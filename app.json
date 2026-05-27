@@ -1,0 +1,56 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/guide/guide",
+    "pages/culture/culture",
+    "pages/specialty/specialty",
+    "pages/activity/activity",
+    "pages/profile/profile",
+    "pages/scenic-detail/scenic-detail",
+    "pages/ship-3d/ship-3d",
+    "pages/ai-chat/ai-chat"
+  ],
+  "window": {
+    "navigationBarTitleText": "樟林归舟",
+    "navigationBarBackgroundColor": "#f7efe5",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f5f3ef",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#7c6f64",
+    "selectedColor": "#a34d2e",
+    "backgroundColor": "#fffdf9",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/guide/guide",
+        "text": "导览"
+      },
+      {
+        "pagePath": "pages/culture/culture",
+        "text": "文化"
+      },
+      {
+        "pagePath": "pages/specialty/specialty",
+        "text": "风物"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于在地图上显示你的位置，方便规划游览路线"
+    }
+  }
+}

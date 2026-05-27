@@ -1,0 +1,65 @@
+<view class="detail-page">
+  <view class="detail-header">
+    <image class="header-image" src="{{spot.image}}" mode="aspectFill" />
+    <view class="header-overlay"></view>
+    <view class="header-content">
+      <view class="back-btn" bindtap="goBack">←</view>
+      <view class="header-info">
+        <view class="spot-category">{{spot.category}}</view>
+        <view class="spot-name">{{spot.name}}</view>
+        <view class="spot-tags">
+          <text class="tag" wx:for="{{spot.tags}}" wx:key="index">{{item}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="detail-content">
+    <view class="info-section">
+      <view class="info-row">
+        <text class="info-icon">📍</text>
+        <text class="info-text">{{spot.location}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-icon">🕐</text>
+        <text class="info-text">{{spot.visitingTime}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-icon">🎫</text>
+        <text class="info-text">{{spot.ticketInfo}}</text>
+      </view>
+    </view>
+
+    <view class="desc-section">
+      <view class="section-title">景点介绍</view>
+      <view class="desc-text">{{spot.description}}</view>
+    </view>
+
+    <view class="audio-section" wx:if="{{spot.audioScript}}">
+      <view class="section-title">语音讲解</view>
+      <view class="audio-player">
+        <view class="play-btn {{isPlaying ? 'playing' : ''}}" bindtap="toggleAudio">
+          <text class="play-icon">{{isPlaying ? '⏸' : '▶'}}</text>
+        </view>
+        <view class="audio-info">
+          <view class="audio-title">阿樟讲解</view>
+          <view class="audio-status">{{isPlaying ? '播放中...' : '点击播放'}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="features-section" wx:if="{{spot.features}}">
+      <view class="section-title">详细信息</view>
+      <view class="features-grid">
+        <view class="feature-item" wx:for="{{spot.featuresArray}}" wx:key="key">
+          <view class="feature-label">{{item.label}}</view>
+          <view class="feature-value">{{item.value}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-action">
+    <button class="action-btn primary" bindtap="startGuide">开始导览</button>
+  </view>
+</view>

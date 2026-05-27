@@ -1,0 +1,38 @@
+<view class="activity-page">
+  <view class="activity-header">
+    <view class="header-bg"></view>
+    <view class="header-content">
+      <view class="header-title">活动资讯</view>
+      <view class="header-subtitle">讲解 · 夜游 · 研学 · 品鉴</view>
+    </view>
+  </view>
+
+  <view class="activity-content">
+    <view class="activity-list">
+      <view class="activity-card" wx:for="{{activities}}" wx:key="id">
+        <view class="card-header">
+          <view class="card-tag {{item.tag}}">{{item.tag}}</view>
+          <view class="card-status {{item.status === '报名中' ? 'open' : 'full'}}">{{item.status}}</view>
+        </view>
+        <view class="card-title">{{item.title}}</view>
+        <view class="card-meta">
+          <text class="meta-item">📅 {{item.date}}</text>
+          <text class="meta-item">🕐 {{item.time}}</text>
+        </view>
+        <view class="card-location">📍 {{item.location}}</view>
+        <view class="card-desc">{{item.description}}</view>
+        <view class="card-footer">
+          <view class="enroll-info">
+            <view class="enroll-bar">
+              <view class="enroll-progress" style="width: {{item.enrollCount / item.maxCount * 100}}%"></view>
+            </view>
+            <text class="enroll-text">{{item.enrollCount}}/{{item.maxCount}}人</text>
+          </view>
+          <view class="enroll-btn" bindtap="enrollActivity" data-id="{{item.id}}">立即报名</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <custom-tab-bar />
+</view>

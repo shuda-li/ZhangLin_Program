@@ -1,0 +1,4 @@
+module.exports = {
+  DEEPSEEK_API_KEY: '请在此填入你的DeepSeek API密钥',
+  TAVILY_API_KEY: '请在此填入你的Tavily API密钥（可选）'
+}

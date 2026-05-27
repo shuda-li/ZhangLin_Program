@@ -1,0 +1,201 @@
+<view class="page-wrapper">
+  <scroll-view scroll-y="true" class="main-scroll" scroll-top="{{scrollTop}}" bindscroll="onPageScroll" enhanced="true" show-scrollbar="false">
+    <view class="page-content">
+      <view class="top-bar">
+        <view class="location-info">
+          <text class="location-icon">📍</text>
+          <text class="location-text">汕头 · 澄海</text>
+        </view>
+        <view class="top-actions">
+          <view class="ai-btn" bindtap="openAiGuide">
+            <text class="ai-icon">💬</text>
+            <text class="ai-text">阿樟</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="hero-section">
+        <view class="hero-overlay"></view>
+        <view class="hero-content">
+          <view class="hero-title">樟林归舟</view>
+          <view class="hero-subtitle">海上丝路 · 红头船故里</view>
+          <view class="typewriter-wrapper">
+            <text class="typewriter-text">{{typewriterText}}<text class="typewriter-cursor">|</text></text>
+          </view>
+        </view>
+        <view class="hero-bottom">
+          <view class="hero-stats">
+            <view class="stat-item" bindtap="handleStatTap" data-target="sf_timeline">
+              <view class="stat-num">{{todayData.visitCount}}</view>
+              <view class="stat-label">今日访客</view>
+            </view>
+            <view class="stat-divider"></view>
+            <view class="stat-item" bindtap="handleStatTap" data-target="sf_timeline">
+              <view class="stat-num">{{todayData.historyYears}}</view>
+              <view class="stat-label">建港历史</view>
+            </view>
+            <view class="stat-divider"></view>
+            <view class="stat-item" bindtap="handleStatTap" data-target="/pages/specialty/specialty">
+              <view class="stat-num">{{todayData.featuredItems}}</view>
+              <view class="stat-label">特色风物</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="quick-services">
+        <view class="section-header">
+          <view class="section-title">快捷服务</view>
+        </view>
+        <view class="service-grid">
+          <view class="service-item primary-service" bindtap="openAiGuide">
+            <view class="service-icon">💬</view>
+            <view class="service-info">
+              <view class="service-title">AI阿樟对话</view>
+              <view class="service-desc">和阿樟聊天，了解古港故事</view>
+            </view>
+          </view>
+          <view class="service-item" bindtap="openGuide" data-route-id="half-day">
+            <view class="service-icon">🗺️</view>
+            <view class="service-info">
+              <view class="service-title">导览路线</view>
+              <view class="service-desc">半日游、一日游推荐</view>
+            </view>
+          </view>
+          <view class="service-item" bindtap="openActivity">
+            <view class="service-icon">🎯</view>
+            <view class="service-info">
+              <view class="service-title">活动报名</view>
+              <view class="service-desc">近期活动快速通道</view>
+            </view>
+          </view>
+          <view class="service-item" bindtap="open3DShip">
+            <view class="service-icon">🚢</view>
+            <view class="service-info">
+              <view class="service-title">3D红头船</view>
+              <view class="service-desc">旋转查看模型</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="section-spacing scroll-fade {{anim_sf_ship ? 'in-view' : ''}}" id="sf_ship">
+        <view class="card ship-showcase" bindtap="open3DShip">
+          <view class="ship-header">
+            <view class="ship-title-row">
+              <view class="ship-icon-3d">🚢</view>
+              <view class="ship-title-group">
+                <view class="ship-name">3D 红头船</view>
+                <view class="ship-subtitle">旋转查看 · 海丝记忆</view>
+              </view>
+            </view>
+            <view class="ship-badge">3D</view>
+          </view>
+          <view class="ship-stage">
+            <view class="ship-model">
+              <image class="ship-img" src="/assets/images/red-ship.jpg" mode="aspectFit" />
+              <view class="ship-glow"></view>
+              <view class="ship-hint">点击进入3D查看 ›</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="section-spacing scroll-fade {{anim_sf_timeline ? 'in-view' : ''}}" id="sf_timeline">
+        <view class="section-header">
+          <view class="section-title">侨乡文化时间线</view>
+          <view class="section-more" bindtap="handleActionTap" data-action="tab" data-target="/pages/culture/culture">查看全部 ›</view>
+        </view>
+        <scroll-view class="timeline-scroll" scroll-x="true" enhanced="true" show-scrollbar="false">
+          <view class="timeline-track">
+            <view class="timeline-item {{item.isHighlight ? 'highlight' : ''}}" wx:for="{{cultureTimeline}}" wx:key="id">
+              <view class="timeline-year">{{item.year}}</view>
+              <view class="timeline-dot"></view>
+              <view class="timeline-content">
+                <view class="timeline-title">{{item.title}}</view>
+                <view class="timeline-desc">{{item.desc}}</view>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <view class="section-spacing scroll-fade {{anim_sf_dashboard ? 'in-view' : ''}}" id="sf_dashboard">
+        <view class="section-header">
+          <view class="section-title">景点速览</view>
+          <view class="section-more" bindtap="handleActionTap" data-action="detail" data-target="ship-museum">景点详情 ›</view>
+        </view>
+        <view class="dashboard-grid">
+          <view class="dashboard-card main-card" bindtap="openSpot" data-id="ship-museum">
+            <view class="card-image-wrapper">
+              <image class="card-img" src="/assets/images/1.红头船.jpg" mode="aspectFill" />
+              <view class="card-badge">核心</view>
+            </view>
+            <view class="card-body">
+              <view class="card-title">红头船文化展示点</view>
+              <view class="card-meta">
+                <text class="card-location">📍 樟林古港</text>
+                <text class="card-time">🕐 8:30-17:30</text>
+              </view>
+              <view class="card-tags">
+                <text class="tag tag-family">亲子</text>
+                <text class="tag tag-photo">拍照</text>
+              </view>
+            </view>
+          </view>
+          <view class="dashboard-side">
+            <view class="side-card" bindtap="openSpot" data-id="port-ruins">
+              <image class="side-img" src="/assets/images/2.古港遗址.jpg" mode="aspectFill" />
+              <view class="side-body">
+                <view class="side-title">古港遗址游览区</view>
+                <view class="side-tags"><text class="tag tag-hot">热门</text></view>
+              </view>
+            </view>
+            <view class="side-card" bindtap="openSpot" data-id="historic-arcade">
+              <image class="side-img" src="/assets/images/3.古码头.jpg" mode="aspectFill" />
+              <view class="side-body">
+                <view class="side-title">侨乡古建筑群</view>
+                <view class="side-tags"><text class="tag tag-photo">摄影</text></view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="section-spacing scroll-fade {{anim_sf_quick ? 'in-view' : ''}}" id="sf_quick">
+        <view class="section-header">
+          <view class="section-title">主题导览</view>
+          <view class="section-more" bindtap="handleActionTap" data-action="tab" data-target="/pages/guide/guide">更多路线 ›</view>
+        </view>
+        <view class="route-cards">
+          <view class="route-card" wx:for="{{routePlans}}" wx:key="id" bindtap="openGuide" data-route-id="{{item.id}}">
+            <view class="route-header">
+              <view class="route-icon">{{item.icon}}</view>
+              <view class="route-title-group">
+                <view class="route-name">{{item.name}}</view>
+                <view class="route-duration">{{item.duration}}</view>
+              </view>
+              <view class="route-tag">{{item.tag}}</view>
+            </view>
+            <view class="route-spots">
+              <text class="route-spot-name" wx:for="{{item.spots}}" wx:for-item="spot" wx:key="spot">{{spot}}</text>
+            </view>
+            <view class="route-footer">
+              <view class="route-price" wx:if="{{item.price === 0}}">免费</view>
+              <view class="route-price" wx:else>¥{{item.price}}</view>
+              <view class="route-btn">查看详情 ›</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="bottom-spacer"></view>
+    </view>
+  </scroll-view>
+
+  <view class="back-top {{showBackTop ? 'visible' : ''}}" bindtap="scrollToTop">
+    <text class="back-top-icon">↑</text>
+  </view>
+
+  <custom-tab-bar />
+</view>

@@ -1,0 +1,74 @@
+<view class="culture-page">
+  <view class="culture-header">
+    <view class="header-bg"></view>
+    <view class="header-content">
+      <view class="header-title">侨乡文化</view>
+      <view class="header-subtitle">红头船 · 海上丝路 · 潮商传奇</view>
+    </view>
+  </view>
+
+  <view class="culture-content">
+    <view class="culture-section">
+      <view class="section-title">
+        <text class="title-icon">🚢</text>
+        <text class="title-text">红头船文化</text>
+      </view>
+      <view class="culture-card" bindtap="openAiChat" data-topic="红头船">
+        <view class="card-content">
+          <view class="card-title">红头船的由来</view>
+          <view class="card-desc">因船头涂朱红色而得名，是清代潮汕地区远洋帆船的典范</view>
+        </view>
+        <view class="card-action">
+          <text class="action-icon">💬</text>
+          <text class="action-text">问问阿樟</text>
+        </view>
+      </view>
+      <view class="culture-card" bindtap="openAiChat" data-topic="航海">
+        <view class="card-content">
+          <view class="card-title">海上丝绸之路</view>
+          <view class="card-desc">樟林港是海丝之路的重要节点，承载着潮商闯荡南洋的历史记忆</view>
+        </view>
+        <view class="card-action">
+          <text class="action-icon">💬</text>
+          <text class="action-text">问问阿樟</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="culture-section">
+      <view class="section-title">
+        <text class="title-icon">🏠</text>
+        <text class="title-text">侨乡建筑</text>
+      </view>
+      <view class="culture-card" bindtap="openAiChat" data-topic="建筑">
+        <view class="card-content">
+          <view class="card-title">中西合璧之美</view>
+          <view class="card-desc">融合潮汕传统建筑工艺与西洋建筑元素的侨乡特色建筑</view>
+        </view>
+        <view class="card-action">
+          <text class="action-icon">💬</text>
+          <text class="action-text">问问阿樟</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="culture-section">
+      <view class="section-title">
+        <text class="title-icon">🍵</text>
+        <text class="title-text">潮汕文化</text>
+      </view>
+      <view class="culture-card" bindtap="openAiChat" data-topic="工夫茶">
+        <view class="card-content">
+          <view class="card-title">潮汕工夫茶</view>
+          <view class="card-desc">"茶道四宝"承载着潮汕人的待客之道与生活美学</view>
+        </view>
+        <view class="card-action">
+          <text class="action-icon">💬</text>
+          <text class="action-text">问问阿樟</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <custom-tab-bar />
+</view>

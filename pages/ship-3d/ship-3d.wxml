@@ -1,0 +1,90 @@
+<view class="ship-3d-page">
+  <view class="header">
+    <view class="back-btn" bindtap="goBack">←</view>
+    <view class="header-title">3D 红头船</view>
+  </view>
+
+  <view class="model-container" bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd">
+    <view class="model-wrapper">
+      <image 
+        class="ship-image" 
+        src="{{currentImage}}" 
+        mode="aspectFill"
+      />
+    </view>
+    <view class="swipe-hint">左右滑动旋转查看 →</view>
+    <view class="rotation-indicator">
+      <view 
+        wx:for="{{shipImages}}" 
+        wx:for-index="index"
+        wx:key="index"
+        class="indicator-dot {{currentIndex === index ? 'active' : ''}}"
+        bindtap="setImage"
+        data-index="{{index}}"
+      />
+    </view>
+  </view>
+
+  <view class="ship-info">
+    <view class="info-header">
+      <view class="ship-icon">🚢</view>
+      <view class="ship-title">
+        <view class="ship-name">红头船</view>
+        <view class="ship-subtitle">清代潮汕远洋帆船</view>
+      </view>
+    </view>
+
+    <view class="info-tabs">
+      <view class="tab-item {{activeTab === 'info' ? 'active' : ''}}" bindtap="switchTab" data-tab="info">基本信息</view>
+      <view class="tab-item {{activeTab === 'history' ? 'active' : ''}}" bindtap="switchTab" data-tab="history">历史故事</view>
+      <view class="tab-item {{activeTab === 'tech' ? 'active' : ''}}" bindtap="switchTab" data-tab="tech">建造工艺</view>
+    </view>
+
+    <view class="info-content">
+      <view class="info-panel" wx:if="{{activeTab === 'info'}}">
+        <view class="info-row">
+          <text class="label">船型</text>
+          <text class="value">广式红头船</text>
+        </view>
+        <view class="info-row">
+          <text class="label">船长</text>
+          <text class="value">约 28 米</text>
+        </view>
+        <view class="info-row">
+          <text class="label">船宽</text>
+          <text class="value">约 8 米</text>
+        </view>
+        <view class="info-row">
+          <text class="label">航线</text>
+          <text class="value">东南亚多埠</text>
+        </view>
+        <view class="info-row">
+          <text class="label">鼎盛期</text>
+          <text class="value">乾隆-咸丰年间</text>
+        </view>
+      </view>
+
+      <view class="info-panel" wx:if="{{activeTab === 'history'}}">
+        <view class="history-text">红头船是潮汕地区特有的远洋帆船，因船头涂以朱红色而得名。清代乾隆年间，潮汕沿海居民大量乘坐红头船下南洋经商，形成了著名的"潮商"群体。</view>
+        <view class="history-text">樟林港是红头船的重要停泊港，最多时港内停泊红头船达数千艘，见证了海上丝绸之路的繁荣。</view>
+      </view>
+
+      <view class="info-panel" wx:if="{{activeTab === 'tech'}}">
+        <view class="tech-item">
+          <view class="tech-title">船体结构</view>
+          <view class="tech-desc">采用潮汕传统的"龙骨+肋骨"结构，抗风浪能力强</view>
+        </view>
+        <view class="tech-item">
+          <view class="tech-title">红头涂装</view>
+          <view class="tech-desc">船头涂朱红色，寓意吉祥辟邪，也便于识别</view>
+        </view>
+        <view class="tech-item">
+          <view class="tech-title">风帆系统</view>
+          <view class="tech-desc">配备大型布帆，利用季风航行，航速可达每日200海里</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="detail-btn" bindtap="showDetail">查看详细信息</view>
+</view>

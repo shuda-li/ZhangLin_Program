@@ -1,0 +1,80 @@
+<view class="guide-page">
+  <view class="guide-header">
+    <view class="header-bg"></view>
+    <view class="header-content">
+      <view class="header-title">景点导览</view>
+      <view class="header-subtitle">樟林古港 · 四大核心景区</view>
+    </view>
+  </view>
+
+  <view class="guide-tabs">
+    <view class="tab-item {{activeTab === 'flow' ? 'active' : ''}}" bindtap="switchTab" data-tab="flow">
+      <text class="tab-icon">🗺️</text>
+      <text class="tab-text">流程图</text>
+    </view>
+    <view class="tab-item {{activeTab === 'list' ? 'active' : ''}}" bindtap="switchTab" data-tab="list">
+      <text class="tab-icon">📋</text>
+      <text class="tab-text">列表</text>
+    </view>
+    <view class="tab-item {{activeTab === 'map' ? 'active' : ''}}" bindtap="switchTab" data-tab="map">
+      <text class="tab-icon">🧭</text>
+      <text class="tab-text">地图</text>
+    </view>
+  </view>
+
+  <view class="guide-content">
+    <view class="flow-view" wx:if="{{activeTab === 'flow'}}">
+      <view class="flow-container">
+        <view class="flow-line"></view>
+        <view class="flow-nodes">
+          <view class="flow-node {{item.active ? 'active' : ''}}" wx:for="{{flowNodes}}" wx:key="id" bindtap="onNodeTap" data-id="{{item.id}}">
+            <view class="node-icon">{{item.icon}}</view>
+            <view class="node-info">
+              <view class="node-name">{{item.name}}</view>
+              <view class="node-time">{{item.time}}</view>
+            </view>
+            <view class="node-indicator"></view>
+          </view>
+        </view>
+      </view>
+
+      <view class="flow-detail" wx:if="{{selectedNode}}">
+        <view class="detail-header">
+          <view class="detail-icon">{{selectedNode.icon}}</view>
+          <view class="detail-title">{{selectedNode.name}}</view>
+        </view>
+        <view class="detail-meta">
+          <text class="meta-item">📍 {{selectedNode.location}}</text>
+          <text class="meta-item">🕐 {{selectedNode.time}}</text>
+        </view>
+        <view class="detail-desc">{{selectedNode.description}}</view>
+        <view class="detail-tags">
+          <text class="tag" wx:for="{{selectedNode.tags}}" wx:key="index">{{item}}</text>
+        </view>
+        <view class="detail-actions">
+          <button class="action-btn primary" bindtap="navigateToSpot" data-id="{{selectedNode.id}}">查看详情</button>
+          <button class="action-btn" bindtap="playAudio">播放讲解</button>
+        </view>
+      </view>
+    </view>
+
+    <view class="list-view" wx:if="{{activeTab === 'list'}}">
+      <view class="spot-card" wx:for="{{spots}}" wx:key="id" bindtap="onSpotTap" data-id="{{item.id}}">
+        <image class="spot-image" src="{{item.image}}" mode="aspectFill" />
+        <view class="spot-info">
+          <view class="spot-name">{{item.name}}</view>
+          <view class="spot-summary">{{item.summary}}</view>
+          <view class="spot-tags">
+            <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="index">{{tag}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="map-view" wx:if="{{activeTab === 'map'}}">
+      <map id="guideMap" class="guide-map" latitude="{{mapCenter.latitude}}" longitude="{{mapCenter.longitude}}" markers="{{markers}}" scale="15" show-location bindmarkertap="onMarkerTap"></map>
+    </view>
+  </view>
+
+  <custom-tab-bar />
+</view>

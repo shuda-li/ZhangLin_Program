@@ -1,0 +1,27 @@
+# 微信小程序项目
+
+node_modules/
+.vscode/
+.DS_Store
+
+# 日志
+*.log
+
+# 临时文件
+*.tmp
+*.temp
+
+# 本地配置（包含密钥）
+project.private.config.json
+utils/config.js
+
+# 后端（如果不需要）
+backend/
+
+# 图片素材（使用远程或本地）
+assets/images/*.jpg
+assets/images/*.png
+assets/tabbar/*.png
+
+# zhanglin_picture 目录
+zhanglin_picture/

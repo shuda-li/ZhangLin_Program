@@ -1,0 +1,76 @@
+<view class="container">
+  <view class="header">
+    <view class="header-left" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <view class="header-title">
+      <view class="header-avatar">阿樟</view>
+      <view class="header-info">
+        <view class="header-name">阿樟</view>
+        <view class="header-status">
+          <view class="status-dot"></view>
+          在线
+        </view>
+      </view>
+    </view>
+    <view class="header-right" bindtap="clearChat">
+      <text class="clear-icon">🗑️</text>
+    </view>
+  </view>
+
+  <view class="chat-container" scroll-y="true" scroll-top="{{scrollTop}}" enhanced="true" show-scrollbar="false">
+    <view class="welcome-section" wx:if="{{messages.length === 0}}">
+      <view class="welcome-avatar">阿樟</view>
+      <view class="welcome-text">你好！我是阿樟，樟林古港的AI旅游助手 🚢</view>
+      <view class="welcome-hint">有什么关于古港的问题，都可以问我哦~</view>
+      <view class="quick-questions">
+        <view class="quick-title">试试这样问我：</view>
+        <view class="quick-list">
+          <view class="quick-item" bindtap="askQuestion" data-q="推荐一条半日游路线">推荐一条半日游路线</view>
+          <view class="quick-item" bindtap="askQuestion" data-q="红头船有什么历史故事">红头船有什么历史故事</view>
+          <view class="quick-item" bindtap="askQuestion" data-q="古港附近有什么美食">古港附近有什么美食</view>
+          <view class="quick-item" bindtap="askQuestion" data-q="最近有什么活动">最近有什么活动</view>
+        </view>
+      </view>
+    </view>
+
+    <block wx:for="{{messages}}" wx:key="id">
+      <view class="message-row {{item.role === 'user' ? 'user-row' : 'ai-row'}}">
+        <view class="message-avatar" wx:if="{{item.role === 'assistant'}}">阿樟</view>
+        <view class="message-content {{item.role === 'user' ? 'user-message' : 'ai-message'}}">
+          <view class="message-text">{{item.content}}</view>
+          <view class="message-time">{{item.time}}</view>
+        </view>
+      </view>
+    </block>
+
+    <view class="loading-row {{showLoading ? '' : 'hidden'}}" wx:if="{{showLoading}}">
+      <view class="message-avatar">阿樟</view>
+      <view class="ai-message loading-message">
+        <view class="loading-dots">
+          <view class="dot"></view>
+          <view class="dot"></view>
+          <view class="dot"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="input-container">
+    <view class="input-wrapper">
+      <input 
+        class="chat-input" 
+        type="text" 
+        value="{{inputText}}" 
+        placeholder="输入你想问的问题..." 
+        bindinput="onInput"
+        bindconfirm="sendMessage"
+        confirm-type="send"
+        focus="{{inputFocused}}"
+      />
+      <view class="send-btn {{inputText ? 'active' : ''}}" bindtap="sendMessage">
+        <text class="send-icon">↑</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,47 @@
+<view class="specialty-page">
+  <view class="specialty-header">
+    <view class="header-bg"></view>
+    <view class="header-content">
+      <view class="header-title">在地风物</view>
+      <view class="header-subtitle">茶韵 · 小吃 · 文创 · 手作</view>
+    </view>
+  </view>
+
+  <view class="specialty-content">
+    <view class="category-tabs">
+      <view class="tab-item {{activeCategory === 'tea' ? 'active' : ''}}" bindtap="switchCategory" data-category="tea">
+        <text class="tab-icon">🍵</text>
+        <text class="tab-text">工夫茶</text>
+      </view>
+      <view class="tab-item {{activeCategory === 'snack' ? 'active' : ''}}" bindtap="switchCategory" data-category="snack">
+        <text class="tab-icon">🍜</text>
+        <text class="tab-text">小吃</text>
+      </view>
+      <view class="tab-item {{activeCategory === 'creative' ? 'active' : ''}}" bindtap="switchCategory" data-category="creative">
+        <text class="tab-icon">🎨</text>
+        <text class="tab-text">文创</text>
+      </view>
+      <view class="tab-item {{activeCategory === 'handcraft' ? 'active' : ''}}" bindtap="switchCategory" data-category="handcraft">
+        <text class="tab-icon">✂️</text>
+        <text class="tab-text">手作</text>
+      </view>
+    </view>
+
+    <view class="item-list">
+      <view class="item-card" wx:for="{{currentItems}}" wx:key="id" bindtap="showDetail" data-item="{{item}}">
+        <image class="item-image" src="{{item.image}}" mode="aspectFill" />
+        <view class="item-info">
+          <view class="item-name">{{item.name}}</view>
+          <view class="item-desc">{{item.desc}}</view>
+          <view class="item-footer">
+            <view class="item-price" wx:if="{{item.price > 0}}">¥{{item.price}}</view>
+            <view class="item-price free" wx:else>免费</view>
+            <view class="item-location">{{item.location}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <custom-tab-bar />
+</view>
