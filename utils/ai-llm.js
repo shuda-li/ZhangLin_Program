@@ -85,31 +85,43 @@ class AiLlm {
     ]
 
     try {
-      const response = await wx.request({
-        url: this.apiUrl,
-        method: 'POST',
-        header: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.apiKey}`
-        },
-        data: {
-          model: this.model,
-          messages: messages,
-          stream: false
-        }
+      const response = await new Promise((resolve, reject) => {
+        wx.request({
+          url: this.apiUrl,
+          method: 'POST',
+          header: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.apiKey}`
+          },
+          data: {
+            model: this.model,
+            messages: messages,
+            stream: false
+          },
+          success: resolve,
+          fail: reject
+        })
       })
 
       if (response.statusCode === 200 && response.data.choices && response.data.choices[0]) {
         const assistantMessage = response.data.choices[0].message.content
         this.addMessage('assistant', assistantMessage)
         return { success: true, message: assistantMessage }
-      } else {
-        console.error('API错误:', response)
-        return { success: false, error: 'API响应格式错误' }
       }
+
+      const apiErr = response.data && response.data.error && response.data.error.message
+      console.error('API错误:', response)
+      if (response.statusCode === 401) {
+        return { success: false, error: 'API Key 无效，请检查 utils/config.js' }
+      }
+      return { success: false, error: apiErr || `请求失败 (${response.statusCode})` }
     } catch (error) {
       console.error('AI对话错误:', error)
-      return { success: false, error: error.message || '网络请求失败' }
+      const msg = (error && error.errMsg) || (error && error.message) || ''
+      if (msg.indexOf('url not in domain list') !== -1) {
+        return { success: false, error: '未配置合法域名，请在公众平台添加 api.deepseek.com' }
+      }
+      return { success: false, error: msg || '网络请求失败' }
     }
   }
 }

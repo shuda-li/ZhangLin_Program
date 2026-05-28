@@ -1,0 +1,14 @@
+/**
+ * 开启语音后，将下方 plugins 段合并进 app.json（与现有字段并列），
+ * 并在 utils/config.js 中设置 USE_WECHAT_TTS: true
+ *
+ * 同时在 mp.weixin.qq.com → 设置 → 插件管理 → 添加「同声传译」
+ */
+{
+  "plugins": {
+    "WechatSI": {
+      "version": "0.3.5",
+      "provider": "wx069ba97219f66d99"
+    }
+  }
+}

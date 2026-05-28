@@ -7,6 +7,19 @@
     </view>
   </view>
 
+  <view class="location-bar">
+    <text class="location-bar-icon">📍</text>
+    <text class="location-bar-text">{{locationTip}}</text>
+    <view class="location-mock" wx:if="{{isDevtools}}" bindtap="useMockLocation">模拟位置</view>
+    <view class="location-refresh" bindtap="refreshLocation">刷新</view>
+  </view>
+
+  <view class="nearest-banner" wx:if="{{nearestSpot}}" bindtap="onNearestTap">
+    <view class="nearest-label">您已靠近</view>
+    <view class="nearest-name">{{nearestSpot.name}}</view>
+    <view class="nearest-action">点击收听阿樟讲解 ›</view>
+  </view>
+
   <view class="guide-tabs">
     <view class="tab-item {{activeTab === 'flow' ? 'active' : ''}}" bindtap="switchTab" data-tab="flow">
       <text class="tab-icon">🗺️</text>
@@ -27,11 +40,12 @@
       <view class="flow-container">
         <view class="flow-line"></view>
         <view class="flow-nodes">
-          <view class="flow-node {{item.active ? 'active' : ''}}" wx:for="{{flowNodes}}" wx:key="id" bindtap="onNodeTap" data-id="{{item.id}}">
+          <view class="flow-node {{item.active ? 'active' : ''}} {{item.isNearby ? 'nearby' : ''}}" wx:for="{{flowNodes}}" wx:key="id" bindtap="onNodeTap" data-id="{{item.id}}">
             <view class="node-icon">{{item.icon}}</view>
             <view class="node-info">
               <view class="node-name">{{item.name}}</view>
               <view class="node-time">{{item.time}}</view>
+              <view class="node-distance" wx:if="{{item.distanceText}}">距您 {{item.distanceText}}</view>
             </view>
             <view class="node-indicator"></view>
           </view>
@@ -46,6 +60,8 @@
         <view class="detail-meta">
           <text class="meta-item">📍 {{selectedNode.location}}</text>
           <text class="meta-item">🕐 {{selectedNode.time}}</text>
+          <text class="meta-item nearby-tag" wx:if="{{selectedNode.isNearby}}">✓ 您已在附近</text>
+          <text class="meta-item" wx:elif="{{selectedNode.distanceText}}">🧭 距您 {{selectedNode.distanceText}}</text>
         </view>
         <view class="detail-desc">{{selectedNode.description}}</view>
         <view class="detail-tags">
@@ -54,17 +70,22 @@
         <view class="detail-actions">
           <button class="action-btn primary" bindtap="navigateToSpot" data-id="{{selectedNode.id}}">查看详情</button>
           <button class="action-btn" bindtap="playAudio">播放讲解</button>
+          <button class="action-btn outline" bindtap="openNavigation" data-id="{{selectedNode.id}}">导航前往</button>
         </view>
       </view>
     </view>
 
     <view class="list-view" wx:if="{{activeTab === 'list'}}">
-      <view class="spot-card" wx:for="{{spots}}" wx:key="id" bindtap="onSpotTap" data-id="{{item.id}}">
+      <view class="spot-card {{item.isNearby ? 'nearby' : ''}}" wx:for="{{spotsSorted}}" wx:key="id" bindtap="onSpotTap" data-id="{{item.id}}">
         <image class="spot-image" src="{{item.image}}" mode="aspectFill" />
         <view class="spot-info">
-          <view class="spot-name">{{item.name}}</view>
+          <view class="spot-name-row">
+            <view class="spot-name">{{item.name}}</view>
+            <view class="spot-distance" wx:if="{{item.distanceText}}">{{item.distanceText}}</view>
+          </view>
           <view class="spot-summary">{{item.summary}}</view>
           <view class="spot-tags">
+            <text class="tag nearby-tag" wx:if="{{item.isNearby}}">已到附近</text>
             <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="index">{{tag}}</text>
           </view>
         </view>
@@ -72,7 +93,17 @@
     </view>
 
     <view class="map-view" wx:if="{{activeTab === 'map'}}">
-      <map id="guideMap" class="guide-map" latitude="{{mapCenter.latitude}}" longitude="{{mapCenter.longitude}}" markers="{{markers}}" scale="15" show-location bindmarkertap="onMarkerTap"></map>
+      <map
+        id="guideMap"
+        class="guide-map"
+        latitude="{{mapCenter.latitude}}"
+        longitude="{{mapCenter.longitude}}"
+        markers="{{markers}}"
+        scale="15"
+        show-location
+        bindmarkertap="onMarkerTap"
+      ></map>
+      <view class="map-hint">点击标记查看景点 · 蓝点为您的位置</view>
     </view>
   </view>
 

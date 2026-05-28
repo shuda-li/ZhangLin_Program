@@ -1,4 +1,9 @@
 {
   "navigationStyle": "custom",
-  "navigationBarTitleText": "樟林归舟"
+  "navigationBarTitleText": "樟林归舟",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark",
+  "usingComponents": {
+    "skeleton": "/components/skeleton/skeleton"
+  }
 }

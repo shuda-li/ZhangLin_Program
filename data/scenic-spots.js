@@ -11,6 +11,8 @@ module.exports = [
     visitingTime: '8:30-17:30',
     ticketInfo: '免费开放',
     location: '樟林古港码头',
+    latitude: 23.462,
+    longitude: 116.781,
     audioScript: '各位游客好，欢迎来到红头船文化展示点。红头船是潮汕地区特有的远洋帆船，从清代乾隆年间开始兴盛，最多时超过一万艘。它们载着潮汕乡亲闯荡南洋，开创了潮商传奇。现在请随我进入馆内参观，首先看到的是一艘按照1:1比例复原的红头船模型...',
     features: {
       type: '广式红头船（Kwangtung Red-bottom Boat）',
@@ -33,6 +35,8 @@ module.exports = [
     visitingTime: '全天开放',
     ticketInfo: '免费开放',
     location: '古港核心区',
+    latitude: 23.460,
+    longitude: 116.779,
     audioScript: '我们现在所在的位置就是古港遗址的核心区域。脚下的这些石板，每一块都承载着百年的记忆。据史料记载，樟林港在乾隆年间已是粤东第一大港，每年有超过三千艘红头船在此停泊。各位请看左侧的系缆桩，上面的缆绳痕迹清晰可见当年系缆的频繁程度...',
     features: {
       area: '3.2 万平方米',
@@ -53,6 +57,8 @@ module.exports = [
     visitingTime: '全天开放',
     ticketInfo: '免费开放',
     location: '古港西街',
+    latitude: 23.464,
+    longitude: 116.783,
     audioScript: '欢迎来到侨乡古建筑群。这些建筑是潮汕华侨文化的立体史书。请看陈氏大楼，正面是典型的巴洛克风格立面，繁复的浮雕装饰着天使与卷草；而转身到背面，又是规整的潮式四点金厝。这种"一屋两制"的建筑风格，正是当年华侨既向往西方又坚守传统的真实写照...',
     features: {
       buildings: '42 座华侨建筑',
@@ -73,6 +79,8 @@ module.exports = [
     visitingTime: '9:00-17:00（周一闭馆）',
     ticketInfo: '凭身份证免费参观',
     location: '古港文化中心',
+    latitude: 23.459,
+    longitude: 116.777,
     audioScript: '各位朋友好，欢迎参观侨史记忆长廊。我是阿樟，今天由我来为大家讲述潮汕华侨的故事。在潮汕地区有句老话："签仔过番，银仔回唐"，说的是男人下南洋谋生，寄钱回家养家糊口。请各位随我进入第一展厅"出海"，这里展示的是当年华侨出境时必须办理的"红头船票"——这小小一张纸，承载着多少生离死别...',
     features: {
       length: '280 米展线',

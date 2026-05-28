@@ -8,7 +8,8 @@
     "pages/profile/profile",
     "pages/scenic-detail/scenic-detail",
     "pages/ship-3d/ship-3d",
-    "pages/ai-chat/ai-chat"
+    "pages/ai-chat/ai-chat",
+    "pages/favorites/favorites"
   ],
   "window": {
     "navigationBarTitleText": "樟林归舟",
@@ -48,6 +49,9 @@
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json",
+  "requiredPrivateInfos": [
+    "getLocation"
+  ],
   "permission": {
     "scope.userLocation": {
       "desc": "用于在地图上显示你的位置，方便规划游览路线"

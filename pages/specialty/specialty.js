@@ -1,6 +1,17 @@
+function getItemsByCategory(data, category) {
+  const map = {
+    tea: data.teaItems,
+    snack: data.snackItems,
+    creative: data.creativeItems,
+    handcraft: data.handcraftItems
+  }
+  return map[category] || []
+}
+
 Page({
   data: {
     activeCategory: 'tea',
+    currentItems: [],
     teaItems: [
       { id: 1, name: '凤凰单丛', desc: '潮汕乌龙茶代表，香气高扬', price: 68, location: '古港茶庄', image: '/assets/images/tea.jpg' },
       { id: 2, name: '鸭屎香', desc: '银花香型单丛，独特香气', price: 58, location: '古港茶庄', image: '/assets/images/tea.jpg' }
@@ -24,6 +35,7 @@ Page({
     if (app.globalData) {
       app.globalData.currentRoute = '/pages/specialty/specialty'
     }
+    this.setData({ currentItems: getItemsByCategory(this.data, 'tea') })
   },
 
   onShow() {
@@ -34,24 +46,18 @@ Page({
 
   switchCategory(e) {
     const category = e.currentTarget.dataset.category
-    this.setData({ activeCategory: category })
-  },
-
-  get currentItems() {
-    const map = {
-      tea: this.data.teaItems,
-      snack: this.data.snackItems,
-      creative: this.data.creativeItems,
-      handcraft: this.data.handcraftItems
-    }
-    return map[this.data.activeCategory] || []
+    this.setData({
+      activeCategory: category,
+      currentItems: getItemsByCategory(this.data, category)
+    })
   },
 
   showDetail(e) {
     const item = e.currentTarget.dataset.item
+    const priceText = item.price > 0 ? '¥' + item.price : '免费'
     wx.showModal({
       title: item.name,
-      content: item.desc + '\n\n地点：' + item.location + '\n价格：' + (item.price > 0 ? '¥' + item.price : '免费'),
+      content: item.desc + '\n\n地点：' + item.location + '\n价格：' + priceText,
       showCancel: false
     })
   }

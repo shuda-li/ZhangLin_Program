@@ -36,7 +36,6 @@
 .user-avatar {
   width: 100rpx;
   height: 100rpx;
-  background: rgba(255,255,255,0.2);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -46,7 +45,16 @@
   font-weight: bold;
 }
 
+.user-avatar.default {
+  background: rgba(255,255,255,0.2);
+}
+
+.avatar-text {
+  font-size: 48rpx;
+}
+
 .user-detail {
+  flex: 1;
   display: flex;
   flex-direction: column;
 }
@@ -63,8 +71,56 @@
   margin-top: 4rpx;
 }
 
+.login-arrow {
+  font-size: 40rpx;
+  color: rgba(255,255,255,0.6);
+}
+
+/* 统计区域 */
+.stats-section {
+  padding: 0 30rpx;
+  margin-top: -40rpx;
+  position: relative;
+  z-index: 2;
+}
+
+.stats-card {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.08);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  flex: 1;
+}
+
+.stat-num {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #a34d2e;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: #888;
+}
+
+.stat-divider {
+  width: 1rpx;
+  height: 60rpx;
+  background: #e8e4de;
+}
+
 .profile-content {
-  padding: 20rpx;
+  padding: 30rpx 20rpx 20rpx;
 }
 
 .menu-section {
@@ -96,7 +152,34 @@
   color: #333;
 }
 
+.menu-badge {
+  min-width: 36rpx;
+  height: 36rpx;
+  padding: 0 10rpx;
+  background: #e74c3c;
+  border-radius: 18rpx;
+  font-size: 22rpx;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8rpx;
+}
+
 .menu-arrow {
   font-size: 32rpx;
   color: #ccc;
+}
+
+/* 退出登录 */
+.logout-item {
+  background: #fff;
+}
+
+.logout-item .menu-icon {
+  color: #e74c3c;
+}
+
+.logout-text {
+  color: #e74c3c;
 }

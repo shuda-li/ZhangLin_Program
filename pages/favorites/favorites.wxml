@@ -1,0 +1,45 @@
+<view class="favorites-page">
+  <!-- 顶部导航 -->
+  <view class="nav-header" style="padding-top: {{navPaddingTop}}px;">
+    <view class="nav-back" bindtap="goBack">
+      <text class="back-icon">‹</text>
+    </view>
+    <view class="nav-title">我的收藏</view>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <!-- 未登录状态 -->
+  <view class="login-section" wx:if="{{!isLoggedIn}}">
+    <view class="login-icon">⭐</view>
+    <view class="login-text">登录后查看收藏</view>
+    <view class="login-subtext">收藏喜欢的景点和路线</view>
+    <view class="login-btn" bindtap="handleLogin">立即登录</view>
+  </view>
+
+  <!-- 已登录但无收藏 -->
+  <view class="empty-section" wx:elif="{{favorites.length === 0}}">
+    <view class="empty-icon">📭</view>
+    <view class="empty-text">还没有收藏</view>
+    <view class="empty-subtext">去发现和收藏感兴趣的内容吧</view>
+    <view class="empty-btn" bindtap="goHome">去逛逛</view>
+  </view>
+
+  <!-- 收藏列表 -->
+  <view class="favorites-list" wx:else>
+    <view class="favorite-item" wx:for="{{favorites}}" wx:key="id">
+      <view class="item-content" bindtap="viewDetail" data-type="{{item.type}}" data-id="{{item.id}}">
+        <image class="item-image" src="{{item.image}}" mode="aspectFill" lazy-load="true" />
+        <view class="item-info">
+          <view class="item-title">{{item.title || item.name}}</view>
+          <view class="item-desc" wx:if="{{item.summary || item.description}}">{{item.summary || item.description}}</view>
+          <view class="item-tags" wx:if="{{item.tags}}">
+            <text class="item-tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="tag">{{tag}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="item-action" bindtap="removeFavorite" data-id="{{item.id}}">
+        <text class="action-icon">🗑️</text>
+      </view>
+    </view>
+  </view>
+</view>

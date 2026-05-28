@@ -1,9 +1,14 @@
 <view class="detail-page">
   <view class="detail-header">
-    <image class="header-image" src="{{spot.image}}" mode="aspectFill" />
+    <image class="header-image" src="{{spot.image}}" mode="aspectFill" lazy-load="true" />
     <view class="header-overlay"></view>
     <view class="header-content">
-      <view class="back-btn" bindtap="goBack">←</view>
+      <view class="header-top">
+        <view class="back-btn" bindtap="goBack">←</view>
+        <view class="favorite-btn {{isFavorited ? 'active' : ''}}" bindtap="toggleFavorite">
+          <text class="favorite-icon">{{isFavorited ? '⭐' : '☆'}}</text>
+        </view>
+      </view>
       <view class="header-info">
         <view class="spot-category">{{spot.category}}</view>
         <view class="spot-name">{{spot.name}}</view>
@@ -13,6 +18,8 @@
       </view>
     </view>
   </view>
+
+  <view class="scan-banner" wx:if="{{fromScan && scanHint}}">{{scanHint}}</view>
 
   <view class="detail-content">
     <view class="info-section">
@@ -43,7 +50,7 @@
         </view>
         <view class="audio-info">
           <view class="audio-title">阿樟讲解</view>
-          <view class="audio-status">{{isPlaying ? '播放中...' : '点击播放'}}</view>
+          <view class="audio-status">{{audioLoading ? '加载中...' : (isPlaying ? '播放中，点击暂停' : '点击收听（无插件时为文字讲解）')}}</view>
         </view>
       </view>
     </view>
@@ -51,7 +58,7 @@
     <view class="features-section" wx:if="{{spot.features}}">
       <view class="section-title">详细信息</view>
       <view class="features-grid">
-        <view class="feature-item" wx:for="{{spot.featuresArray}}" wx:key="key">
+        <view class="feature-item" wx:for="{{featuresArray}}" wx:key="key">
           <view class="feature-label">{{item.label}}</view>
           <view class="feature-value">{{item.value}}</view>
         </view>
@@ -60,6 +67,7 @@
   </view>
 
   <view class="bottom-action">
-    <button class="action-btn primary" bindtap="startGuide">开始导览</button>
+    <button class="action-btn secondary" bindtap="openNavigation">导航前往</button>
+    <button class="action-btn primary" bindtap="startGuide">问阿樟</button>
   </view>
 </view>

@@ -27,20 +27,24 @@ Page({
   },
 
   onTouchEnd() {
-    var diff = this.data.currentX - this.data.startX
+    const diff = this.data.currentX - this.data.startX
+    const len = this.data.shipImages.length
+    let newIndex = this.data.currentIndex
+
     if (diff > 50) {
-      var newIndex = (this.data.currentIndex + 1) % this.data.shipImages.length
-      this.setData({ currentIndex: newIndex })
-      this.updateCurrentImage()
+      newIndex = (this.data.currentIndex + 1) % len
     } else if (diff < -50) {
-      var newIndex = (this.data.currentIndex - 1 + this.data.shipImages.length) % this.data.shipImages.length
+      newIndex = (this.data.currentIndex - 1 + len) % len
+    }
+
+    if (newIndex !== this.data.currentIndex) {
       this.setData({ currentIndex: newIndex })
       this.updateCurrentImage()
     }
   },
 
   setImage(e) {
-    var index = e.currentTarget.dataset.index
+    const index = e.currentTarget.dataset.index
     this.setData({ currentIndex: index })
     this.updateCurrentImage()
   },
@@ -52,7 +56,7 @@ Page({
   },
 
   switchTab(e) {
-    var tab = e.currentTarget.dataset.tab
+    const tab = e.currentTarget.dataset.tab
     this.setData({ activeTab: tab })
   },
 

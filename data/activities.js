@@ -1,7 +1,7 @@
 module.exports = [
   {
     id: 1,
-    title: '周末定时讲解",
+    title: '周末定时讲解',
     date: '每周六、日',
     time: '10:00 / 14:30',
     location: '红头船文化展示点',

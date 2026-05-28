@@ -107,6 +107,13 @@ npm start
 - **后台**：Vue 3 + Vite
 - **后端**：Node.js + Express + PostgreSQL
 
+## 现场导览与语音
+
+- **定位导览**：导览页自动获取位置，按距离排序景点，150m 内提示收听讲解
+- **扫码讲解**：各景点小程序码路径见 [docs/scenic-qrcode-paths.md](docs/scenic-qrcode-paths.md)
+- **语音播报**：默认**文字讲解**（无需插件）；真机语音见 `app.plugin.json.example` 与 `USE_WECHAT_TTS: true`
+- **未上线 / 模拟器调试**：见 [docs/simulator-guide.md](docs/simulator-guide.md)（模拟位置、编译模式代替扫码等）
+
 ## 注意事项
 
 - 本项目为参加竞赛的文旅小程序作品

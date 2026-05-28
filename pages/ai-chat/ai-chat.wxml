@@ -13,8 +13,13 @@
         </view>
       </view>
     </view>
-    <view class="header-right" bindtap="clearChat">
-      <text class="clear-icon">🗑️</text>
+    <view class="header-actions">
+      <view class="header-voice {{voiceEnabled ? 'on' : ''}} {{voiceAvailable ? '' : 'disabled'}}" bindtap="toggleVoice">
+        <text class="voice-icon">{{voiceAvailable ? (voiceEnabled ? '🔊' : '🔇') : '📖'}}</text>
+      </view>
+      <view class="header-right" bindtap="clearChat">
+        <text class="clear-icon">🗑️</text>
+      </view>
     </view>
   </view>
 
@@ -23,6 +28,8 @@
       <view class="welcome-avatar">阿樟</view>
       <view class="welcome-text">你好！我是阿樟，樟林古港的AI旅游助手 🚢</view>
       <view class="welcome-hint">有什么关于古港的问题，都可以问我哦~</view>
+      <view class="welcome-voice-hint" wx:if="{{voiceAvailable}}">🔊 回复将自动语音播报，点击右上角可关闭</view>
+      <view class="welcome-voice-hint muted" wx:else>📖 当前为文字模式；配置同声传译插件后可语音播报</view>
       <view class="quick-questions">
         <view class="quick-title">试试这样问我：</view>
         <view class="quick-list">
@@ -39,7 +46,13 @@
         <view class="message-avatar" wx:if="{{item.role === 'assistant'}}">阿樟</view>
         <view class="message-content {{item.role === 'user' ? 'user-message' : 'ai-message'}}">
           <view class="message-text">{{item.content}}</view>
-          <view class="message-time">{{item.time}}</view>
+          <view class="message-footer" wx:if="{{item.role === 'assistant'}}">
+            <view class="speak-btn {{speakingId === item.id ? 'speaking' : ''}}" catchtap="onSpeakTap" data-id="{{item.id}}">
+              <text>{{speakingId === item.id ? '⏸ 停止' : (voiceAvailable ? '🔊 朗读' : '📖 查看')}}</text>
+            </view>
+            <view class="message-time">{{item.time}}</view>
+          </view>
+          <view class="message-time" wx:else>{{item.time}}</view>
         </view>
       </view>
     </block>

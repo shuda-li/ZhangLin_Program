@@ -7,14 +7,36 @@
     </view>
   </view>
 
+  <!-- 登录提示 -->
+  <view class="login-banner" wx:if="{{!isLoggedIn}}">
+    <view class="login-info">
+      <text class="login-text">登录后可报名活动和查看已报名活动</text>
+    </view>
+    <view class="login-btn" bindtap="handleLogin">立即登录</view>
+  </view>
+
+  <!-- 标签切换 -->
+  <view class="tab-bar">
+    <view class="tab-item {{activeTab === 'all' ? 'active' : ''}}" bindtap="switchTab" data-tab="all">
+      <text class="tab-text">全部活动</text>
+    </view>
+    <view class="tab-item {{activeTab === 'registered' ? 'active' : ''}}" bindtap="switchTab" data-tab="registered">
+      <text class="tab-text">我的报名</text>
+      <view class="tab-badge" wx:if="{{myActivities.length > 0}}">{{myActivities.length}}</view>
+    </view>
+  </view>
+
   <view class="activity-content">
-    <view class="activity-list">
+    <!-- 全部活动 -->
+    <view class="activity-list" wx:if="{{activeTab === 'all'}}">
       <view class="activity-card" wx:for="{{activities}}" wx:key="id">
         <view class="card-header">
-          <view class="card-tag {{item.tag}}">{{item.tag}}</view>
-          <view class="card-status {{item.status === '报名中' ? 'open' : 'full'}}">{{item.status}}</view>
+          <view class="card-tag {{item.tagClass}}">{{item.tag}}</view>
+          <view class="card-status {{item.status === '报名中' ? 'open' : 'full'}}">
+            {{item.isRegistered ? '已报名' : item.status}}
+          </view>
         </view>
-        <view class="card-title">{{item.title}}</view>
+        <view class="card-title" bindtap="viewActivityDetail" data-id="{{item.id}}">{{item.title}}</view>
         <view class="card-meta">
           <text class="meta-item">📅 {{item.date}}</text>
           <text class="meta-item">🕐 {{item.time}}</text>
@@ -28,7 +50,51 @@
             </view>
             <text class="enroll-text">{{item.enrollCount}}/{{item.maxCount}}人</text>
           </view>
-          <view class="enroll-btn" bindtap="enrollActivity" data-id="{{item.id}}">立即报名</view>
+          <view class="enroll-btn {{item.isRegistered || item.status === '已满' ? 'disabled' : ''}}" 
+                bindtap="{{item.isRegistered ? '' : 'enrollActivity'}}" 
+                data-id="{{item.id}}">
+            {{item.isRegistered ? '已报名' : (item.status === '已满' ? '已满' : '立即报名')}}
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 我的报名 -->
+    <view class="my-activities" wx:if="{{activeTab === 'registered'}}">
+      <!-- 空状态 -->
+      <view class="empty-state" wx:if="{{myActivities.length === 0}}">
+        <view class="empty-icon">📝</view>
+        <view class="empty-text">还没有报名的活动</view>
+        <view class="empty-subtext">快去报名感兴趣的活动吧</view>
+        <view class="empty-btn" bindtap="switchTab" data-tab="all">去报名</view>
+      </view>
+
+      <!-- 已报名列表 -->
+      <view class="activity-list" wx:else>
+        <view class="activity-card registered" wx:for="{{myActivities}}" wx:key="id">
+          <view class="card-header">
+            <view class="card-tag {{item.tagClass}}">{{item.tag}}</view>
+            <view class="card-status registered">已报名</view>
+          </view>
+          <view class="card-title" bindtap="viewActivityDetail" data-id="{{item.id}}">{{item.title}}</view>
+          <view class="card-meta">
+            <text class="meta-item">📅 {{item.date}}</text>
+            <text class="meta-item">🕐 {{item.time}}</text>
+          </view>
+          <view class="card-location">📍 {{item.location}}</view>
+          <view class="card-desc">{{item.description}}</view>
+          <view class="register-info">
+            <text class="register-time">报名时间：{{item.registerTime}}</text>
+          </view>
+          <view class="card-footer">
+            <view class="enroll-info">
+              <view class="enroll-bar">
+                <view class="enroll-progress" style="width: {{item.enrollCount / item.maxCount * 100}}%"></view>
+              </view>
+              <text class="enroll-text">{{item.enrollCount}}/{{item.maxCount}}人</text>
+            </view>
+            <view class="cancel-btn" bindtap="cancelEnroll" data-id="{{item.id}}">取消报名</view>
+          </view>
         </view>
       </view>
     </view>

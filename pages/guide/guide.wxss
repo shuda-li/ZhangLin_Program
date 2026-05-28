@@ -39,6 +39,61 @@
   margin-top: 8rpx;
 }
 
+.location-bar {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 16rpx 30rpx;
+  background: #fff;
+  border-bottom: 1rpx solid #ebe6df;
+}
+
+.location-bar-icon {
+  font-size: 28rpx;
+}
+
+.location-bar-text {
+  flex: 1;
+  font-size: 24rpx;
+  color: #666;
+}
+
+.location-mock,
+.location-refresh {
+  font-size: 24rpx;
+  color: #a34d2e;
+  padding: 8rpx 16rpx;
+}
+
+.location-mock {
+  color: #8b3a1a;
+  font-weight: 500;
+}
+
+.nearest-banner {
+  margin: 16rpx 20rpx 0;
+  padding: 24rpx 28rpx;
+  background: linear-gradient(135deg, #8b3a1a 0%, #a34d2e 100%);
+  border-radius: 16rpx;
+  color: #fff;
+}
+
+.nearest-label {
+  font-size: 22rpx;
+  opacity: 0.85;
+}
+
+.nearest-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin: 8rpx 0;
+}
+
+.nearest-action {
+  font-size: 24rpx;
+  opacity: 0.9;
+}
+
 .guide-tabs {
   display: flex;
   padding: 20rpx 30rpx;
@@ -157,6 +212,20 @@
   color: rgba(255,255,255,0.7);
 }
 
+.node-distance {
+  font-size: 22rpx;
+  color: #a34d2e;
+  margin-top: 4rpx;
+}
+
+.flow-node.active .node-distance {
+  color: rgba(255,255,255,0.85);
+}
+
+.flow-node.nearby {
+  box-shadow: 0 0 0 2rpx rgba(163, 77, 46, 0.35);
+}
+
 .node-indicator {
   width: 16rpx;
   height: 16rpx;
@@ -194,7 +263,8 @@
 
 .detail-meta {
   display: flex;
-  gap: 20rpx;
+  flex-wrap: wrap;
+  gap: 12rpx 20rpx;
   margin-bottom: 20rpx;
 }
 
@@ -225,13 +295,20 @@
   color: #666;
 }
 
+.nearby-tag {
+  color: #a34d2e !important;
+  font-weight: 500;
+}
+
 .detail-actions {
   display: flex;
-  gap: 20rpx;
+  flex-wrap: wrap;
+  gap: 16rpx;
 }
 
 .action-btn {
   flex: 1;
+  min-width: 28%;
   padding: 20rpx;
   background: #f5f3ef;
   border-radius: 12rpx;
@@ -243,6 +320,12 @@
 .action-btn.primary {
   background: linear-gradient(135deg, #8b3a1a 0%, #a34d2e 100%);
   color: #fff;
+}
+
+.action-btn.outline {
+  background: #fff;
+  border: 1rpx solid #a34d2e;
+  color: #a34d2e;
 }
 
 .list-view {
@@ -257,6 +340,26 @@
   border-radius: 20rpx;
   overflow: hidden;
   box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.06);
+}
+
+.spot-card.nearby {
+  box-shadow: 0 4rpx 20rpx rgba(139, 58, 26, 0.2);
+  border: 2rpx solid #d4a574;
+}
+
+.spot-name-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12rpx;
+  margin-bottom: 8rpx;
+}
+
+.spot-distance {
+  font-size: 24rpx;
+  color: #a34d2e;
+  font-weight: 500;
+  flex-shrink: 0;
 }
 
 .spot-image {
@@ -274,7 +377,7 @@
   font-size: 30rpx;
   font-weight: bold;
   color: #333;
-  margin-bottom: 8rpx;
+  flex: 1;
 }
 
 .spot-summary {
@@ -300,4 +403,12 @@
 .guide-map {
   width: 100%;
   height: 100%;
+  border-radius: 16rpx;
+}
+
+.map-hint {
+  text-align: center;
+  font-size: 22rpx;
+  color: #888;
+  margin-top: 16rpx;
 }

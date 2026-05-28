@@ -1,0 +1,153 @@
+.favorites-page {
+  min-height: 100vh;
+  background: #f5f3ef;
+}
+
+/* 导航栏 */
+.nav-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20rpx 20rpx;
+  background: linear-gradient(135deg, #8b3a1a 0%, #a34d2e 100%);
+}
+
+.nav-back {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-icon {
+  font-size: 48rpx;
+  color: #fff;
+}
+
+.nav-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #fff;
+}
+
+.nav-placeholder {
+  width: 60rpx;
+}
+
+/* 登录区域 */
+.login-section,
+.empty-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 200rpx 40rpx;
+}
+
+.login-icon,
+.empty-icon {
+  font-size: 100rpx;
+  margin-bottom: 30rpx;
+}
+
+.login-text,
+.empty-text {
+  font-size: 34rpx;
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 16rpx;
+}
+
+.login-subtext,
+.empty-subtext {
+  font-size: 26rpx;
+  color: #888;
+  margin-bottom: 50rpx;
+}
+
+.login-btn,
+.empty-btn {
+  padding: 24rpx 80rpx;
+  background: linear-gradient(135deg, #8b3a1a 0%, #a34d2e 100%);
+  border-radius: 40rpx;
+  font-size: 30rpx;
+  color: #fff;
+}
+
+/* 收藏列表 */
+.favorites-list {
+  padding: 20rpx;
+}
+
+.favorite-item {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 20rpx;
+  margin-bottom: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.06);
+}
+
+.item-content {
+  flex: 1;
+  display: flex;
+  padding: 20rpx;
+}
+
+.item-image {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 12rpx;
+  margin-right: 20rpx;
+}
+
+.item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.item-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.item-desc {
+  font-size: 24rpx;
+  color: #888;
+  line-height: 1.4;
+  margin-bottom: 12rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.item-tags {
+  display: flex;
+  gap: 10rpx;
+}
+
+.item-tag {
+  padding: 4rpx 12rpx;
+  background: #f5f3ef;
+  border-radius: 6rpx;
+  font-size: 20rpx;
+  color: #666;
+}
+
+.item-action {
+  padding: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-icon {
+  font-size: 36rpx;
+  color: #e74c3c;
+}

@@ -39,6 +39,81 @@
   margin-top: 8rpx;
 }
 
+/* 登录横幅 */
+.login-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background: linear-gradient(135deg, #fff9f0 0%, #fff5e6 100%);
+  border-bottom: 1rpx solid #f0e5d8;
+}
+
+.login-text {
+  font-size: 26rpx;
+  color: #8b3a1a;
+}
+
+.login-btn {
+  padding: 10rpx 24rpx;
+  background: linear-gradient(135deg, #8b3a1a 0%, #a34d2e 100%);
+  border-radius: 30rpx;
+  font-size: 24rpx;
+  color: #fff;
+}
+
+/* 标签栏 */
+.tab-bar {
+  display: flex;
+  background: #fff;
+  border-bottom: 1rpx solid #f0e5d8;
+}
+
+.tab-item {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8rpx;
+  padding: 24rpx 0;
+  position: relative;
+}
+
+.tab-text {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.tab-item.active .tab-text {
+  color: #8b3a1a;
+  font-weight: 500;
+}
+
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60rpx;
+  height: 4rpx;
+  background: linear-gradient(135deg, #8b3a1a 0%, #a34d2e 100%);
+  border-radius: 2rpx;
+}
+
+.tab-badge {
+  min-width: 32rpx;
+  height: 32rpx;
+  padding: 0 8rpx;
+  background: #e74c3c;
+  border-radius: 16rpx;
+  font-size: 20rpx;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .activity-content {
   padding: 20rpx;
 }
@@ -56,6 +131,10 @@
   box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.06);
 }
 
+.activity-card.registered {
+  border: 2rpx solid #e8f5e9;
+}
+
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -70,10 +149,10 @@
   color: #fff;
 }
 
-.card-tag.讲解 { background: #3498db; }
-.card-tag.夜游 { background: #9b59b6; }
-.card-tag.亲子 { background: #e67e22; }
-.card-tag.文化 { background: #27ae60; }
+.card-tag.tag-guide { background: #3498db; }
+.card-tag.tag-night { background: #9b59b6; }
+.card-tag.tag-family { background: #e67e22; }
+.card-tag.tag-culture { background: #27ae60; }
 
 .card-status {
   padding: 6rpx 16rpx;
@@ -89,6 +168,11 @@
 .card-status.full {
   background: #ffebee;
   color: #e74c3c;
+}
+
+.card-status.registered {
+  background: #e3f2fd;
+  color: #1976d2;
 }
 
 .card-title {
@@ -120,6 +204,15 @@
   color: #666;
   line-height: 1.5;
   margin-bottom: 20rpx;
+}
+
+.register-info {
+  margin-bottom: 16rpx;
+}
+
+.register-time {
+  font-size: 22rpx;
+  color: #999;
 }
 
 .card-footer {
@@ -158,5 +251,51 @@
   background: linear-gradient(135deg, #8b3a1a 0%, #a34d2e 100%);
   border-radius: 30rpx;
   font-size: 26rpx;
+  color: #fff;
+}
+
+.enroll-btn.disabled {
+  background: #ccc;
+}
+
+.cancel-btn {
+  padding: 12rpx 30rpx;
+  background: #ffebee;
+  border-radius: 30rpx;
+  font-size: 26rpx;
+  color: #e74c3c;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100rpx 40rpx;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 12rpx;
+}
+
+.empty-subtext {
+  font-size: 26rpx;
+  color: #888;
+  margin-bottom: 40rpx;
+}
+
+.empty-btn {
+  padding: 20rpx 60rpx;
+  background: linear-gradient(135deg, #8b3a1a 0%, #a34d2e 100%);
+  border-radius: 40rpx;
+  font-size: 28rpx;
   color: #fff;
 }

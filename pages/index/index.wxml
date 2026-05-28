@@ -1,7 +1,11 @@
 <view class="page-wrapper">
-  <scroll-view scroll-y="true" class="main-scroll" scroll-top="{{scrollTop}}" bindscroll="onPageScroll" enhanced="true" show-scrollbar="false">
+  <!-- 骨架屏 -->
+  <skeleton wx:if="{{loading}}" />
+  
+  <!-- 主内容 -->
+  <scroll-view wx:else scroll-y="true" class="main-scroll" scroll-top="{{scrollTop}}" bindscroll="onPageScroll" enhanced="true" show-scrollbar="false" refresher-enabled="true" refresher-triggered="{{refreshing}}" bindrefresherrefresh="onPullDownRefresh">
     <view class="page-content">
-      <view class="top-bar">
+      <view class="top-bar" style="padding-top: {{navPaddingTop}}px; padding-right: {{navPaddingRight}}px;">
         <view class="location-info">
           <text class="location-icon">📍</text>
           <text class="location-text">汕头 · 澄海</text>
@@ -93,7 +97,7 @@
           </view>
           <view class="ship-stage">
             <view class="ship-model">
-              <image class="ship-img" src="/assets/images/red-ship.jpg" mode="aspectFit" />
+              <image class="ship-img" src="/assets/images/red-ship.jpg" mode="aspectFit" lazy-load="true" />
               <view class="ship-glow"></view>
               <view class="ship-hint">点击进入3D查看 ›</view>
             </view>
@@ -128,7 +132,7 @@
         <view class="dashboard-grid">
           <view class="dashboard-card main-card" bindtap="openSpot" data-id="ship-museum">
             <view class="card-image-wrapper">
-              <image class="card-img" src="/assets/images/1.红头船.jpg" mode="aspectFill" />
+              <image class="card-img" src="/assets/images/1.红头船.jpg" mode="aspectFill" lazy-load="true" />
               <view class="card-badge">核心</view>
             </view>
             <view class="card-body">
@@ -145,14 +149,14 @@
           </view>
           <view class="dashboard-side">
             <view class="side-card" bindtap="openSpot" data-id="port-ruins">
-              <image class="side-img" src="/assets/images/2.古港遗址.jpg" mode="aspectFill" />
+              <image class="side-img" src="/assets/images/2.古港遗址.jpg" mode="aspectFill" lazy-load="true" />
               <view class="side-body">
                 <view class="side-title">古港遗址游览区</view>
                 <view class="side-tags"><text class="tag tag-hot">热门</text></view>
               </view>
             </view>
             <view class="side-card" bindtap="openSpot" data-id="historic-arcade">
-              <image class="side-img" src="/assets/images/3.古码头.jpg" mode="aspectFill" />
+              <image class="side-img" src="/assets/images/3.古码头.jpg" mode="aspectFill" lazy-load="true" />
               <view class="side-body">
                 <view class="side-title">侨乡古建筑群</view>
                 <view class="side-tags"><text class="tag tag-photo">摄影</text></view>

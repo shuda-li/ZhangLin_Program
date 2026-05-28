@@ -1,4 +1,11 @@
 module.exports = {
-  DEEPSEEK_API_KEY: '请在此填入你的DeepSeek API密钥',
-  TAVILY_API_KEY: '请在此填入你的Tavily API密钥（可选）'
+  DEEPSEEK_API_KEY: 'your-api-key-here',
+  TAVILY_API_KEY: 'your-tavily-key-here',
+
+  /**
+   * 语音讲解（同声传译插件）
+   * - false：默认文字讲解，模拟器/未添加插件时不会报错（推荐本地开发）
+   * - true：需在 app.json 添加 WechatSI 插件，且在 mp.weixin.qq.com 插件管理中授权
+   */
+  USE_WECHAT_TTS: false
 }

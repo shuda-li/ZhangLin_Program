@@ -18,9 +18,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20rpx 30rpx;
-  padding-top: calc(20rpx + env(safe-area-inset-top));
+  padding-left: 30rpx;
+  padding-bottom: 16rpx;
   background: #f5f3ef;
+  box-sizing: border-box;
 }
 
 .location-info {
@@ -65,7 +66,6 @@
 
 .hero-section {
   position: relative;
-  height: 400rpx;
   background: linear-gradient(135deg, #8b3a1a 0%, #a34d2e 50%, #c19660 100%);
   overflow: hidden;
 }
@@ -83,8 +83,8 @@
 .hero-content {
   position: relative;
   z-index: 1;
-  padding: 40rpx;
-  padding-top: 80rpx;
+  padding: 40rpx 40rpx 20rpx;
+  padding-top: 60rpx;
 }
 
 .hero-title {
@@ -103,17 +103,22 @@
 }
 
 .typewriter-wrapper {
-  margin-top: 30rpx;
-  padding: 20rpx 24rpx;
-  background: rgba(255,255,255,0.15);
+  margin-top: 20rpx;
+  padding: 16rpx 20rpx;
+  background: rgba(0, 0, 0, 0.18);
   border-radius: 16rpx;
-  backdrop-filter: blur(10px);
+  max-height: 96rpx;
+  overflow: hidden;
 }
 
 .typewriter-text {
-  font-size: 26rpx;
+  font-size: 24rpx;
   color: #fff;
-  line-height: 1.6;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .typewriter-cursor {
@@ -127,11 +132,9 @@
 }
 
 .hero-bottom {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 30rpx;
+  position: relative;
+  z-index: 1;
+  padding: 0 30rpx 30rpx;
 }
 
 .hero-stats {
@@ -165,7 +168,10 @@
 }
 
 .quick-services {
+  position: relative;
+  z-index: 2;
   padding: 30rpx;
+  background: #f5f3ef;
 }
 
 .section-header {
@@ -390,6 +396,7 @@
 
 .timeline-content {
   text-align: center;
+  width: 200rpx;
 }
 
 .timeline-title {
@@ -403,6 +410,11 @@
   font-size: 22rpx;
   color: #888;
   line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .timeline-item.highlight .timeline-year {

@@ -36,6 +36,13 @@
   justify-content: space-between;
 }
 
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 120rpx;
+}
+
 .back-btn {
   width: 70rpx;
   height: 70rpx;
@@ -46,6 +53,29 @@
   justify-content: center;
   font-size: 36rpx;
   color: #fff;
+}
+
+.favorite-btn {
+  width: 70rpx;
+  height: 70rpx;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+}
+
+.favorite-btn.active {
+  background: rgba(255,215,0,0.3);
+}
+
+.favorite-icon {
+  color: #fff;
+}
+
+.favorite-btn.active .favorite-icon {
+  color: #ffd700;
 }
 
 .header-info {
@@ -74,6 +104,16 @@
   background: rgba(255,255,255,0.2);
   border-radius: 6rpx;
   font-size: 22rpx;
+}
+
+.scan-banner {
+  margin: -20rpx 30rpx 0;
+  padding: 20rpx 24rpx;
+  background: linear-gradient(135deg, #f7efe5 0%, #ede5d8 100%);
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  color: #a34d2e;
+  text-align: center;
 }
 
 .detail-content {
@@ -200,6 +240,8 @@
   bottom: 0;
   left: 0;
   right: 0;
+  display: flex;
+  gap: 20rpx;
   padding: 20rpx 30rpx;
   padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
   background: #fff;
@@ -207,12 +249,21 @@
 }
 
 .action-btn {
-  width: 100%;
+  flex: 1;
   padding: 24rpx;
-  background: linear-gradient(135deg, #8b3a1a 0%, #a34d2e 100%);
   border-radius: 40rpx;
-  font-size: 32rpx;
+  font-size: 30rpx;
   font-weight: bold;
-  color: #fff;
   text-align: center;
+}
+
+.action-btn.primary {
+  background: linear-gradient(135deg, #8b3a1a 0%, #a34d2e 100%);
+  color: #fff;
+}
+
+.action-btn.secondary {
+  background: #f5f3ef;
+  color: #a34d2e;
+  border: 1rpx solid #d4a574;
 }

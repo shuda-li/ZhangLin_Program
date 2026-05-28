@@ -2,12 +2,45 @@
   <view class="profile-header">
     <view class="header-bg"></view>
     <view class="header-content">
-      <view class="user-info">
-        <view class="user-avatar">游</view>
+      <!-- 未登录状态 -->
+      <view class="user-info" wx:if="{{!isLoggedIn}}" bindtap="handleLogin">
+        <view class="user-avatar default">
+          <text class="avatar-text">👤</text>
+        </view>
         <view class="user-detail">
-          <view class="user-name">游客用户</view>
+          <view class="user-name">点击登录</view>
+          <view class="user-desc">登录后享受更多功能</view>
+        </view>
+        <view class="login-arrow">›</view>
+      </view>
+      
+      <!-- 已登录状态 -->
+      <view class="user-info" wx:else>
+        <image class="user-avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill" />
+        <view class="user-detail">
+          <view class="user-name">{{userInfo.nickName}}</view>
           <view class="user-desc">探索樟林古港文化</view>
         </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 统计卡片 -->
+  <view class="stats-section">
+    <view class="stats-card">
+      <view class="stat-item" bindtap="viewFavorites">
+        <view class="stat-num">{{favoriteCount}}</view>
+        <view class="stat-label">我的收藏</view>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item" bindtap="viewMyRegistrations">
+        <view class="stat-num">{{registrationCount}}</view>
+        <view class="stat-label">我的报名</view>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <view class="stat-num">0</view>
+        <view class="stat-label">我的足迹</view>
       </view>
     </view>
   </view>
@@ -19,10 +52,17 @@
         <text class="menu-text">与阿樟对话</text>
         <text class="menu-arrow">›</text>
       </view>
-      <view class="menu-item" bindtap="navigateTo" data-url="/pages/activity/activity">
+      <view class="menu-item" bindtap="viewFavorites">
+        <text class="menu-icon">⭐</text>
+        <text class="menu-text">我的收藏</text>
+        <text class="menu-badge" wx:if="{{favoriteCount > 0}}">{{favoriteCount}}</text>
+        <text class="menu-arrow" wx:else>›</text>
+      </view>
+      <view class="menu-item" bindtap="viewMyRegistrations">
         <text class="menu-icon">🎯</text>
         <text class="menu-text">我的报名</text>
-        <text class="menu-arrow">›</text>
+        <text class="menu-badge" wx:if="{{registrationCount > 0}}">{{registrationCount}}</text>
+        <text class="menu-arrow" wx:else>›</text>
       </view>
       <view class="menu-item" bindtap="navigateTo" data-url="/pages/ship-3d/ship-3d">
         <text class="menu-icon">🚢</text>
@@ -32,14 +72,23 @@
     </view>
 
     <view class="menu-section">
-      <view class="menu-item">
+      <view class="menu-item" bindtap="callService">
         <text class="menu-icon">📞</text>
         <text class="menu-text">联系客服</text>
         <text class="menu-arrow">›</text>
       </view>
-      <view class="menu-item">
+      <view class="menu-item" bindtap="showAbout">
         <text class="menu-icon">ℹ️</text>
         <text class="menu-text">关于我们</text>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+
+    <!-- 退出登录 -->
+    <view class="menu-section" wx:if="{{isLoggedIn}}">
+      <view class="menu-item logout-item" bindtap="handleLogout">
+        <text class="menu-icon">🚪</text>
+        <text class="menu-text logout-text">退出登录</text>
         <text class="menu-arrow">›</text>
       </view>
     </view>

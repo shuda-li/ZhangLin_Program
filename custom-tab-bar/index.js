@@ -15,8 +15,8 @@ Component({
   methods: {
     updateSelected() {
       const app = getApp()
-      const currentRoute = app.globalData && app.globalData.currentRoute || '/pages/index/index'
-      const index = this.data.list.findIndex(item => item.pagePath === currentRoute)
+      const currentRoute = (app.globalData && app.globalData.currentRoute) || '/pages/index/index'
+      const index = this.data.list.findIndex((item) => item.pagePath === currentRoute)
       if (index !== -1) {
         this.setData({ selected: index })
       }
@@ -26,8 +26,9 @@ Component({
       const pagePath = this.data.list[index].pagePath
       wx.switchTab({ url: pagePath })
       this.setData({ selected: index })
-      if (getApp().globalData) {
-        getApp().globalData.currentRoute = pagePath
+      const app = getApp()
+      if (app.globalData) {
+        app.globalData.currentRoute = pagePath
       }
     }
   }

@@ -1,0 +1,80 @@
+<view class="skeleton-container">
+  <!-- 顶部栏骨架 -->
+  <view class="skeleton-top-bar">
+    <view class="skeleton-location"></view>
+    <view class="skeleton-ai-btn"></view>
+  </view>
+  
+  <!-- Hero区域骨架 -->
+  <view class="skeleton-hero">
+    <view class="skeleton-title"></view>
+    <view class="skeleton-subtitle"></view>
+    <view class="skeleton-text"></view>
+    <view class="skeleton-stats">
+      <view class="skeleton-stat-item" wx:for="{{3}}" wx:key="index">
+        <view class="skeleton-stat-num"></view>
+        <view class="skeleton-stat-label"></view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 快捷服务骨架 -->
+  <view class="skeleton-section">
+    <view class="skeleton-section-title"></view>
+    <view class="skeleton-service-grid">
+      <view class="skeleton-service-item" wx:for="{{4}}" wx:key="index">
+        <view class="skeleton-service-icon"></view>
+        <view class="skeleton-service-text"></view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 3D红头船骨架 -->
+  <view class="skeleton-section">
+    <view class="skeleton-card">
+      <view class="skeleton-card-header">
+        <view class="skeleton-card-title"></view>
+        <view class="skeleton-card-badge"></view>
+      </view>
+      <view class="skeleton-card-body"></view>
+    </view>
+  </view>
+  
+  <!-- 时间线骨架 -->
+  <view class="skeleton-section">
+    <view class="skeleton-section-header">
+      <view class="skeleton-section-title"></view>
+      <view class="skeleton-section-more"></view>
+    </view>
+    <view class="skeleton-timeline">
+      <view class="skeleton-timeline-item" wx:for="{{4}}" wx:key="index">
+        <view class="skeleton-timeline-year"></view>
+        <view class="skeleton-timeline-dot"></view>
+        <view class="skeleton-timeline-content"></view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 景点速览骨架 -->
+  <view class="skeleton-section">
+    <view class="skeleton-section-header">
+      <view class="skeleton-section-title"></view>
+      <view class="skeleton-section-more"></view>
+    </view>
+    <view class="skeleton-dashboard">
+      <view class="skeleton-main-card">
+        <view class="skeleton-card-image"></view>
+        <view class="skeleton-card-body">
+          <view class="skeleton-card-title"></view>
+          <view class="skeleton-card-meta"></view>
+        </view>
+      </view>
+      <view class="skeleton-side-cards">
+        <view class="skeleton-side-card" wx:for="{{2}}" wx:key="index">
+          <view class="skeleton-side-image"></view>
+          <view class="skeleton-side-body"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

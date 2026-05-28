@@ -1,7 +1,8 @@
 {
   "description": "樟林归舟微信小程序",
   "packOptions": {
-    "ignore": []
+    "ignore": [],
+    "include": []
   },
   "setting": {
     "urlCheck": false,
@@ -39,15 +40,44 @@
     "disableUseStrict": false,
     "minifyWXML": true,
     "showES6CompileOption": false,
-    "useCompilerPlugins": false
+    "useCompilerPlugins": false,
+    "compileWorklet": false,
+    "localPlugins": false,
+    "condition": true,
+    "swc": false,
+    "disableSWC": true
   },
   "compileType": "miniprogram",
   "libVersion": "3.16.0",
-  "appid": "wxxxxxxxxxx",
+  "appid": "wxe49fc80e433ea124",
   "projectname": "zhanglin-guizhou",
-  "condition": {},
+  "condition": {
+    "miniprogram": {
+      "list": [
+        {
+          "name": "测试-扫码讲解红头船",
+          "pathName": "pages/scenic-detail/scenic-detail",
+          "query": "id=ship-museum&autoplay=1&from=scan",
+          "scene": null
+        },
+        {
+          "name": "测试-导览页",
+          "pathName": "pages/guide/guide",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "测试-AI阿樟",
+          "pathName": "pages/ai-chat/ai-chat",
+          "query": "",
+          "scene": null
+        }
+      ]
+    }
+  },
   "editorSetting": {
     "tabIndent": "insertSpaces",
     "tabSize": 2
-  }
+  },
+  "simulatorPluginLibVersion": {}
 }
