@@ -11,7 +11,8 @@
     "vue": "^3.4.21",
     "element-plus": "^2.6.1",
     "axios": "^1.6.8",
-    "echarts": "^5.5.0"
+    "echarts": "^5.5.0",
+    "vue-router": "^4.3.0"
   },
   "devDependencies": {
     "vite": "^6.5.0",

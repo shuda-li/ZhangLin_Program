@@ -30,7 +30,7 @@
   <view class="stats grid-3">
     <block wx:for="{{profileStats}}" wx:key="label">
       <view class="card stat-card glow-card" bindtap="handleStatTap" data-target="{{item.target}}" hover-class="card-tap">
-        <view class="stat-icon">{{item.icon}}</view>
+        <view class="stat-icon ui-icon {{item.icon}} ui-icon-lg"></view>
         <view class="stat-value number-flip">{{item.value}}</view>
         <view class="stat-label">{{item.label}}</view>
         <view class="stat-trend" wx:if="{{item.trend}}">{{item.trend}}</view>
@@ -64,8 +64,8 @@
         <block wx:for="{{badges}}" wx:key="id">
           <view class="badge-card {{item.unlocked ? 'unlocked badge-glow' : 'locked'}}" bindtap="handleBadgeTap" data-id="{{item.id}}">
             <view class="badge-icon-wrap">
-              <text class="badge-icon">{{item.icon}}</text>
-              <view class="badge-lock" wx:if="{{!item.unlocked}}">🔒</view>
+              <view class="badge-icon ui-icon {{item.icon}} ui-icon-lg"></view>
+              <view class="badge-lock ui-icon ui-icon-lock ui-icon-sm" wx:if="{{!item.unlocked}}"></view>
             </view>
             <view class="badge-name">{{item.name}}</view>
             <view class="badge-desc">{{item.desc}}</view>
@@ -111,7 +111,7 @@
             </view>
             <text class="read-progress-text">已阅读 {{readProgresses[index]}}%</text>
           </view>
-          <view class="recent-ai-rec" wx:if="{{aiRecs[index]}}">💡 {{aiRecs[index]}}</view>
+          <view class="recent-ai-rec" wx:if="{{aiRecs[index]}}"><view class="ui-icon ui-icon-bulb ui-icon-sm"></view>{{aiRecs[index]}}</view>
         </view>
       </block>
     </block>

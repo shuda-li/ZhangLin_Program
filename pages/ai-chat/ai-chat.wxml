@@ -4,7 +4,7 @@
       <text class="back-icon">‹</text>
     </view>
     <view class="header-center">
-      <text class="chat-avatar">🎧</text>
+      <view class="chat-avatar ui-icon ui-icon-headphone"></view>
       <text class="chat-title">阿樟导览助手</text>
     </view>
     <view class="header-right"></view>
@@ -13,7 +13,7 @@
   <scroll-view scroll-y class="messages-container" scroll-into-view="{{scrollToId}}" scroll-with-animation>
     <block wx:for="{{messages}}" wx:key="id">
       <view class="message-wrapper {{item.role === 'user' ? 'user-wrapper' : 'ai-wrapper'}}">
-        <view class="message-avatar">{{item.role === 'user' ? '👤' : '🎧'}}</view>
+        <view class="message-avatar"><view class="ui-icon ui-icon-{{item.role === 'user' ? 'user' : 'headphone'}} ui-icon-sm"></view></view>
         <view class="message-bubble {{item.role === 'user' ? 'user-bubble' : 'ai-bubble'}}">
           <text>{{item.content}}</text>
           <view wx:if="{{item.isLoading}}" class="loading-dots">
@@ -49,8 +49,8 @@
         confirm-type="send"
         focus="{{inputFocused}}"
       />
-      <view class="send-btn {{inputText ? 'active' : ''}}" bindtap="sendMessage">
-        <text class="send-icon">↑</text>
+      <view class="send-btn ui-press {{inputText ? 'active' : ''}}" bindtap="sendMessage">
+        <view class="send-icon ui-icon ui-icon-up ui-icon-sm"></view>
       </view>
     </view>
   </view>

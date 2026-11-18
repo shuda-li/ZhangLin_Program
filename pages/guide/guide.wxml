@@ -5,7 +5,7 @@
         <view class="map-title">智慧导览地图</view>
         <view class="map-subtitle">{{activeRoute.name}} · {{activeRoute.stops.length}}个点位</view>
       </view>
-      <view class="map-locate-btn" bindtap="onShowLocation">📍 定位</view>
+      <view class="map-locate-btn" bindtap="onShowLocation"><view class="ui-icon ui-icon-locate ui-icon-sm"></view>定位</view>
     </view>
     <map
       id="guideMap"
@@ -35,7 +35,7 @@
       <text class="ai-rec-label">AI 今日推荐</text>
     </view>
     <view class="ai-rec-body">
-      <text class="ai-rec-icon">{{aiTip.icon}}</text>
+      <view class="ai-rec-icon ui-icon {{aiTip.icon}} ui-icon-lg"></view>
       <text class="ai-rec-text">{{aiTip.text}}</text>
     </view>
   </view>
@@ -58,15 +58,15 @@
     </view>
     <view class="route-meta-row">
       <view class="route-meta-item">
-        <text class="meta-icon">👥</text>
+        <view class="meta-icon ui-icon ui-icon-people ui-icon-sm"></view>
         <text>{{activeRoute.suitable}}</text>
       </view>
       <view class="route-meta-item">
-        <text class="meta-icon">{{activeRoute.transport === '步行' ? '🚶' : '🚲'}}</text>
+        <view class="meta-icon ui-icon ui-icon-{{activeRoute.transport === '步行' ? 'walk' : 'bike'}} ui-icon-sm"></view>
         <text>{{activeRoute.transport}}</text>
       </view>
       <view class="route-meta-item">
-        <text class="meta-icon">{{activeRoute.difficulty === '轻松' ? '🟢' : '🟡'}}</text>
+        <view class="meta-icon meta-dot {{activeRoute.difficulty === '轻松' ? 'meta-dot-easy' : 'meta-dot-normal'}}"></view>
         <text>{{activeRoute.difficulty || '轻松'}}</text>
       </view>
     </view>
@@ -76,7 +76,7 @@
   <view class="card voice-card card-tap-fb" bindtap="startVoiceGuide">
     <view class="voice-content">
       <view class="voice-icon-wrap">
-        <text class="voice-icon">🎙️</text>
+        <view class="voice-icon ui-icon ui-icon-headphone ui-icon-lg"></view>
       </view>
       <view class="voice-info">
         <view class="voice-title">全程语音导览</view>
@@ -126,7 +126,7 @@
             <view class="stop-title">{{item.title}}</view>
             <view class="stop-detail">{{item.detail}}</view>
             <view class="stop-walk" wx:if="{{index < activeRoute.stops.length - 1}}">
-              <text class="walk-icon">🚶</text>
+              <view class="walk-icon ui-icon ui-icon-walk ui-icon-sm"></view>
               <text>步行约{{10 + index * 5}}分钟至下一站</text>
             </view>
           </view>
@@ -140,7 +140,7 @@
     <view class="service-grid">
       <block wx:for="{{nearbyServices}}" wx:key="name">
         <view class="card service-item">
-          <view class="service-icon">{{item.icon}}</view>
+          <view class="service-icon ui-icon {{item.icon}} ui-icon-lg"></view>
           <view class="service-name">{{item.name}}</view>
           <view class="service-dist">{{item.dist}}</view>
         </view>
@@ -173,17 +173,17 @@
       <view class="panel-stop-detail">{{detailStop.detail}}</view>
     </scroll-view>
     <view class="panel-actions">
-      <view class="panel-btn" bindtap="startVoiceGuide">🎙️ 语音讲解</view>
+      <view class="panel-btn ui-press" bindtap="startVoiceGuide">语音讲解</view>
       <view class="panel-btn primary" bindtap="closeStopDetail">导航到这里</view>
     </view>
   </view>
 
-  <view class="ai-chat-btn" bindtap="openAiChat">
-    <view class="ai-chat-icon">🎧</view>
+  <view class="ai-chat-btn ui-press" bindtap="openAiChat">
+    <view class="ai-chat-icon ui-icon ui-icon-chat"></view>
     <view class="ai-chat-text">阿樟导览</view>
   </view>
 
   <view class="back-top {{showBackTop ? 'back-top-show' : ''}}" bindtap="scrollToTop">
-    <text class="back-top-icon">^</text>
+    <view class="ui-icon ui-icon-up"></view>
   </view>
 </view>

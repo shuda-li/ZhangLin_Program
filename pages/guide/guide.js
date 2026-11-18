@@ -3,19 +3,24 @@ const { chatWithAI } = require('../../utils/ai-llm');
 
 function getAiTip(hour) {
   if (hour >= 5 && hour < 10) {
-    return { icon: '🌅', text: '清晨古港光影柔和，推荐"人文摄影打卡线"，日出至上午是拍摄建筑细节的黄金时段。' };
+    return { icon: 'ui-icon-sun', text: '清晨古港光影柔和，推荐"人文摄影打卡线"，日出至上午是拍摄建筑细节的黄金时段。' };
   }
   if (hour >= 10 && hour < 14) {
-    return { icon: '🚶', text: '上午游客较少，推荐优先游览侨乡建筑群和红头船展示点，体验更从容。' };
+    return { icon: 'ui-icon-walk', text: '上午游客较少，推荐优先游览侨乡建筑群和红头船展示点，体验更从容。' };
   }
   if (hour >= 14 && hour < 17) {
-    return { icon: '☀️', text: '下午光线温暖，适合古街漫步与工夫茶体验，"在地风味寻访线"正是好时候。' };
+    return { icon: 'ui-icon-sun', text: '下午光线温暖，适合古街漫步与工夫茶体验，"在地风味寻访线"正是好时候。' };
   }
   if (hour >= 17 && hour < 20) {
-    return { icon: '🌇', text: '黄昏至傍晚是古港最美时刻，推荐切换"古港夜游光影线"，建筑灯光与夕阳同框。' };
+    return { icon: 'ui-icon-sun', text: '黄昏至傍晚是古港最美时刻，推荐切换"古港夜游光影线"，建筑灯光与夕阳同框。' };
   }
-  return { icon: '🌙', text: '夜间古港氛围静谧，适合漫步古街感受灯影夜景，或在茶空间结束一天的旅程。' };
+  return { icon: 'ui-icon-moon', text: '夜间古港氛围静谧，适合漫步古街感受灯影夜景，或在茶空间结束一天的旅程。' };
 }
+
+var SERVICE_ICONS = [
+  'ui-icon-pin', 'ui-icon-route', 'ui-icon-leaf',
+  'ui-icon-user', 'ui-icon-book', 'ui-icon-grid'
+];
 
 function getRouteMapData(route) {
   var baseLat = 23.461;
@@ -84,8 +89,10 @@ Page({
 
   data: {
     routePlans: routePlans,
-    nearbyServices: nearbyServices,
-    activeRouteId: routePlans[0].id,
+    nearbyServices: nearbyServices.map(function(item, index) {
+      return Object.assign({}, item, { icon: SERVICE_ICONS[index % SERVICE_ICONS.length] });
+    }),
+    activeRouteId: (routePlans && routePlans[0]) ? routePlans[0].id : '',
     activeRoute: routePlans[0],
     aiTip: getAiTip(new Date().getHours()),
     mapLat: 23.461,
@@ -153,7 +160,7 @@ Page({
     var that = this;
     setTimeout(function() {
       wx.showModal({
-        title: '🎙️ 语音讲解',
+        title: '语音讲解',
         content: '正在为你播放「' + that.data.activeRoute.name + '」的全程语音导览。在完整版中将支持潮汕话、普通话双语切换，并可分段收听各点位讲解。',
         showCancel: false,
         confirmText: '好的'

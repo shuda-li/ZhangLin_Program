@@ -35,7 +35,8 @@ class AILLM {
   constructor() {
     this.apiKey = '';
     this.apiUrl = 'https://api.deepseek.com/chat/completions';
-    this.model = 'deepseek-v4-flash';
+    // deepseek-chat = DeepSeek-V3 通用对话模型（原 deepseek-v4-flash 不存在）
+    this.model = 'deepseek-chat';
     this.messages = [];
     this.maxHistory = 20;
     

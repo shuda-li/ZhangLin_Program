@@ -14,10 +14,11 @@ const scenicSpots = [
     location: '古港核心游线',
     tags: ['智能讲解', '亲子研学', '文化打卡'],
     highlights: ['红头船贸易史', '船体结构展示', '侨乡航海故事'],
+    audioUrl: '',
     audioGuide: [
       '红头船是潮汕地区极具辨识度的海贸船型，因船头与船尾多饰以朱红色而得名。',
       '樟林古港曾是粤东重要通商口岸，船只往来频繁，带动了侨乡文化与海贸文明的发展。',
-      '参观时建议结合展陈中的航线图与故事板，理解“出海谋生”和“侨批家书”之间的联系。'
+      '参观时建议结合展陈中的航线图与故事板，理解"出海谋生"和"侨批家书"之间的联系。'
     ],
     tips: ['建议与文化科普页同步浏览', '适合30分钟以上深度参观']
   },
@@ -36,6 +37,7 @@ const scenicSpots = [
     location: '沿河古港片区',
     tags: ['遗址漫游', '拍照推荐', '慢游体验'],
     highlights: ['古港空间脉络', '口岸发展记忆', '街区步行体验'],
+    audioUrl: '',
     audioGuide: [
       '这里保留着古港发展留下的空间印记，是认识樟林港埠兴衰的重要窗口。',
       '从遗址周边的道路走向和建筑布局，可以大致推测当年码头、仓储与居住之间的组织关系。',
@@ -58,6 +60,7 @@ const scenicSpots = [
     location: '古街建筑带',
     tags: ['建筑美学', '人文摄影', '街区漫步'],
     highlights: ['潮汕建筑装饰', '骑楼街景', '中西融合痕迹'],
+    audioUrl: '',
     audioGuide: [
       '古建筑群是侨乡历史文脉的直观载体，屋脊、门楼、灰塑和街巷尺度都很有辨识度。',
       '不少建筑细部体现了本土营造技艺与外来审美的融合，也反映出侨乡开放的文化气质。',
@@ -80,8 +83,9 @@ const scenicSpots = [
     location: '文化展示步道',
     tags: ['侨乡故事', '文化阅读', '家庭共游'],
     highlights: ['侨批家书', '人物故事', '时代记忆'],
+    audioUrl: '',
     audioGuide: [
-      '侨史记忆长廊重在讲述“人”的故事，让游客从家庭叙事切入地方历史。',
+      '侨史记忆长廊重在讲述"人"的故事，让游客从家庭叙事切入地方历史。',
       '侨批不仅是汇款凭证，也承载着跨海沟通的情感与责任，是侨乡文化的重要符号。',
       '建议在游览后回到文化科普页面继续查看专题内容，形成完整认知。'
     ],
@@ -90,37 +94,37 @@ const scenicSpots = [
 ];
 
 const userBadges = [
-  { id: 'explorer', name: '红头船探索者', icon: '🚢', desc: '浏览3个以上景点', cond: 'spots >= 3', level: 1 },
-  { id: 'photographer', name: '古港摄影师', icon: '📸', desc: '收藏2个以上景点', cond: 'favs >= 2', level: 1 },
-  { id: 'taste', name: '潮味体验官', icon: '🍵', desc: '报名1场以上活动', cond: 'acts >= 1', level: 1 },
-  { id: 'scholar', name: '海丝文化学者', icon: '📖', desc: '浏览全部4个景点', cond: 'spots >= 4', level: 2 },
-  { id: 'traveler', name: '侨乡行者', icon: '🌍', desc: '景点+活动+收藏全部达成', cond: 'spots >= 4 && acts >= 1 && favs >= 2', level: 3 }
+  { id: 'explorer', name: '红头船探索者', desc: '浏览3个以上景点', cond: 'spots >= 3', level: 1 },
+  { id: 'photographer', name: '古港摄影师', desc: '收藏2个以上景点', cond: 'favs >= 2', level: 1 },
+  { id: 'taste', name: '潮味体验官', desc: '报名1场以上活动', cond: 'acts >= 1', level: 1 },
+  { id: 'scholar', name: '海丝文化学者', desc: '浏览全部4个景点', cond: 'spots >= 4', level: 2 },
+  { id: 'traveler', name: '侨乡行者', desc: '景点+活动+收藏全部达成', cond: 'spots >= 4 && acts >= 1 && favs >= 2', level: 3 }
 ];
 
 const journeyTips = [
-  { icon: '🏛️', title: '核心景点', desc: '红头船展示点、古港遗址、侨乡建筑群、侨史长廊' },
-  { icon: '🚶', title: '推荐路线', desc: '古港半日轻游 · 人文深度一日游 · 亲子研学体验' },
-  { icon: '🎯', title: '近期活动', desc: '周末讲解专场、古街夜游、亲子研学打卡任务' }
+  { title: '核心景点', desc: '红头船展示点、古港遗址、侨乡建筑群、侨史长廊' },
+  { title: '推荐路线', desc: '古港半日轻游 · 人文深度一日游 · 亲子研学体验' },
+  { title: '近期活动', desc: '周末讲解专场、古街夜游、亲子研学打卡任务' }
 ];
 
 const profileAiTips = [
-  { scene: 'less', icon: '🗺️', text: '你刚开始探索樟林古港，推荐从红头船文化展示点开始，建立整体认知后再深入各专题。' },
-  { scene: 'half', icon: '📸', text: '你已经探索了部分景点，补充侨乡建筑群和侨史长廊可以让你的文化拼图更完整。' },
-  { scene: 'full', icon: '🎉', text: '文化探索度很高！现在是体验潮汕工夫茶和古港小吃的最佳时机，给旅程加点烟火气。' }
+  { scene: 'less', text: '你刚开始探索樟林古港，推荐从红头船文化展示点开始，建立整体认知后再深入各专题。' },
+  { scene: 'half', text: '你已经探索了部分景点，补充侨乡建筑群和侨史长廊可以让你的文化拼图更完整。' },
+  { scene: 'full', text: '文化探索度很高！现在是体验潮汕工夫茶和古港小吃的最佳时机，给旅程加点烟火气。' }
 ];
 
 const heritageItems = [
-  { id: 'yingge', name: '英歌舞', icon: '💃', desc: '潮汕传统民间舞蹈，以刚劲有力的集体舞蹈展现英雄气概，常在节庆与重大活动中表演。', image: '/assets/images/5.亥爷.jpg' },
-  { id: 'chaozhou-opera', name: '潮剧', icon: '🎭', desc: '以潮汕方言演唱的传统戏曲，唱腔婉转、做工细腻，是国家级非物质文化遗产。', image: '/assets/images/1.文化长廊.jpg' },
-  { id: 'gongfu-tea', name: '工夫茶艺', icon: '🍵', desc: '潮汕工夫茶以"讲究"著称，从选茶、冲水到品饮皆有章法，体现地方待客之道和生活美学。', image: '/assets/images/0.樟林古港石碑.jpg' },
-  { id: 'woodcarving', name: '潮汕木雕', icon: '🪵', desc: '以精湛的透雕、浮雕技法闻名，常见于庙宇、祠堂与古宅装饰，是建筑文化的重要组成。', image: '/assets/images/20.锡庆堂大门.jpg' }
+  { id: 'yingge', name: '英歌舞', desc: '潮汕传统民间舞蹈，以刚劲有力的集体舞蹈展现英雄气概，常在节庆与重大活动中表演。', image: '/assets/images/5.亥爷.jpg' },
+  { id: 'chaozhou-opera', name: '潮剧', desc: '以潮汕方言演唱的传统戏曲，唱腔婉转、做工细腻，是国家级非物质文化遗产。', image: '/assets/images/1.文化长廊.jpg' },
+  { id: 'gongfu-tea', name: '工夫茶艺', desc: '潮汕工夫茶以"讲究"著称，从选茶、冲水到品饮皆有章法，体现地方待客之道和生活美学。', image: '/assets/images/0.樟林古港石碑.jpg' },
+  { id: 'woodcarving', name: '潮汕木雕', desc: '以精湛的透雕、浮雕技法闻名，常见于庙宇、祠堂与古宅装饰，是建筑文化的重要组成。', image: '/assets/images/20.锡庆堂大门.jpg' }
 ];
 
 const overseasStories = [
-  { title: '下南洋潮', subtitle: '清代潮人出海潮', desc: '清代中后期，大量潮汕人从樟林古港出发，乘红头船远赴东南亚谋生，形成规模空前的"下南洋"移民潮。', icon: '⛵' },
-  { title: '侨批家书', subtitle: '跨越海洋的情感纽带', desc: '侨批是华侨寄回家乡的信件与汇款凭证，一纸家书承载着跨越海洋的牵挂与责任，是侨乡社会的情感基石。', icon: '✉️' },
-  { title: '侨汇与建设', subtitle: '反哺家乡的力量', desc: '华侨汇款不仅支撑了家乡亲人的生活，更推动了学校、医院、道路等公共设施的建设，深刻改变了地方面貌。', icon: '🏠' },
-  { title: '南洋归来', subtitle: '文化交融的见证', desc: '许多华侨归国后在樟林兴建中西合璧的建筑，将南洋的生活方式和审美带回故土，形成独特的侨乡风貌。', icon: '🏛️' }
+  { title: '下南洋潮', subtitle: '清代潮人出海潮', desc: '清代中后期，大量潮汕人从樟林古港出发，乘红头船远赴东南亚谋生，形成规模空前的"下南洋"移民潮。' },
+  { title: '侨批家书', subtitle: '跨越海洋的情感纽带', desc: '侨批是华侨寄回家乡的信件与汇款凭证，一纸家书承载着跨越海洋的牵挂与责任，是侨乡社会的情感基石。' },
+  { title: '侨汇与建设', subtitle: '反哺家乡的力量', desc: '华侨汇款不仅支撑了家乡亲人的生活，更推动了学校、医院、道路等公共设施的建设，深刻改变了地方面貌。' },
+  { title: '南洋归来', subtitle: '文化交融的见证', desc: '许多华侨归国后在樟林兴建中西合璧的建筑，将南洋的生活方式和审美带回故土，形成独特的侨乡风貌。' }
 ];
 
 const exhibitionItems = [
@@ -183,7 +187,7 @@ const routePlans = [
     stops: [
       { time: '09:20', title: '服务页任务开启', detail: '浏览今日适合亲子体验的点位。' },
       { time: '10:00', title: '红头船文化展示点', detail: '围绕船、海和贸易故事进行启蒙讲解。' },
-      { time: '11:00', title: '侨史记忆长廊', detail: '从家书故事理解“家”和“远方”的关系。' },
+      { time: '11:00', title: '侨史记忆长廊', detail: '从家书故事理解"家"和"远方"的关系。' },
       { time: '12:00', title: '本土风物体验', detail: '结合地方饮食与手作内容建立生活感受。' },
       { time: '14:00', title: '古建筑观察任务', detail: '寻找屋脊、门楼、装饰纹样等建筑元素。' }
     ],
@@ -237,13 +241,14 @@ const routePlans = [
     difficulty: '轻松'
   }
 ];
+
 const nearbyServices = [
-  { icon: '🚻', name: '公共卫生间', dist: '游客中心旁' },
-  { icon: '🅿️', name: '停车场', dist: '入口东侧 200m' },
-  { icon: '🍵', name: '茶饮补给', dist: '古街沿线' },
-  { icon: '📍', name: '游客服务中心', dist: '古港入口处' },
-  { icon: '🛒', name: '伴手礼商店', dist: '步行街中段' },
-  { icon: '📶', name: '免费Wi-Fi', dist: '景区全覆盖' }
+  { name: '公共卫生间', dist: '游客中心旁' },
+  { name: '停车场', dist: '入口东侧 200m' },
+  { name: '茶饮补给', dist: '古街沿线' },
+  { name: '游客服务中心', dist: '古港入口处' },
+  { name: '伴手礼商店', dist: '步行街中段' },
+  { name: '免费Wi-Fi', dist: '景区全覆盖' }
 ];
 
 const cultureTopics = [
@@ -269,7 +274,7 @@ const cultureTopics = [
       '侨批、汇款、家书和口述故事，共同构成侨乡社会的情感网络与历史档案。',
       '理解侨乡历史，不只是理解远行，也是在理解地方社会如何在交流中持续生长。'
     ],
-    facts: ['建议游客关注“侨批”“家书”“汇兑”这些线索', '适合亲子与研学用户阅读']
+    facts: ['建议游客关注"侨批""家书""汇兑"这些线索', '适合亲子与研学用户阅读']
   },
   {
     id: 'architecture',
@@ -362,9 +367,9 @@ const specialtyItems = [
 
 const homeStats = [
   { label: '推荐景点', value: '4+', target: 'featured-section' },
-  { label: '主题线路', value: '3', target: 'route-section' },
+  { label: '主题线路', value: '6', target: 'route-section' },
   { label: '文化专题', value: '3', target: '/pages/culture/culture' },
-  { label: '风物推荐', value: '4', target: '/pages/specialty/specialty' }
+  { label: '风物推荐', value: '6', target: '/pages/specialty/specialty' }
 ];
 
 const homeBanners = [
@@ -452,34 +457,10 @@ const profileStats = [
 ];
 
 const profileServices = [
-  {
-    id: 'activity',
-    title: '活动资讯',
-    desc: '查看近期导览、夜游与研学活动安排。',
-    type: 'page',
-    target: '/pages/activity/activity'
-  },
-  {
-    id: 'culture',
-    title: '文化专题',
-    desc: '继续浏览红头船、侨乡文脉与古港建筑内容。',
-    type: 'tab',
-    target: '/pages/culture/culture'
-  },
-  {
-    id: 'specialty',
-    title: '特色风物',
-    desc: '快速查看在地茶饮、文创与伴手礼推荐。',
-    type: 'tab',
-    target: '/pages/specialty/specialty'
-  },
-  {
-    id: 'guide',
-    title: '我的路线',
-    desc: '回到智慧导览页继续规划半日游或一日游路线。',
-    type: 'tab',
-    target: '/pages/guide/guide'
-  }
+  { id: 'activity', title: '活动资讯', desc: '查看近期导览、夜游与研学活动安排。', type: 'page', target: '/pages/activity/activity' },
+  { id: 'culture', title: '文化专题', desc: '继续浏览红头船、侨乡文脉与古港建筑内容。', type: 'tab', target: '/pages/culture/culture' },
+  { id: 'specialty', title: '特色风物', desc: '快速查看在地茶饮、文创与伴手礼推荐。', type: 'tab', target: '/pages/specialty/specialty' },
+  { id: 'guide', title: '我的路线', desc: '回到智慧导览页继续规划半日游或一日游路线。', type: 'tab', target: '/pages/guide/guide' }
 ];
 
 const cultureTimeline = [
@@ -494,7 +475,7 @@ const cultureTimeline = [
 
 const todayData = [
   { label: '可游览景点', value: '10+', sub: '含古港遗址与建筑群' },
-  { label: '推荐路线', value: '3条', sub: '半日/全日/亲子研学' },
+  { label: '推荐路线', value: '6条', sub: '半日/全日/亲子研学/夜游/摄影/风味' },
   { label: '文化专题', value: '3组', sub: '红头船·侨乡·建筑' },
   { label: '近期活动', value: '4场', sub: '讲解专场·夜游体验' }
 ];
@@ -506,24 +487,9 @@ const newHomeBanners = [
 ];
 
 module.exports = {
-  scenicSpots,
-  routePlans,
-  cultureTopics,
-  specialtyItems,
-  homeStats,
-  homeBanners,
-  activityNews,
-  profileStats,
-  profileServices,
-  cultureTimeline,
-  todayData,
-  newHomeBanners,
-  nearbyServices,
-  heritageItems,
-  overseasStories,
-  exhibitionItems,
-  cultureAiQA,
-  userBadges,
-  journeyTips,
-  profileAiTips
+  scenicSpots, routePlans, cultureTopics, specialtyItems,
+  homeStats, homeBanners, activityNews, profileStats,
+  profileServices, cultureTimeline, todayData, newHomeBanners,
+  nearbyServices, heritageItems, overseasStories, exhibitionItems,
+  cultureAiQA, userBadges, journeyTips, profileAiTips
 };

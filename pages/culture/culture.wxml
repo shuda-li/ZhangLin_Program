@@ -33,9 +33,9 @@
 
   <view class="ai-answer-card {{showAiAnswer ? 'show' : ''}}">
     <view class="ai-answer-header">
-      <text class="ai-answer-icon">🤖</text>
+      <view class="ai-answer-icon ui-icon ui-icon-chat"></view>
       <text class="ai-answer-label">AI 文化讲解</text>
-      <view class="ai-answer-close" catchtap="closeAiAnswer">✕</view>
+      <view class="ai-answer-close ui-press" catchtap="closeAiAnswer"><view class="ui-icon ui-icon-close ui-icon-sm"></view></view>
     </view>
     <view class="ai-answer-q">{{aiQuestion}}</view>
     <view class="ai-answer-divider"></view>

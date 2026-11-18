@@ -1,13 +1,13 @@
 <view class="container">
   <view class="header">
     <view class="header-left" bindtap="goBack">
-      <text class="back-icon">←</text>
+      <view class="ui-icon ui-icon-arrow ui-icon-sm back-arrow"></view>
     </view>
     <view class="header-title">
       <text class="title-text">随机景点</text>
     </view>
     <view class="header-right" bindtap="refresh">
-      <text class="refresh-icon">🔄</text>
+      <view class="ui-icon ui-icon-refresh refresh-icon"></view>
     </view>
   </view>
 
@@ -27,7 +27,7 @@
         <view class="card-description">{{item.description}}</view>
         <view class="card-footer">
           <view class="card-location">
-            <text class="location-icon">📍</text>
+            <view class="ui-icon ui-icon-pin ui-icon-sm location-icon"></view>
             <text>{{item.location}}</text>
           </view>
           <view class="card-action">
@@ -39,7 +39,7 @@
   </view>
 
   <view class="refresh-hint" bindtap="refresh">
-    <text class="hint-icon">🔀</text>
+    <view class="ui-icon ui-icon-route ui-icon-sm hint-icon"></view>
     <text>点击刷新，发现更多景点</text>
   </view>
 
@@ -55,7 +55,7 @@
       <view class="modal-body">
         <view class="modal-category">{{selectedAttraction.category}}</view>
         <view class="modal-location">
-          <text class="location-icon">📍</text>
+          <view class="ui-icon ui-icon-pin ui-icon-sm location-icon"></view>
           <text>{{selectedAttraction.location}}</text>
         </view>
         <view class="modal-description">{{selectedAttraction.detail}}</view>

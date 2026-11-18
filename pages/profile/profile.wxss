@@ -445,10 +445,22 @@
   gap: 8rpx;
 }
 
-.recent-time::before {
-  content: '🕐';
-  font-size: 20rpx;
+.recent-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 6rpx;
 }
+.recent-time::before {
+  content: '';
+  display: inline-block;
+  width: 18rpx;
+  height: 18rpx;
+  border: 2rpx solid currentColor;
+  border-radius: 50%;
+  position: relative;
+}
+.recent-ai-rec { display: flex; align-items: center; gap: 8rpx; }
+.stat-icon.ui-icon, .badge-icon.ui-icon, .badge-lock.ui-icon { color: var(--color-primary); }
 
 /* ===== 阅读进度 ===== */
 .read-progress-wrap {

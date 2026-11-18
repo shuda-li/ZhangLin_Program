@@ -1,4 +1,4 @@
-const TAVILY_API_KEY = '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';
+const { TAVILY_API_KEY } = require('./config');
 const TAVILY_API_URL = 'https://api.tavily.com/search';
 
 const localKnowledgeBase = {

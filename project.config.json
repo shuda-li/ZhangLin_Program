@@ -1,7 +1,36 @@
 {
   "description": "樟林归舟微信小程序",
   "packOptions": {
-    "ignore": [],
+    "ignore": [
+      {
+        "value": "zhanglin-deck",
+        "type": "folder"
+      },
+      {
+        "value": "zhanglin_picture",
+        "type": "folder"
+      },
+      {
+        "value": "backend",
+        "type": "folder"
+      },
+      {
+        "value": "admin",
+        "type": "folder"
+      },
+      {
+        "value": ".git",
+        "type": "folder"
+      },
+      {
+        "value": ".codegraph",
+        "type": "folder"
+      },
+      {
+        "value": ".md",
+        "type": "suffix"
+      }
+    ],
     "include": []
   },
   "setting": {
@@ -44,7 +73,7 @@
   },
   "compileType": "miniprogram",
   "libVersion": "3.16.0",
-  "appid": "wxe49fc80e433ea124",
+  "appid": "wx75de82ae31003b52",
   "projectname": "zhanglin-guizhou",
   "condition": {},
   "editorSetting": {

@@ -21,7 +21,7 @@
       <text class="ai-tip-label">AI 今日风物推荐</text>
     </view>
     <view class="ai-tip-body">
-      <text class="ai-tip-icon">{{aiTip.icon}}</text>
+      <view class="ai-tip-icon ui-icon {{aiTip.icon}} ui-icon-lg"></view>
       <text class="ai-tip-text">{{aiTip.text}}</text>
     </view>
   </view>
@@ -34,7 +34,7 @@
           <view class="today-card" bindtap="openStory" data-id="{{item.id}}">
             <image class="today-img" src="{{item.image}}" mode="aspectFill" />
             <view class="today-overlay">
-              <view class="today-hot">🔥 热门推荐</view>
+              <view class="today-hot">热门推荐</view>
               <view class="today-name">{{item.name}}</view>
             </view>
           </view>
@@ -70,11 +70,11 @@
             <text>{{item.recommend}}</text>
           </view>
           <view class="meta-item">
-            <text class="meta-icon-sm">🕐</text>
+            <view class="meta-icon-sm ui-icon ui-icon-clock ui-icon-sm"></view>
             <text>{{item.bestTime}}</text>
           </view>
           <view class="meta-item">
-            <text class="meta-icon-sm">{{item.crowdLevel === '热门' ? '🔥' : '👥'}}</text>
+            <view class="meta-icon-sm ui-icon ui-icon-{{item.crowdLevel === '热门' ? 'bulb' : 'people'}} ui-icon-sm"></view>
             <text>{{item.crowdLevel}}</text>
           </view>
         </view>
@@ -83,7 +83,7 @@
             <text class="tag">{{item}}</text>
           </block>
         </view>
-        <view class="story-link" catchtap="openStory" data-id="{{item.id}}">📖 查看风物故事 ›</view>
+        <view class="story-link" catchtap="openStory" data-id="{{item.id}}"><view class="ui-icon ui-icon-book ui-icon-sm"></view>查看风物故事<view class="ui-icon ui-icon-arrow ui-icon-sm"></view></view>
       </view>
     </view>
   </block>
@@ -94,7 +94,7 @@
     <view class="story-panel-handle"></view>
     <view class="story-panel-header">
       <view class="story-panel-title">{{storyItem.name}}</view>
-      <view class="story-panel-close" catchtap="closeStory">✕</view>
+      <view class="story-panel-close ui-press" catchtap="closeStory"><view class="ui-icon ui-icon-close ui-icon-sm"></view></view>
     </view>
     <view class="story-panel-scroll">
       <image class="story-panel-img" wx:if="{{storyItem.image}}" src="{{storyItem.image}}" mode="aspectFill" catchtap="previewImage" data-src="{{storyItem.image}}" />

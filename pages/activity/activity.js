@@ -108,7 +108,7 @@ Page({
     }
     const result = registerActivity(activity);
     wx.showToast({
-      title: result.registered ? '你已报名该活动' : '报名成功',
+      title: result.alreadyRegistered ? '你已报名该活动' : '报名成功',
       icon: 'none'
     });
     this.refreshActivities();

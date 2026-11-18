@@ -165,7 +165,8 @@
   max-height: 0;
   overflow: hidden;
   opacity: 0;
-  transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease, margin 0.3s ease;
+  transition: max-height 0.36s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.28s ease, padding 0.28s ease, margin 0.28s ease, transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transform: translateY(12rpx);
   margin-top: 0;
 }
 
@@ -174,6 +175,7 @@
   opacity: 1;
   padding: 24rpx;
   margin-top: 20rpx;
+  transform: translateY(0);
 }
 
 .ai-answer-header {
@@ -531,3 +533,7 @@
   color: rgba(140, 170, 140, 0.5);
   letter-spacing: 4rpx;
 }
+
+/* 统一线性图标适配 */
+.ai-answer-icon.ui-icon { color: rgba(180, 200, 170, 0.9); }
+.ai-answer-close.ui-icon { color: rgba(180, 200, 170, 0.7); }

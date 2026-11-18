@@ -275,3 +275,8 @@
   color: rgba(255, 255, 255, 0.9);
   line-height: 1.8;
 }
+
+/* 统一线性图标适配 */
+.back-arrow { transform: rotate(180deg); }
+.refresh-icon.ui-icon, .location-icon.ui-icon, .hint-icon.ui-icon { color: inherit; }
+.card-location, .modal-location, .refresh-hint { display: inline-flex; align-items: center; gap: 8rpx; }

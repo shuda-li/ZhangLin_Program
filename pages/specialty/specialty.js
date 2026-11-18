@@ -8,10 +8,10 @@ const categories = ['全部'].concat(
 );
 
 function getAiTip(hour) {
-  if (hour >= 14 && hour < 17) return { icon: '🍵', text: '午后时光最适合体验工夫茶，慢下来感受潮汕待客之道。古港周边多家茶空间正在等你去坐坐。' };
-  if (hour >= 11 && hour < 14) return { icon: '🦪', text: '正午时分，蚝烙的香气飘满古港老街。来一份外酥内嫩的蚝烙，配上一碗牛肉丸汤，便是最地道的樟林午餐。' };
-  if (hour >= 17 && hour < 20) return { icon: '🌆', text: '傍晚是挑选伴手礼的好时机，木雕摆件和侨批主题文创正在文创馆等你。带一份古港记忆回家。' };
-  return { icon: '☀️', text: '早上从一杯工夫茶开始，午后寻味蚝烙和茶配，傍晚带一件木雕文创回家——这是属于你的樟林风物一日。' };
+  if (hour >= 14 && hour < 17) return { icon: 'ui-icon-leaf', text: '午后时光最适合体验工夫茶，慢下来感受潮汕待客之道。古港周边多家茶空间正在等你去坐坐。' };
+  if (hour >= 11 && hour < 14) return { icon: 'ui-icon-bulb', text: '正午时分，蚝烙的香气飘满古港老街。来一份外酥内嫩的蚝烙，配上一碗牛肉丸汤，便是最地道的樟林午餐。' };
+  if (hour >= 17 && hour < 20) return { icon: 'ui-icon-sun', text: '傍晚是挑选伴手礼的好时机，木雕摆件和侨批主题文创正在文创馆等你。带一份古港记忆回家。' };
+  return { icon: 'ui-icon-sun', text: '早上从一杯工夫茶开始，午后寻味蚝烙和茶配，傍晚带一件木雕文创回家——这是属于你的樟林风物一日。' };
 }
 
 Page({

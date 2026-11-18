@@ -12,12 +12,36 @@ node_modules/
 
 # 日志
 *.log
+*.tmp
+*.temp
 
 # 微信开发者工具私有配置
 project.private.config.json
 
+# 本地配置（包含密钥）
+utils/config.js
+
 # 原始素材
 Zhanglin_Material/
-
-# 图片资源文件夹（太大，不随仓库上传）
 zhanglin_picture/
+
+# 后端（如果不需要）
+backend/
+
+# 图片素材（使用远程或本地）
+assets/images/*.jpg
+assets/images/*.png
+assets/tabbar/*.png
+
+# 本地工具缓存与临时文件
+.codegraph/
+.reasonix/
+.workbuddy/
+nul
+*.pid
+
+# 演示与素材目录
+zhanglin-deck/
+
+# 个人简历文件
+resume-*.md

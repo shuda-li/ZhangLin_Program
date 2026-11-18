@@ -3,7 +3,7 @@ Page({
     attractions: [
       {
         name: '樟林古港石碑',
-        image: '/zhanglin_picture/0.樟林古港石碑.jpg',
+        image: '/assets/images/0.樟林古港石碑.jpg',
         backupImage: '/assets/images/0.樟林古港石碑.jpg',
         category: '历史遗迹',
         location: '樟林古港入口',
@@ -12,7 +12,7 @@ Page({
       },
       {
         name: '文化长廊',
-        image: '/zhanglin_picture/1.文化长廊.jpg',
+        image: '/assets/images/1.文化长廊.jpg',
         backupImage: '/assets/images/1.文化长廊.jpg',
         category: '文化设施',
         location: '古港核心区',
@@ -21,7 +21,7 @@ Page({
       },
       {
         name: '红头船',
-        image: '/zhanglin_picture/2.红头船.jpg',
+        image: '/assets/images/2.红头船.jpg',
         backupImage: '/assets/images/2.红头船.jpg',
         category: '历史文物',
         location: '红头船文化展示点',
@@ -30,7 +30,7 @@ Page({
       },
       {
         name: '天后宫',
-        image: '/zhanglin_picture/3.天后宫.jpg',
+        image: '/assets/images/3.天后宫.jpg',
         backupImage: '/assets/images/3.天后宫.jpg',
         category: '宗教建筑',
         location: '古港街区',
@@ -39,7 +39,7 @@ Page({
       },
       {
         name: '新兴街古码头',
-        image: '/zhanglin_picture/6.新兴街古码头.jpg',
+        image: '/assets/images/6.新兴街古码头.jpg',
         backupImage: '/assets/images/6.新兴街古码头.jpg',
         category: '历史遗迹',
         location: '新兴街',
@@ -48,7 +48,7 @@ Page({
       },
       {
         name: '古海堤',
-        image: '/zhanglin_picture/7.古海堤.jpg',
+        image: '/assets/images/7.古海堤.jpg',
         backupImage: '/assets/images/7.古海堤.jpg',
         category: '水利工程',
         location: '古港出海口',
@@ -57,7 +57,7 @@ Page({
       },
       {
         name: '南粤古驿道纪念地',
-        image: '/zhanglin_picture/8.樟林古港南粤古驿道纪念地.jpg',
+        image: '/assets/images/8.樟林古港南粤古驿道纪念地.jpg',
         backupImage: '/assets/images/8.樟林古港南粤古驿道纪念地.jpg',
         category: '历史遗迹',
         location: '古港入口',
@@ -66,7 +66,7 @@ Page({
       },
       {
         name: '林氏义祖祠',
-        image: '/zhanglin_picture/9.林氏义祖祠.jpg',
+        image: '/assets/images/9.林氏义祖祠.jpg',
         backupImage: '/assets/images/9.林氏义祖祠.jpg',
         category: '宗祠建筑',
         location: '林厝围',
@@ -75,7 +75,7 @@ Page({
       },
       {
         name: '永定楼',
-        image: '/zhanglin_picture/10.永定楼.jpg',
+        image: '/assets/images/10.永定楼.jpg',
         backupImage: '/assets/images/10.永定楼.jpg',
         category: '传统建筑',
         location: '古港核心区',
@@ -84,8 +84,8 @@ Page({
       },
       {
         name: '达祖家庙',
-        image: '/zhanglin_picture/11.达祖家庙.jpg',
-        backupImage: '/assets/images/11.达祖家庙.jpg',
+        image: '/assets/images/11.达祖家庙 1.jpg',
+        backupImage: '/assets/images/11.达祖家庙 1.jpg',
         category: '宗祠建筑',
         location: '古港街区',
         description: '海外华人寻根问祖的精神家园',
@@ -93,7 +93,7 @@ Page({
       },
       {
         name: '秦牧故居',
-        image: '/zhanglin_picture/15.秦牧故居.jpg',
+        image: '/assets/images/15.秦牧故居.jpg',
         backupImage: '/assets/images/15.秦牧故居.jpg',
         category: '名人故居',
         location: '古港街区',
@@ -102,7 +102,7 @@ Page({
       },
       {
         name: '南盛里',
-        image: '/zhanglin_picture/14.南盛里.jpg',
+        image: '/assets/images/14.南盛里.jpg',
         backupImage: '/assets/images/14.南盛里.jpg',
         category: '建筑群',
         location: '古港核心区',
@@ -111,7 +111,7 @@ Page({
       },
       {
         name: '山海雄镇庙',
-        image: '/zhanglin_picture/19.山海雄镇庙.jpg',
+        image: '/assets/images/19.山海雄镇庙.jpg',
         backupImage: '/assets/images/19.山海雄镇庙.jpg',
         category: '宗教建筑',
         location: '古港高地',
@@ -120,7 +120,7 @@ Page({
       },
       {
         name: '哲谋广居',
-        image: '/zhanglin_picture/20.哲谋广居.jpg',
+        image: '/assets/images/20.哲谋广居.jpg',
         backupImage: '/assets/images/20.哲谋广居.jpg',
         category: '传统建筑',
         location: '古港街区',

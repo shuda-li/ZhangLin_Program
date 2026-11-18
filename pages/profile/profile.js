@@ -37,6 +37,14 @@ function enrichSpot(spot) {
   return spot;
 }
 
+var BADGE_ICONS = {
+  explorer: 'ui-icon-compass',
+  photographer: 'ui-icon-pin',
+  taste: 'ui-icon-leaf',
+  scholar: 'ui-icon-book',
+  traveler: 'ui-icon-route'
+};
+
 function computeBadges(spots, favs, acts) {
   return userBadges.map(function(b) {
     var unlocked;
@@ -48,7 +56,7 @@ function computeBadges(spots, favs, acts) {
       case 'traveler': unlocked = spots >= 4 && acts >= 1 && favs >= 2; break;
       default: unlocked = false;
     }
-    return Object.assign({}, b, { unlocked: unlocked });
+    return Object.assign({}, b, { unlocked: unlocked, icon: BADGE_ICONS[b.id] || 'ui-icon-pin' });
   });
 }
 
@@ -249,9 +257,9 @@ Page({
       hasFootprint: footprint.hasMarkers,
       weeklyNew: weeklyNew,
       profileStats: [
-        { label: '已浏览', value: '' + spots, icon: '🏛️', trend: weeklyNew > 0 ? '本周新增 ' + weeklyNew : '', target: 'recent-section' },
-        { label: '已报名', value: '' + acts, icon: '🎟️', trend: acts > 0 ? '本月活跃中' : '', target: 'registration-section' },
-        { label: '已收藏', value: '' + favs, icon: '⭐', trend: favs > 0 ? favs + ' 处心仪风物' : '', target: 'favorite-section' }
+        { label: '已浏览', value: '' + spots, icon: 'ui-icon-book', trend: weeklyNew > 0 ? '本周新增 ' + weeklyNew : '', target: 'recent-section' },
+        { label: '已报名', value: '' + acts, icon: 'ui-icon-calendar', trend: acts > 0 ? '本月活跃中' : '', target: 'registration-section' },
+        { label: '已收藏', value: '' + favs, icon: 'ui-icon-bookmark', trend: favs > 0 ? favs + ' 处心仪风物' : '', target: 'favorite-section' }
       ]
     });
   },

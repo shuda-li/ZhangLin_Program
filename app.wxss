@@ -500,3 +500,363 @@ image { background: #ebe5d9; }
   background: #f0e8fa;
   color: #6b3fa0;
 }
+
+/* ==================== 统一简约线性图标系统 ====================
+   全部使用纯 CSS 绘制，无 emoji、无图片依赖。
+   颜色继承 currentColor；尺寸可用 .ui-icon-sm / .ui-icon-lg 调整。
+   ============================================================ */
+.ui-icon {
+  position: relative;
+  display: inline-block;
+  width: 36rpx;
+  height: 36rpx;
+  flex: 0 0 36rpx;
+  box-sizing: border-box;
+  vertical-align: middle;
+  color: inherit;
+}
+.ui-icon::before,
+.ui-icon::after {
+  content: '';
+  position: absolute;
+  box-sizing: border-box;
+}
+.ui-icon-sm { width: 28rpx; height: 28rpx; flex-basis: 28rpx; }
+.ui-icon-lg { width: 48rpx; height: 48rpx; flex-basis: 48rpx; }
+
+/* 导览 / 指南针 */
+.ui-icon-compass::before {
+  left: 3rpx; top: 3rpx; width: 30rpx; height: 30rpx;
+  border: 2.5rpx solid currentColor; border-radius: 50%;
+}
+.ui-icon-compass::after {
+  left: 14rpx; top: 6rpx; width: 6rpx; height: 24rpx;
+  background: currentColor; border-radius: 3rpx; transform: rotate(45deg);
+}
+
+/* 活动 / 日历 */
+.ui-icon-calendar::before {
+  left: 4rpx; top: 8rpx; width: 28rpx; height: 24rpx;
+  border: 2.5rpx solid currentColor; border-radius: 5rpx;
+}
+.ui-icon-calendar::after {
+  left: 4rpx; top: 16rpx; width: 28rpx; height: 2.5rpx;
+  background: currentColor;
+}
+
+/* 收藏 / 书签 */
+.ui-icon-bookmark::before {
+  left: 9rpx; top: 4rpx; width: 18rpx; height: 25rpx;
+  border: 2.5rpx solid currentColor; border-bottom: none;
+  border-radius: 4rpx 4rpx 0 0;
+}
+.ui-icon-bookmark::after {
+  left: 9rpx; top: 23rpx; width: 0; height: 0;
+  border-left: 9rpx solid transparent; border-right: 9rpx solid transparent;
+  border-top: 11rpx solid currentColor;
+}
+
+/* 音频 / 耳机 */
+.ui-icon-headphone::before {
+  left: 5rpx; top: 7rpx; width: 26rpx; height: 22rpx;
+  border: 2.5rpx solid currentColor; border-bottom: none;
+  border-radius: 13rpx 13rpx 0 0;
+}
+.ui-icon-headphone::after {
+  left: 4rpx; top: 20rpx; width: 8rpx; height: 12rpx;
+  border: 2.5rpx solid currentColor; border-radius: 3rpx;
+  box-shadow: 18rpx 0 0 -0.5rpx transparent, 0 0 0 0 transparent;
+}
+
+/* 路线 / 路径 */
+.ui-icon-route::before {
+  left: 5rpx; top: 5rpx; width: 9rpx; height: 9rpx;
+  border-radius: 50%; background: currentColor;
+  box-shadow: 17rpx 19rpx 0 currentColor;
+}
+.ui-icon-route::after {
+  left: 11rpx; top: 13rpx; width: 17rpx; height: 12rpx;
+  border-left: 2.5rpx solid currentColor; border-bottom: 2.5rpx solid currentColor;
+  transform: rotate(-38deg); border-radius: 0 0 0 2rpx;
+}
+
+/* AI 对话 / 气泡 */
+.ui-icon-chat::before {
+  left: 3rpx; top: 5rpx; width: 30rpx; height: 22rpx;
+  border: 2.5rpx solid currentColor; border-radius: 8rpx;
+}
+.ui-icon-chat::after {
+  left: 11rpx; top: 25rpx; width: 0; height: 0;
+  border-left: 6rpx solid transparent; border-right: 6rpx solid transparent;
+  border-top: 9rpx solid currentColor;
+}
+
+/* 景点 / 定位标记 */
+.ui-icon-pin::before {
+  left: 8rpx; top: 3rpx; width: 20rpx; height: 20rpx;
+  border: 2.5rpx solid currentColor; border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+}
+.ui-icon-pin::after {
+  left: 14rpx; top: 9rpx; width: 7rpx; height: 7rpx;
+  border-radius: 50%; background: currentColor;
+}
+
+/* 文化 / 书 */
+.ui-icon-book::before {
+  left: 4rpx; top: 6rpx; width: 28rpx; height: 24rpx;
+  border: 2.5rpx solid currentColor; border-radius: 4rpx;
+}
+.ui-icon-book::after {
+  left: 17rpx; top: 7rpx; width: 2.5rpx; height: 22rpx;
+  background: currentColor;
+}
+
+/* 风物 / 叶 */
+.ui-icon-leaf::before {
+  left: 6rpx; top: 5rpx; width: 24rpx; height: 24rpx;
+  border: 2.5rpx solid currentColor; border-radius: 0 13rpx 0 13rpx;
+  transform: rotate(-22deg);
+}
+.ui-icon-leaf::after {
+  left: 11rpx; top: 25rpx; width: 18rpx; height: 2.5rpx;
+  background: currentColor; transform: rotate(-40deg); border-radius: 2rpx;
+}
+
+/* 随机 / 骰子 */
+.ui-icon-dice::before {
+  left: 5rpx; top: 5rpx; width: 26rpx; height: 26rpx;
+  border: 2.5rpx solid currentColor; border-radius: 7rpx;
+}
+.ui-icon-dice::after {
+  left: 11rpx; top: 11rpx; width: 5rpx; height: 5rpx;
+  border-radius: 50%; background: currentColor;
+  box-shadow: 9rpx 0 0 currentColor, 0 9rpx 0 currentColor, 9rpx 9rpx 0 currentColor;
+}
+
+/* 返回顶部 / 上箭头 */
+.ui-icon-up::before {
+  left: 10rpx; top: 13rpx; width: 15rpx; height: 15rpx;
+  border-left: 3rpx solid currentColor; border-top: 3rpx solid currentColor;
+  border-radius: 3rpx 0 0 0; transform: rotate(45deg);
+}
+
+/* 关闭 */
+.ui-icon-close::before,
+.ui-icon-close::after {
+  left: 8rpx; top: 17rpx; width: 20rpx; height: 2.5rpx;
+  background: currentColor; border-radius: 2rpx;
+}
+.ui-icon-close::before { transform: rotate(45deg); }
+.ui-icon-close::after { transform: rotate(-45deg); }
+
+/* 点赞 / 心形 */
+.ui-icon-heart::before {
+  left: 9rpx; top: 17rpx; width: 18rpx; height: 18rpx;
+  background: currentColor; border-radius: 3rpx; transform: rotate(45deg);
+}
+.ui-icon-heart::after {
+  left: 9rpx; top: 11rpx; width: 9rpx; height: 9rpx;
+  border-radius: 50%; background: currentColor; box-shadow: 9rpx 0 0 currentColor;
+}
+
+/* 用户 */
+.ui-icon-user::before {
+  left: 13rpx; top: 5rpx; width: 10rpx; height: 10rpx;
+  border-radius: 50%; background: currentColor;
+}
+.ui-icon-user::after {
+  left: 6rpx; top: 18rpx; width: 24rpx; height: 14rpx;
+  border: 2.5rpx solid currentColor; border-bottom: none;
+  border-radius: 11rpx 11rpx 0 0;
+}
+
+/* 播放 */
+.ui-icon-play::before {
+  left: 12rpx; top: 7rpx; width: 0; height: 0;
+  border-left: 18rpx solid currentColor;
+  border-top: 11rpx solid transparent; border-bottom: 11rpx solid transparent;
+}
+
+/* 定位靶心 */
+.ui-icon-locate::before {
+  left: 3rpx; top: 3rpx; width: 30rpx; height: 30rpx;
+  border: 2.5rpx solid currentColor; border-radius: 50%;
+}
+.ui-icon-locate::after {
+  left: 13rpx; top: 13rpx; width: 10rpx; height: 10rpx;
+  border-radius: 50%; background: currentColor;
+}
+
+/* 群组 */
+.ui-icon-people::before {
+  left: 5rpx; top: 7rpx; width: 9rpx; height: 9rpx;
+  border-radius: 50%; background: currentColor;
+  box-shadow: 17rpx 0 0 currentColor;
+}
+.ui-icon-people::after {
+  left: 3rpx; top: 19rpx; width: 13rpx; height: 10rpx;
+  border: 2.5rpx solid currentColor; border-radius: 6rpx 6rpx 0 0;
+  box-shadow: 17rpx 0 0 -0.5rpx transparent;
+}
+
+/* 太阳 / 时段 */
+.ui-icon-sun::before {
+  left: 9rpx; top: 9rpx; width: 18rpx; height: 18rpx;
+  border: 2.5rpx solid currentColor; border-radius: 50%;
+}
+.ui-icon-sun::after {
+  left: 16rpx; top: 2rpx; width: 2.5rpx; height: 5rpx;
+  background: currentColor;
+  box-shadow: 0 27rpx 0 currentColor, -9rpx 4rpx 0 currentColor, 9rpx 4rpx 0 currentColor,
+              0 0 0 0 transparent;
+}
+
+/* 月亮 */
+.ui-icon-moon::before {
+  left: 8rpx; top: 5rpx; width: 22rpx; height: 22rpx;
+  border: 2.5rpx solid currentColor; border-radius: 50%;
+  box-shadow: inset 7rpx -4rpx 0 0 var(--color-bg-card);
+}
+
+/* 步行 */
+.ui-icon-walk::before {
+  left: 13rpx; top: 4rpx; width: 10rpx; height: 10rpx;
+  border-radius: 50%; background: currentColor;
+}
+.ui-icon-walk::after {
+  left: 12rpx; top: 17rpx; width: 12rpx; height: 15rpx;
+  border-left: 2.5rpx solid currentColor; border-bottom: 2.5rpx solid currentColor;
+  transform: rotate(-25deg);
+}
+
+/* 骑行 */
+.ui-icon-bike::before {
+  left: 4rpx; top: 20rpx; width: 11rpx; height: 11rpx;
+  border: 2.5rpx solid currentColor; border-radius: 50%;
+  box-shadow: 18rpx 0 0 -0.5rpx transparent;
+}
+.ui-icon-bike::after {
+  left: 8rpx; top: 12rpx; width: 20rpx; height: 12rpx;
+  border: 2.5rpx solid currentColor; border-bottom: none;
+  border-radius: 10rpx 10rpx 0 0;
+}
+
+/* 锁 */
+.ui-icon-lock::before {
+  left: 8rpx; top: 15rpx; width: 20rpx; height: 16rpx;
+  border: 2.5rpx solid currentColor; border-radius: 4rpx;
+}
+.ui-icon-lock::after {
+  left: 12rpx; top: 8rpx; width: 12rpx; height: 10rpx;
+  border: 2.5rpx solid currentColor; border-bottom: none; border-radius: 6rpx 6rpx 0 0;
+}
+
+/* 灯泡 / 建议 */
+.ui-icon-bulb::before {
+  left: 10rpx; top: 5rpx; width: 16rpx; height: 16rpx;
+  border: 2.5rpx solid currentColor; border-radius: 50%;
+}
+.ui-icon-bulb::after {
+  left: 12rpx; top: 22rpx; width: 12rpx; height: 8rpx;
+  border: 2.5rpx solid currentColor; border-top: none; border-radius: 0 0 3rpx 3rpx;
+}
+
+/* 时钟 */
+.ui-icon-clock::before {
+  left: 4rpx; top: 4rpx; width: 28rpx; height: 28rpx;
+  border: 2.5rpx solid currentColor; border-radius: 50%;
+}
+.ui-icon-clock::after {
+  left: 17rpx; top: 10rpx; width: 2.5rpx; height: 11rpx;
+  background: currentColor; border-radius: 2rpx;
+  box-shadow: 0 0 0 0 transparent;
+}
+
+/* 刷新 */
+.ui-icon-refresh::before {
+  left: 5rpx; top: 5rpx; width: 26rpx; height: 26rpx;
+  border: 2.5rpx solid currentColor; border-radius: 50%;
+  border-right-color: transparent; transform: rotate(35deg);
+}
+.ui-icon-refresh::after {
+  left: 26rpx; top: 2rpx; width: 0; height: 0;
+  border-left: 5rpx solid transparent; border-bottom: 7rpx solid currentColor;
+  transform: rotate(35deg);
+}
+
+/* 分享 / 箭头 */
+.ui-icon-arrow::before {
+  left: 6rpx; top: 17rpx; width: 22rpx; height: 2.5rpx;
+  background: currentColor; border-radius: 2rpx;
+}
+.ui-icon-arrow::after {
+  left: 21rpx; top: 12rpx; width: 9rpx; height: 9rpx;
+  border-top: 2.5rpx solid currentColor; border-right: 2.5rpx solid currentColor;
+  transform: rotate(45deg); border-radius: 0 2rpx 0 0;
+}
+
+/* 网格 / 功能 */
+.ui-icon-grid::before {
+  left: 5rpx; top: 5rpx; width: 10rpx; height: 10rpx;
+  border: 2.5rpx solid currentColor; border-radius: 2rpx;
+  box-shadow: 16rpx 0 0 -0.5rpx transparent, 0 16rpx 0 -0.5rpx transparent;
+}
+.ui-icon-grid::after {
+  left: 21rpx; top: 5rpx; width: 10rpx; height: 10rpx;
+  border: 2.5rpx solid currentColor; border-radius: 2rpx;
+}
+
+/* ==================== 统一交互反馈 ==================== */
+/* 页面进入：轻微上移 + 淡入，避免突兀跳变 */
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(12rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.page {
+  animation: pageEnter 0.36s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+/* 弹窗进入：缩放 + 淡入，遮罩单独淡入 */
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes dialogIn {
+  from { opacity: 0; transform: translateY(24rpx) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.ui-overlay {
+  animation: overlayIn 0.22s ease both;
+}
+.ui-dialog {
+  animation: dialogIn 0.3s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+/* 按钮与卡片：统一按压反馈与过渡曲线 */
+.ui-press {
+  transition: transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1),
+              box-shadow 0.22s cubic-bezier(0.22, 0.61, 0.36, 1),
+              background-color 0.22s ease, opacity 0.22s ease;
+}
+.ui-press:active { transform: scale(0.96); opacity: 0.88; }
+.ui-press-hover { transform: scale(0.975); background: #f3ebe1; }
+
+/* 列表项依次入场 */
+@keyframes itemEnter {
+  from { opacity: 0; transform: translateY(16rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.ui-enter { animation: itemEnter 0.42s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+.ui-enter-1 { animation-delay: 0.04s; }
+.ui-enter-2 { animation-delay: 0.08s; }
+.ui-enter-3 { animation-delay: 0.12s; }
+.ui-enter-4 { animation-delay: 0.16s; }
+.ui-enter-5 { animation-delay: 0.20s; }
+.ui-enter-6 { animation-delay: 0.24s; }
+
+/* 尊重系统减少动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+  .page, .ui-overlay, .ui-dialog, .ui-enter { animation: none !important; }
+  .ui-press, .card, .button-primary { transition: none !important; }
+}

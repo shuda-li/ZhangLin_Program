@@ -212,3 +212,8 @@
   font-size: 32rpx;
   font-weight: 600;
 }
+
+/* 统一线性图标适配 */
+.chat-avatar.ui-icon { color: #fff; }
+.message-avatar .ui-icon { color: #fff; }
+.send-btn .send-icon.ui-icon { color: #fff; }
