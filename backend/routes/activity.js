@@ -1,7 +1,10 @@
 const express = require('express');
 const { activities, activityEnrollments } = require('../data/mockData');
+const { authenticate, staffOnly } = require('../middleware/auth');
 
 const router = express.Router();
+
+const writeAuth = [authenticate, staffOnly];
 
 router.get('/', (req, res) => {
   const { page = 1, limit = 10, status, type } = req.query;
@@ -49,7 +52,7 @@ router.get('/:id', (req, res) => {
   });
 });
 
-router.post('/', (req, res) => {
+router.post('/', writeAuth, (req, res) => {
   const { title, description, place, image, capacity, startTime, endTime, type } = req.body;
   
   if (!title || !description || !place || !startTime || !endTime) {
@@ -80,7 +83,7 @@ router.post('/', (req, res) => {
   });
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', writeAuth, (req, res) => {
   const { id } = req.params;
   const index = activities.findIndex(a => a.id === id);
   
@@ -98,7 +101,7 @@ router.put('/:id', (req, res) => {
   });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', writeAuth, (req, res) => {
   const { id } = req.params;
   const index = activities.findIndex(a => a.id === id);
   
@@ -114,24 +117,25 @@ router.delete('/:id', (req, res) => {
   });
 });
 
-router.post('/:id/enroll', (req, res) => {
+router.post('/:id/enroll', authenticate, (req, res) => {
   const { id } = req.params;
-  const { userId } = req.body;
-  
+  // 用户身份以 token 为准，忽略客户端传入的 userId，防止冒名报名
+  const userId = req.user.id;
+
   const activity = activities.find(a => a.id === id);
   if (!activity) {
     return res.status(404).json({ code: 404, message: '活动不存在' });
   }
-  
+
   if (activity.enrolled >= activity.capacity) {
     return res.status(400).json({ code: 400, message: '活动已满' });
   }
-  
+
   const existingEnrollment = activityEnrollments.find(e => e.activityId === id && e.userId === userId);
   if (existingEnrollment) {
     return res.status(400).json({ code: 400, message: '已报名此活动' });
   }
-  
+
   const newEnrollment = {
     id: String(Date.now()),
     activityId: id,
@@ -150,7 +154,7 @@ router.post('/:id/enroll', (req, res) => {
   });
 });
 
-router.get('/:id/enrollments', (req, res) => {
+router.get('/:id/enrollments', [authenticate, staffOnly], (req, res) => {
   const { id } = req.params;
   const enrollments = activityEnrollments.filter(e => e.activityId === id);
   

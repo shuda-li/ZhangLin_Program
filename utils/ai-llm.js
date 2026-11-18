@@ -31,21 +31,13 @@ const SYSTEM_PROMPT = `你是「阿樟」— 樟林古港文旅小程序的AI旅
 3. 回答要简洁友好，控制在100-200字
 4. 如果用户问天气、交通等实时信息，告诉用户你可以帮忙查询`;
 
+const api = require('./api.js');
+
 class AILLM {
   constructor() {
-    this.apiKey = '';
-    this.apiUrl = 'https://api.deepseek.com/chat/completions';
-    // deepseek-chat = DeepSeek-V3 通用对话模型（原 deepseek-v4-flash 不存在）
-    this.model = 'deepseek-chat';
+    // 密钥不再存放于小程序端，统一由后端代理持有
     this.messages = [];
     this.maxHistory = 20;
-    
-    try {
-      const config = require('./config.js');
-      this.apiKey = config.DEEPSEEK_API_KEY;
-    } catch (e) {
-      console.log('配置文件未找到，API密钥将为空');
-    }
   }
 
   addMessage(role, content) {
@@ -60,15 +52,6 @@ class AILLM {
   }
 
   async chat(userMessage) {
-    if (!this.apiKey) {
-      try {
-        const config = require('./config.js');
-        this.apiKey = config.DEEPSEEK_API_KEY;
-      } catch (e) {
-        return { success: false, error: '请配置 DeepSeek API Key' };
-      }
-    }
-
     this.addMessage('user', userMessage);
 
     const messages = [
@@ -76,46 +59,19 @@ class AILLM {
       ...this.messages.slice(-this.maxHistory)
     ];
 
-    try {
-      const result = await this._callAPI(messages);
-      const aiMessage = result.choices[0].message.content;
+    const result = await api.chatWithAI(messages);
+
+    if (result.success && result.data && result.data.choices && result.data.choices[0]) {
+      const aiMessage = result.data.choices[0].message.content;
       this.addMessage('assistant', aiMessage);
       return { success: true, content: aiMessage };
-    } catch (error) {
-      console.error('AI对话出错:', error);
-      return { success: false, error: '抱歉，阿樟暂时遇到了一点问题。请稍后再试，或者咨询现场工作人员。' };
     }
-  }
 
-  _callAPI(messages) {
-    return new Promise((resolve, reject) => {
-      wx.request({
-        url: this.apiUrl,
-        method: 'POST',
-        header: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.apiKey}`
-        },
-        data: {
-          model: this.model,
-          messages: messages,
-          temperature: 0.7,
-          max_tokens: 500
-        },
-        success: (res) => {
-          if (res.statusCode === 200 && res.data) {
-            resolve(res.data);
-          } else {
-            console.error('DeepSeek API错误:', res);
-            reject(new Error('DeepSeek API请求失败: ' + res.statusCode));
-          }
-        },
-        fail: (err) => {
-          console.error('DeepSeek API调用失败:', err);
-          reject(err);
-        }
-      });
-    });
+    console.warn('AI对话不可用:', result.error);
+    return {
+      success: false,
+      error: result.error || '抱歉，阿樟暂时遇到了一点问题。请稍后再试，或者咨询现场工作人员。'
+    };
   }
 }
 

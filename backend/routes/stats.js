@@ -1,7 +1,11 @@
 const express = require('express');
 const { stats, scenicSpots, activities, users } = require('../data/mockData');
+const { authenticate, staffOnly } = require('../middleware/auth');
 
 const router = express.Router();
+
+// 统计数据仅对管理员/讲解员开放
+router.use(authenticate, staffOnly);
 
 router.get('/overview', (req, res) => {
   const overviewStats = {

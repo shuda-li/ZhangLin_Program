@@ -1,8 +1,12 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const { users } = require('../data/mockData');
+const { authenticate, adminOnly } = require('../middleware/auth');
 
 const router = express.Router();
+
+// 用户管理全部敏感：仅管理员可访问
+router.use(authenticate, adminOnly);
 
 router.get('/', (req, res) => {
   const { page = 1, limit = 10, role, status, keyword } = req.query;

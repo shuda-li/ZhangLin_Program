@@ -6,6 +6,7 @@ const {
   activityNews,
   cultureTimeline
 } = require('../../data/site');
+const dataService = require('../../utils/data-service');
 
 Page({
   data: {
@@ -30,6 +31,33 @@ Page({
       { id: 4, latitude: 23.4545, longitude: 116.7800, width: 30, height: 30, title: '侨史记忆长廊' }
     ],
     showBackTop: false
+  },
+
+  async onLoad() {
+    await this.refreshFromServer(false);
+  },
+
+  // 从服务端拉取管理端维护的内容；失败时静默使用本地数据
+  async refreshFromServer(force) {
+    const result = await dataService.getOverview(Boolean(force));
+    if (result.source === 'local') return;
+    const d = result.data;
+    const patch = {};
+    if (Array.isArray(d.scenicSpots) && d.scenicSpots.length) {
+      patch.popularSpots = d.scenicSpots.map(function (spot) {
+        return { id: spot.id, name: spot.name, image: spot.image };
+      });
+    }
+    if (Array.isArray(d.routePlans) && d.routePlans.length) {
+      patch.routePlans = d.routePlans.slice(0, 3);
+    }
+    if (Array.isArray(d.activityNews) && d.activityNews.length) {
+      patch.hotActivities = d.activityNews.slice(0, 1);
+    }
+    if (Array.isArray(d.homeBanners) && d.homeBanners.length) {
+      patch.homeBanners = d.homeBanners;
+    }
+    if (Object.keys(patch).length) this.setData(patch);
   },
 
   onShow() {
@@ -106,7 +134,8 @@ Page({
     }
   },
 
-  onPullDownRefresh() {
+  async onPullDownRefresh() {
+    await this.refreshFromServer(true);
     wx.stopPullDownRefresh();
   },
 

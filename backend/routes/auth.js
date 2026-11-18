@@ -2,9 +2,9 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { users } = require('../data/mockData');
+const { RUNTIME_SECRET, authenticate } = require('../middleware/auth');
 
 const router = express.Router();
-const JWT_SECRET = 'zhanglin_secret_key';
 const JWT_EXPIRES_IN = '24h';
 
 router.post('/login', (req, res) => {
@@ -17,7 +17,7 @@ router.post('/login', (req, res) => {
   }
 
   if (bcrypt.compareSync(password, user.password)) {
-    const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+    const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, RUNTIME_SECRET, { expiresIn: JWT_EXPIRES_IN });
     
     res.json({
       code: 200,
@@ -57,6 +57,7 @@ router.post('/register', (req, res) => {
     password: hashedPassword,
     nickname,
     avatar: '',
+    // 角色由服务端固定为 visitor，忽略客户端传入值，防止自助注册管理员
     role: 'visitor',
     status: 'active',
     createdAt: new Date().toISOString().split('T')[0],
@@ -77,37 +78,26 @@ router.post('/register', (req, res) => {
   });
 });
 
-router.get('/profile', (req, res) => {
-  const token = req.headers.authorization?.split(' ')[1];
-  
-  if (!token) {
-    return res.status(401).json({ code: 401, message: '未授权' });
+router.get('/profile', authenticate, (req, res) => {
+  const user = users.find(u => u.id === req.user.id);
+
+  if (!user) {
+    return res.status(401).json({ code: 401, message: '用户不存在' });
   }
 
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    const user = users.find(u => u.id === decoded.id);
-    
-    if (!user) {
-      return res.status(401).json({ code: 401, message: '用户不存在' });
+  res.json({
+    code: 200,
+    data: {
+      id: user.id,
+      username: user.username,
+      nickname: user.nickname,
+      role: user.role,
+      avatar: user.avatar,
+      status: user.status,
+      createdAt: user.createdAt,
+      lastLogin: user.lastLogin
     }
-
-    res.json({
-      code: 200,
-      data: {
-        id: user.id,
-        username: user.username,
-        nickname: user.nickname,
-        role: user.role,
-        avatar: user.avatar,
-        status: user.status,
-        createdAt: user.createdAt,
-        lastLogin: user.lastLogin
-      }
-    });
-  } catch (error) {
-    res.status(401).json({ code: 401, message: 'Token无效或已过期' });
-  }
+  });
 });
 
 module.exports = router;

@@ -149,14 +149,19 @@ ZhangLin_Program/
 - **游览路线推荐**：根据游客时间和兴趣推荐半日游、一日游或亲子研学路线
 - **在地特色推介**：介绍潮汕工夫茶、牛肉火锅、英歌舞等本地风物
 
-### 技术实现
+### 技术实现（安全架构）
 
-AI能力由 `utils/ai-service.js` 提供支持：
+> 密钥不再存放于小程序前端，统一由后端代理持有，避免反编译盗用。
+
+- 前端：`utils/api.js` 统一请求层 + `utils/ai-llm.js`（对话）/ `utils/ai-service.js`（问答）
+- 后端：`backend/routes/ai.js` 代理 DeepSeek / Tavily，密钥从环境变量读取，含输入校验与限流
+- 降级：后端不可用时，`utils/ai-service.js` 自动使用内置本地知识库与预设问答
+
+调用示例：
 
 ```javascript
 const { askAI } = require('./utils/ai-service.js');
 
-// 调用示例
 askAI('红头船为什么是红色的？', {
   context: { currentPage: 'scenic-detail', scenicId: 'ship-museum' }
 }).then(result => {
@@ -167,10 +172,12 @@ askAI('红头船为什么是红色的？', {
 
 ### 接入流程
 
-1. 获取 Tavily API Key（已配置：`tvly-dev-***ATDa`）
-2. 在 `utils/ai-service.js` 中配置 `TAVILY_API_KEY`
-3. 小程序端通过 `askAI()` 函数调用AI服务
-4. 支持设置 `useLocalFirst: true` 优先使用本地预设问答
+1. 在 `backend/.env`（复制自 `.env.example`）中配置 `DEEPSEEK_API_KEY` / `TAVILY_API_KEY`
+2. 在 `utils/api.js` 中填写后端地址 `API_BASE_URL`
+3. 在微信公众平台把后端域名加入 request 合法域名
+4. 启动后端服务 `node backend/server.js` 即可
+
+详见 `SECURITY-NOTICE.md`（密钥轮换与历史清理说明）。
 
 ---
 

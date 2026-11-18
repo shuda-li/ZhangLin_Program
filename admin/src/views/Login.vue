@@ -25,9 +25,6 @@
           <el-button type="primary" class="login-btn" @click="handleLogin">登录</el-button>
         </el-form-item>
       </el-form>
-      <div class="login-footer">
-        <span>测试账户：admin / admin123</span>
-      </div>
     </div>
   </div>
 </template>

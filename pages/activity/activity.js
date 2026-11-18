@@ -1,4 +1,5 @@
 const { activityNews } = require('../../data/site');
+const dataService = require('../../utils/data-service');
 const {
   isRegisteredActivity,
   registerActivity,
@@ -37,14 +38,21 @@ Page({
     setTimeout(() => wx.stopPullDownRefresh(), 1200);
   },
 
-  refreshActivities(category = this.data.activeCategory) {
+  async refreshActivities(category = this.data.activeCategory) {
+    // 优先使用服务端数据，失败回退本地
+    let source = activityNews;
+    const result = await dataService.getOverview(false);
+    if (result.source !== 'local' && Array.isArray(result.data.activityNews) && result.data.activityNews.length) {
+      source = result.data.activityNews;
+    }
+
     const filtered = category === '全部'
-      ? activityNews
-      : activityNews.filter((item) => item.category === category);
+      ? source
+      : source.filter((item) => item.category === category);
 
     const formatted = filtered.map((item) => ({
       ...item,
-      remaining: Math.max(item.capacity - item.enrolled, 0),
+      remaining: Math.max((item.capacity || 0) - (item.enrolled || 0), 0),
       registered: isRegisteredActivity(item.id)
     }));
 

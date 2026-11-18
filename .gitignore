@@ -25,8 +25,8 @@ utils/config.js
 Zhanglin_Material/
 zhanglin_picture/
 
-# 后端（如果不需要）
-backend/
+# 后端环境变量（含密钥，绝不入库）
+backend/.env
 
 # 图片素材（使用远程或本地）
 assets/images/*.jpg

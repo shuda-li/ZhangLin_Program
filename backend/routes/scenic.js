@@ -1,7 +1,11 @@
 const express = require('express');
 const { scenicSpots } = require('../data/mockData');
+const { authenticate, staffOnly } = require('../middleware/auth');
 
 const router = express.Router();
+
+// 写操作统一挂载鉴权：管理员/讲解员可增删改景点
+const writeAuth = [authenticate, staffOnly];
 
 router.get('/', (req, res) => {
   const { page = 1, limit = 10, category, keyword } = req.query;
@@ -51,7 +55,7 @@ router.get('/:id', (req, res) => {
   });
 });
 
-router.post('/', (req, res) => {
+router.post('/', writeAuth, (req, res) => {
   const { name, category, description, image, gallery, features, openTime, ticketPrice, location } = req.body;
   
   if (!name || !category || !description) {
@@ -83,7 +87,7 @@ router.post('/', (req, res) => {
   });
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', writeAuth, (req, res) => {
   const { id } = req.params;
   const index = scenicSpots.findIndex(s => s.id === id);
   
@@ -101,7 +105,7 @@ router.put('/:id', (req, res) => {
   });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', writeAuth, (req, res) => {
   const { id } = req.params;
   const index = scenicSpots.findIndex(s => s.id === id);
   

@@ -1,5 +1,4 @@
-const { TAVILY_API_KEY } = require('./config');
-const TAVILY_API_URL = 'https://api.tavily.com/search';
+const api = require('./api.js');
 
 const localKnowledgeBase = {
   scenicSpots: {
@@ -60,46 +59,28 @@ function buildZhanglinContext(context = {}) {
 }
 
 async function queryTavily(question, options = {}) {
-  return new Promise((resolve, reject) => {
-    const {
-      context = {},
-      searchDepth = 'basic',
-      maxResults = 3
-    } = options;
+  const {
+    context = {},
+    searchDepth = 'basic',
+    maxResults = 3
+  } = options;
 
-    const zhanglinContext = buildZhanglinContext(context);
-    const enhancedQuery = `${zhanglinContext} 问题：${question}`;
+  const zhanglinContext = buildZhanglinContext(context);
+  const enhancedQuery = `${zhanglinContext} 问题：${question}`;
 
-    wx.request({
-      url: TAVILY_API_URL,
-      method: 'POST',
-      header: {
-        'Content-Type': 'application/json'
-      },
-      data: {
-        api_key: TAVILY_API_KEY,
-        query: enhancedQuery,
-        search_depth: searchDepth,
-        max_results: maxResults,
-        include_answer: true,
-        include_raw_content: false
-      },
-      success: (res) => {
-        if (res.statusCode === 200 && res.data) {
-          resolve({
-            answer: res.data.answer || res.data.results?.[0]?.content || '',
-            results: res.data.results || [],
-            relatedTopics: extractRelatedTopics(question)
-          });
-        } else {
-          reject(new Error('Tavily API 请求失败'));
-        }
-      },
-      fail: (err) => {
-        reject(err);
-      }
-    });
-  });
+  // 经后端代理调用 Tavily，密钥不落地小程序端
+  const result = await api.searchWithAI(enhancedQuery, { searchDepth, maxResults });
+
+  if (!result.success || !result.data) {
+    throw new Error(result.error || '搜索服务不可用');
+  }
+
+  const data = result.data;
+  return {
+    answer: data.answer || (data.results && data.results[0] && data.results[0].content) || '',
+    results: data.results || [],
+    relatedTopics: extractRelatedTopics(question)
+  };
 }
 
 function extractRelatedTopics(question) {

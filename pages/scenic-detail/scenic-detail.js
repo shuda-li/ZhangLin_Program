@@ -1,4 +1,5 @@
 const { scenicSpots } = require('../../data/site');
+const dataService = require('../../utils/data-service');
 const {
   addRecentSpot, isFavoriteSpot, toggleFavoriteSpot,
   toggleLikeSpot, isLikedSpot,
@@ -47,7 +48,30 @@ Page({
       durationText: scenicSpot.audioMeta ? scenicSpot.audioMeta.duration : '00:00'
     });
     wx.setNavigationBarTitle({ title: scenicSpot.name });
+    this._spotId = scenicSpot.id;
     setTimeout(() => this.setData({ loading: false }), 400);
+    this.refreshFromServer();
+  },
+
+  // 用管理端维护的内容覆盖当前景点（按 id 匹配），失败时保持本地数据
+  async refreshFromServer() {
+    const result = await dataService.getOverview(false);
+    if (result.source === 'local' || !Array.isArray(result.data.scenicSpots)) return;
+    const fresh = result.data.scenicSpots.find((s) => s.id === this._spotId);
+    if (!fresh) return;
+    // 图片/图集沿用本地已校验资源，仅覆盖文字与运营字段
+    const base = this.data.scenicSpot || {};
+    this.setData({
+      scenicSpot: Object.assign({}, base, {
+        name: fresh.name || base.name,
+        summary: fresh.summary || base.summary,
+        location: fresh.location || base.location,
+        duration: fresh.openTime || base.duration,
+        image: base.image,
+        gallery: base.gallery
+      })
+    });
+    wx.setNavigationBarTitle({ title: this.data.scenicSpot.name });
   },
 
   onShareAppMessage() {
