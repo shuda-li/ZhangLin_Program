@@ -1,6 +1,4 @@
-// API 配置示例 - 复制为 config.js 后填写自己的密钥
-// 注意：生产环境切勿在前端存储真实 API Key，应通过后端代理调用
-module.exports = {
-  DEEPSEEK_API_KEY: 'sk-请替换为你的DeepSeek密钥',
-  TAVILY_API_KEY: ''
-}
+// API 配置（已弃用）
+// AI 密钥改由管理员在管理后台「AI 密钥设置」中输入，加密保存在后端，
+// 前端不再持有任何第三方 API Key，本文件仅作历史兼容占位，请勿填写真实密钥。
+module.exports = {}

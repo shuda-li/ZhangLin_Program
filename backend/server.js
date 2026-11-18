@@ -30,7 +30,9 @@ const userRouter = require('./routes/user');
 const statsRouter = require('./routes/stats');
 const aiRouter = require('./routes/ai');
 const contentRouter = require('./routes/content');
+const settingsRouter = require('./routes/settings');
 
+app.use('/api/settings', settingsRouter);
 app.use('/api/content', contentRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/scenic', scenicRouter);

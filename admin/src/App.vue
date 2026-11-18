@@ -11,7 +11,7 @@
         @select="handleMenuSelect"
       >
         <el-menu-item index="/">
-          <el-icon><component :is="icons.LayoutDashboard" /></el-icon>
+          <el-icon><component :is="icons.Odometer" /></el-icon>
           <span>数据概览</span>
         </el-menu-item>
         <el-menu-item index="/scenic">
@@ -27,8 +27,12 @@
           <span>用户管理</span>
         </el-menu-item>
         <el-menu-item index="/stats">
-          <el-icon><component :is="icons.BarChart3" /></el-icon>
+          <el-icon><component :is="icons.TrendCharts" /></el-icon>
           <span>数据统计</span>
+        </el-menu-item>
+        <el-menu-item index="/settings/ai-keys">
+          <el-icon><component :is="icons.Setting" /></el-icon>
+          <span>AI 密钥设置</span>
         </el-menu-item>
       </el-menu>
     </el-aside>
@@ -55,11 +59,12 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import {
-  LayoutDashboard,
+  Odometer,
   MapLocation,
   Calendar,
   User,
-  BarChart3
+  TrendCharts,
+  Setting
 } from '@element-plus/icons-vue'
 import { authApi } from './api'
 
@@ -67,11 +72,12 @@ const router = useRouter()
 const user = ref(null)
 
 const icons = {
-  LayoutDashboard,
+  Odometer,
   MapLocation,
   Calendar,
   User,
-  BarChart3
+  TrendCharts,
+  Setting
 }
 
 const handleMenuSelect = (key) => {

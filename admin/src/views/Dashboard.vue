@@ -32,7 +32,7 @@
       </el-card>
       <el-card class="stat-card">
         <div class="stat-icon visits">
-          <el-icon><component :is="icons.Eye" /></el-icon>
+          <el-icon><component :is="icons.View" /></el-icon>
         </div>
         <div class="stat-info">
           <p class="stat-value">{{ formatNumber(overview.totalVisits) }}</p>
@@ -80,11 +80,11 @@
 
 <script setup>
 import { ref, onMounted, watch } from 'vue'
-import { MapLocation, Calendar, User, Eye } from '@element-plus/icons-vue'
+import { MapLocation, Calendar, User, View } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
 import { statsApi, activityApi } from '../api'
 
-const icons = { MapLocation, Calendar, User, Eye }
+const icons = { MapLocation, Calendar, User, View }
 
 const overview = ref({
   totalScenicSpots: 0,

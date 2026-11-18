@@ -75,3 +75,10 @@ export const statsApi = {
   scenic: () => api.get('/stats/scenic'),
   daily: () => api.get('/stats/daily')
 }
+
+export const settingsApi = {
+  getAiKeys: () => api.get('/settings/ai-keys'),
+  updateAiKeys: (data) => api.put('/settings/ai-keys', data),
+  clearAiKey: (name) => api.delete(`/settings/ai-keys/${name}`),
+  verifyDeepSeek: () => api.post('/settings/ai-keys/verify')
+}

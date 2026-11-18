@@ -154,7 +154,8 @@ ZhangLin_Program/
 > 密钥不再存放于小程序前端，统一由后端代理持有，避免反编译盗用。
 
 - 前端：`utils/api.js` 统一请求层 + `utils/ai-llm.js`（对话）/ `utils/ai-service.js`（问答）
-- 后端：`backend/routes/ai.js` 代理 DeepSeek / Tavily，密钥从环境变量读取，含输入校验与限流
+- 后端：`backend/routes/ai.js` 代理 DeepSeek / Tavily，密钥由管理员在管理后台输入并加密存储，含输入校验与限流
+- 密钥管理：管理后台「AI 密钥设置」页输入/更换/清除密钥，后端 AES-256-GCM 加密存于 `backend/data/.ai-keys.json`（不入库），接口只返回脱敏信息
 - 降级：后端不可用时，`utils/ai-service.js` 自动使用内置本地知识库与预设问答
 
 调用示例：
@@ -172,10 +173,13 @@ askAI('红头船为什么是红色的？', {
 
 ### 接入流程
 
-1. 在 `backend/.env`（复制自 `.env.example`）中配置 `DEEPSEEK_API_KEY` / `TAVILY_API_KEY`
-2. 在 `utils/api.js` 中填写后端地址 `API_BASE_URL`
-3. 在微信公众平台把后端域名加入 request 合法域名
-4. 启动后端服务 `node backend/server.js` 即可
+1. 复制 `backend/.env.example` 为 `backend/.env`，配置 `JWT_SECRET`、`ADMIN_PASSWORD`，生产建议配置 `KEY_STORE_SECRET`（AI 密钥加密主密钥）
+2. 启动后端 `node backend/server.js`，用管理员账号登录管理后台
+3. 进入「AI 密钥设置」，输入自己的 DeepSeek Key（Tavily Key 可选），可点「验证可用性」确认
+4. 在 `utils/api.js` 中填写后端地址 `API_BASE_URL`
+5. 在微信公众平台把后端域名加入 request 合法域名
+
+> 密钥不再写进 `.env`、前端文件或代码仓库；未配置密钥时 AI 功能返回明确提示，本地知识库问答仍可用。
 
 详见 `SECURITY-NOTICE.md`（密钥轮换与历史清理说明）。
 

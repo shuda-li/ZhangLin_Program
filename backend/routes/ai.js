@@ -2,52 +2,16 @@
  * AI 代理路由
  * 作用：把 DeepSeek / Tavily 的 API 调用与密钥收敛到后端，
  * 前端不再持有任何第三方 API Key。
+ * 密钥来源：管理员在管理后台输入，由 keyStore 加密存储（不再使用环境变量）。
  */
 const express = require('express');
-const https = require('https');
-const config = require('../config');
+const keyStore = require('../data/keyStore');
+const httpsPost = require('../utils/httpsPost');
 
 const router = express.Router();
 
 const DEEPSEEK_URL = 'https://api.deepseek.com/chat/completions';
 const TAVILY_URL = 'https://api.tavily.com/search';
-
-/**
- * 原生 https POST，返回 { statusCode, data }，兼容未内置 fetch 的 Node 版本。
- */
-function httpsPost(url, headers, body, timeoutMs = 15000) {
-  return new Promise((resolve, reject) => {
-    const urlObj = new URL(url);
-    const payload = JSON.stringify(body);
-    const req = https.request(
-      {
-        hostname: urlObj.hostname,
-        path: urlObj.pathname + urlObj.search,
-        method: 'POST',
-        headers: Object.assign(
-          { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) },
-          headers
-        )
-      },
-      (res) => {
-        let chunks = '';
-        res.setEncoding('utf8');
-        res.on('data', (chunk) => { chunks += chunk; });
-        res.on('end', () => {
-          try {
-            resolve({ statusCode: res.statusCode, data: JSON.parse(chunks) });
-          } catch (e) {
-            reject(new Error('AI 服务返回非 JSON 数据'));
-          }
-        });
-      }
-    );
-    req.setTimeout(timeoutMs, () => req.destroy(new Error('AI 服务请求超时')));
-    req.on('error', reject);
-    req.write(payload);
-    req.end();
-  });
-}
 
 // 简易内存限流：同一 IP 每分钟最多 N 次请求，防止密钥被恶意刷取
 const RATE_WINDOW_MS = 60 * 1000;
@@ -83,21 +47,22 @@ setInterval(() => {
 function serviceUnavailable(res, name) {
   return res.status(503).json({
     code: 503,
-    message: `${name} 服务未配置密钥，请联系管理员`
+    message: `${name} 服务尚未配置密钥，请管理员在后台「AI 密钥设置」中输入`
   });
 }
 
 /**
  * POST /api/ai/chat
  * body: { messages: [{role, content}], model?, temperature?, max_tokens? }
- * 后端注入 DEEPSEEK_API_KEY，前端只传对话内容。
+ * 后端从 keyStore 读取管理员配置的密钥，前端只传对话内容。
  */
 router.post('/chat', async (req, res) => {
   if (!rateLimit(req)) {
     return res.status(429).json({ code: 429, message: '请求过于频繁，请稍后再试' });
   }
 
-  if (!config.isConfigured(config.deepseekApiKey)) {
+  const deepseekKey = keyStore.getKey('deepseek');
+  if (!deepseekKey) {
     return serviceUnavailable(res, 'AI 问答');
   }
 
@@ -115,7 +80,7 @@ router.post('/chat', async (req, res) => {
   try {
     const result = await httpsPost(
       DEEPSEEK_URL,
-      { Authorization: `Bearer ${config.deepseekApiKey}` },
+      { Authorization: `Bearer ${deepseekKey}` },
       {
         model: 'deepseek-chat',
         messages: sanitized,
@@ -146,7 +111,8 @@ router.post('/search', async (req, res) => {
     return res.status(429).json({ code: 429, message: '请求过于频繁，请稍后再试' });
   }
 
-  if (!config.isConfigured(config.tavilyApiKey)) {
+  const tavilyKey = keyStore.getKey('tavily');
+  if (!tavilyKey) {
     return serviceUnavailable(res, '联网搜索');
   }
 
@@ -160,7 +126,7 @@ router.post('/search', async (req, res) => {
       TAVILY_URL,
       {},
       {
-        api_key: config.tavilyApiKey,
+        api_key: tavilyKey,
         query: query.slice(0, 1000),
         search_depth: req.body.search_depth === 'advanced' ? 'advanced' : 'basic',
         max_results: Math.min(Number(req.body.max_results) || 3, 10),

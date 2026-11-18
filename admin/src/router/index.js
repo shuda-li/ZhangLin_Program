@@ -1,13 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from './views/Login.vue'
-import Dashboard from './views/Dashboard.vue'
-import ScenicList from './views/ScenicList.vue'
-import ScenicForm from './views/ScenicForm.vue'
-import ActivityList from './views/ActivityList.vue'
-import ActivityForm from './views/ActivityForm.vue'
-import UserList from './views/UserList.vue'
-import UserForm from './views/UserForm.vue'
-import Stats from './views/Stats.vue'
+import Login from '../views/Login.vue'
+import Dashboard from '../views/Dashboard.vue'
+import ScenicList from '../views/ScenicList.vue'
+import ScenicForm from '../views/ScenicForm.vue'
+import ActivityList from '../views/ActivityList.vue'
+import ActivityForm from '../views/ActivityForm.vue'
+import UserList from '../views/UserList.vue'
+import UserForm from '../views/UserForm.vue'
+import Stats from '../views/Stats.vue'
+import AISettings from '../views/AISettings.vue'
 
 const routes = [
   {
@@ -69,6 +70,11 @@ const routes = [
     path: '/stats',
     name: 'Stats',
     component: Stats
+  },
+  {
+    path: '/settings/ai-keys',
+    name: 'AISettings',
+    component: AISettings
   }
 ]
 

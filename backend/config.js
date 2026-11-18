@@ -45,8 +45,7 @@ module.exports = {
   port: process.env.PORT || 3000,
   jwtSecret: process.env.JWT_SECRET || '',
   adminPassword: process.env.ADMIN_PASSWORD || '',
-  deepseekApiKey: process.env.DEEPSEEK_API_KEY || '',
-  tavilyApiKey: process.env.TAVILY_API_KEY || '',
+  // AI 密钥不再从环境变量读取：仅由管理员在管理后台输入，加密存于 data/.ai-keys.json
   corsOrigins: rawOrigin.split(',').map((s) => s.trim()).filter(Boolean),
   isConfigured,
   // JWT 密钥未配置时给出明确告警，避免继续使用硬编码弱密钥

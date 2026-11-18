@@ -6,6 +6,9 @@ desktop.ini
 # node依赖
 node_modules/
 
+# 前端构建产物
+admin/dist/
+
 # IDE
 .idea/
 .vscode/
@@ -27,6 +30,9 @@ zhanglin_picture/
 
 # 后端环境变量（含密钥，绝不入库）
 backend/.env
+
+# 管理后台输入的 AI 密钥（AES 加密后的密文文件，绝不入库）
+backend/data/.ai-keys.json
 
 # 图片素材（使用远程或本地）
 assets/images/*.jpg
