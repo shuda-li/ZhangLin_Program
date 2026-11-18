@@ -1,3 +1,5 @@
+const nav = require('../../utils/navigate');
+
 Page({
   data: {
     attractions: [
@@ -167,7 +169,7 @@ Page({
   },
 
   goBack() {
-    wx.navigateBack()
+    nav.back()
   },
 
   onImageError(e) {

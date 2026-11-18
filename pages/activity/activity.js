@@ -1,5 +1,6 @@
 const { activityNews } = require('../../data/site');
 const dataService = require('../../utils/data-service');
+const nav = require('../../utils/navigate');
 const {
   isRegisteredActivity,
   registerActivity,
@@ -123,14 +124,10 @@ Page({
   },
 
   openGuide() {
-    wx.switchTab({
-      url: '/pages/guide/guide'
-    });
+    nav.go('/pages/guide/guide');
   },
 
   openProfile() {
-    wx.switchTab({
-      url: '/pages/profile/profile'
-    });
+    nav.go('/pages/profile/profile');
   }
 });

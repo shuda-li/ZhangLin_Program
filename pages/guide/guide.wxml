@@ -15,6 +15,7 @@
       scale="15"
       markers="{{mapMarkers}}"
       polyline="{{mapPolyline}}"
+      show-location="{{showLocation}}"
       bindmarkertap="onMarkerTap"
     />
     <view class="map-legend">

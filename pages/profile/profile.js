@@ -6,6 +6,7 @@ const {
   journeyTips,
   profileAiTips
 } = require('../../data/site');
+const nav = require('../../utils/navigate');
 const {
   getActivityRegistrations,
   getFavoriteSpots,
@@ -281,19 +282,17 @@ Page({
   },
 
   openService(event) {
-    var type = event.currentTarget.dataset.type;
     var target = event.currentTarget.dataset.target;
-    if (type === 'tab') { wx.switchTab({ url: target }); return; }
-    wx.navigateTo({ url: target });
+    nav.go(target);
   },
 
   openSpot(event) {
     var id = event.currentTarget.dataset.id;
-    wx.navigateTo({ url: '/pages/scenic-detail/scenic-detail?id=' + id });
+    nav.go('/pages/scenic-detail/scenic-detail?id=' + id);
   },
 
   openActivity() {
-    wx.navigateTo({ url: '/pages/activity/activity' });
+    nav.go('/pages/activity/activity');
   },
 
   unregister(event) {

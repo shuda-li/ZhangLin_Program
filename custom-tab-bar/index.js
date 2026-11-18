@@ -40,7 +40,13 @@ Component({
       const { path, index } = e.currentTarget.dataset;
       if (this.data.selected === index) return;
       this.setData({ selected: index });
-      wx.switchTab({ url: path });
+      wx.switchTab({
+        url: path,
+        fail: () => {
+          wx.showToast({ title: '页面切换失败，请重试', icon: 'none' });
+          console.warn('[导航] tabBar 切换失败:', path);
+        }
+      });
     }
   }
 });

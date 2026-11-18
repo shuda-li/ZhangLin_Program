@@ -52,5 +52,8 @@
     "scope.userLocation": {
       "desc": "用于在地图上显示你的位置，方便规划游览路线"
     }
-  }
+  },
+  "requiredPrivateInfos": [
+    "getLocation"
+  ]
 }

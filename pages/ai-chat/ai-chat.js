@@ -1,4 +1,5 @@
 const AILLM = require('../../utils/ai-llm');
+const nav = require('../../utils/navigate');
 
 Page({
   data: {
@@ -37,7 +38,7 @@ Page({
   },
 
   goBack() {
-    wx.navigateBack();
+    nav.back();
   },
 
   onInput(e) {

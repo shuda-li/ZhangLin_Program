@@ -1,5 +1,6 @@
 const { routePlans, nearbyServices, cultureAiQA } = require('../../data/site');
 const { chatWithAI } = require('../../utils/ai-llm');
+const nav = require('../../utils/navigate');
 
 function getAiTip(hour) {
   if (hour >= 5 && hour < 10) {
@@ -97,6 +98,7 @@ Page({
     aiTip: getAiTip(new Date().getHours()),
     mapLat: 23.461,
     mapLng: 116.780,
+    showLocation: false,
     mapMarkers: [],
     mapPolyline: [],
     stopMarkers: [],
@@ -151,8 +153,68 @@ Page({
   },
 
   onShowLocation() {
-    var mapCtx = wx.createMapContext('guideMap', this);
-    mapCtx.moveToLocation();
+    var that = this;
+
+    // 先确认定位权限状态，避免直接 moveToLocation 静默失败
+    wx.getSetting({
+      success: function(settingRes) {
+        var authorized = settingRes.authSetting['scope.userLocation'];
+        if (authorized === false) {
+          // 用户曾拒绝授权，引导去设置页开启
+          wx.showModal({
+            title: '需要定位权限',
+            content: '定位功能需要获取你的位置权限，请在设置中开启。',
+            confirmText: '去设置',
+            success: function(modalRes) {
+              if (modalRes.confirm) {
+                wx.openSetting({
+                  success: function(openRes) {
+                    if (openRes.authSetting['scope.userLocation']) {
+                      that.locateAndMove();
+                    }
+                  }
+                });
+              }
+            }
+          });
+          return;
+        }
+        // 已授权或未询问过，直接定位
+        that.locateAndMove();
+      },
+      fail: function() {
+        that.locateAndMove();
+      }
+    });
+  },
+
+  // 获取当前位置并把地图移动到该处
+  locateAndMove() {
+    var that = this;
+    wx.showLoading({ title: '定位中...' });
+
+    wx.getLocation({
+      type: 'gcj02',
+      success: function(loc) {
+        wx.hideLoading();
+        that.setData({
+          mapLat: loc.latitude,
+          mapLng: loc.longitude,
+          showLocation: true
+        });
+        // 坐标系一致后移动视野
+        var mapCtx = wx.createMapContext('guideMap', that);
+        mapCtx.moveToLocation();
+      },
+      fail: function(err) {
+        wx.hideLoading();
+        var msg = '定位失败，请检查是否开启位置权限';
+        if (err && err.errMsg && err.errMsg.indexOf('auth') !== -1) {
+          msg = '未获得定位授权，请在设置中开启位置权限';
+        }
+        wx.showToast({ title: msg, icon: 'none', duration: 2000 });
+      }
+    });
   },
 
   startVoiceGuide() {
@@ -169,10 +231,7 @@ Page({
   },
 
   openAiChat() {
-    wx.showToast({ title: 'AI向导加载中...', icon: 'loading', duration: 600 });
-    setTimeout(function() {
-      wx.navigateTo({ url: '/pages/ai-chat/ai-chat' });
-    }, 700);
+    nav.go('/pages/ai-chat/ai-chat');
   },
 
   closeAiChat() {

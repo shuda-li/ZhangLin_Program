@@ -98,6 +98,8 @@ Page({
   closeReview() {
     this.setData({ showReviewPanel: false });
   },
+  // 阻止点击面板内部时冒泡关闭面板（wxml catchtap="dummy"）
+  dummy() {},
   setRating(e) {
     this.setData({ reviewRating: parseInt(e.currentTarget.dataset.rating) });
   },

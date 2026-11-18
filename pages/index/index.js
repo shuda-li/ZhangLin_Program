@@ -7,6 +7,7 @@ const {
   cultureTimeline
 } = require('../../data/site');
 const dataService = require('../../utils/data-service');
+const nav = require('../../utils/navigate');
 
 Page({
   data: {
@@ -72,21 +73,18 @@ Page({
 
   handleActionTap(event) {
     const { action, target } = event.currentTarget.dataset;
-    if (action === 'tab') {
-      wx.switchTab({ url: target });
+    if (action === 'detail') {
+      nav.go(`/pages/scenic-detail/scenic-detail?id=${target}`);
       return;
     }
-    if (action === 'page') {
-      wx.navigateTo({ url: target });
-      return;
-    }
-    wx.navigateTo({ url: `/pages/scenic-detail/scenic-detail?id=${target}` });
+    // tab / page 统一交给导航工具判断，自动选择 switchTab 或 navigateTo
+    nav.go(target);
   },
 
   handleStatTap(event) {
     const { target } = event.currentTarget.dataset;
     if (target.startsWith('/pages/')) {
-      wx.switchTab({ url: target });
+      nav.go(target);
     } else {
       wx.pageScrollTo({ selector: '#' + target, duration: 300 });
     }
@@ -94,7 +92,7 @@ Page({
 
   openSpot(event) {
     const { id } = event.currentTarget.dataset;
-    wx.navigateTo({ url: `/pages/scenic-detail/scenic-detail?id=${id}` });
+    nav.go(`/pages/scenic-detail/scenic-detail?id=${id}`);
   },
 
   openGuide(event) {
@@ -103,27 +101,27 @@ Page({
       const app = getApp();
       app.globalData.activeRouteId = routeId;
     }
-    wx.switchTab({ url: '/pages/guide/guide' });
+    nav.go('/pages/guide/guide');
   },
 
   openActivity() {
-    wx.navigateTo({ url: '/pages/activity/activity' });
+    nav.go('/pages/activity/activity');
   },
 
   openAiGuide() {
-    wx.navigateTo({ url: '/pages/ai-chat/ai-chat' });
+    nav.go('/pages/ai-chat/ai-chat');
   },
 
   aiQuickAsk(event) {
     const q = event.currentTarget.dataset.q;
-    wx.navigateTo({ url: '/pages/ai-chat/ai-chat?question=' + encodeURIComponent(q) });
+    nav.go('/pages/ai-chat/ai-chat?question=' + encodeURIComponent(q));
   },
 
   onMarkerTap(event) {
     const spotMap = { 1: 'ship-museum', 2: 'port-ruins', 3: 'historic-arcade', 4: 'overseas-memory' };
     const spotId = spotMap[event.detail.markerId];
     if (spotId) {
-      wx.navigateTo({ url: '/pages/scenic-detail/scenic-detail?id=' + spotId });
+      nav.go('/pages/scenic-detail/scenic-detail?id=' + spotId);
     }
   },
 
