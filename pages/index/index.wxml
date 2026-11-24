@@ -35,33 +35,8 @@
     </block>
   </view>
 
-  <!-- 3. AI 助手 -->
-  <view class="section">
-    <view class="section-head">
-      <view class="section-title">AI 古港助手</view>
-      <view class="section-more ui-press" bindtap="openAiGuide">进入对话<view class="ui-icon ui-icon-arrow ui-icon-sm"></view></view>
-    </view>
-    <view class="card ai-card ui-press" bindtap="openAiGuide">
-      <view class="ai-row">
-        <view class="ai-icon-wrap"><view class="ui-icon ui-icon-chat ui-icon-lg"></view></view>
-        <view class="ai-copy">
-          <view class="ai-title">阿樟 · 随时为你讲解</view>
-          <view class="ai-sub">红头船历史、游玩路线、古港故事</view>
-        </view>
-        <view class="ai-status"><view class="ai-dot"></view>在线</view>
-      </view>
-      <view class="ai-prompts">
-        <view class="prompt-chip" catchtap="aiQuickAsk" data-q="推荐一条半日游路线">推荐半日游路线</view>
-        <view class="prompt-chip" catchtap="aiQuickAsk" data-q="红头船有什么历史故事">红头船的故事</view>
-      </view>
-    </view>
-  </view>
-
-  <!-- 4. 快捷服务 -->
-  <view class="section">
-    <view class="section-head">
-      <view class="section-title">快捷服务</view>
-    </view>
+  <!-- 3. 快捷操作（上移，核心入口前置） -->
+  <view class="section quick-section">
     <view class="quick-grid">
       <block wx:for="{{quickServices}}" wx:key="title">
         <view class="quick-item ui-press" bindtap="handleActionTap" data-action="{{item.action}}" data-target="{{item.target}}">
@@ -72,26 +47,21 @@
     </view>
   </view>
 
-  <!-- 5. 海丝文化时间轴 -->
-  <view class="section">
-    <view class="section-head">
-      <view class="section-title">海丝文化时间轴</view>
-      <view class="section-subtitle-inline">七百年变迁</view>
-    </view>
-    <scroll-view class="timeline-scroll" scroll-x="{{true}}" show-scrollbar="{{false}}">
-      <view class="timeline-row">
-        <block wx:for="{{cultureTimeline}}" wx:key="year">
-          <view class="timeline-node">
-            <view class="timeline-dot"></view>
-            <view class="timeline-year">{{item.year}}</view>
-            <view class="timeline-event">{{item.event}}</view>
-          </view>
-        </block>
+  <!-- 4. AI 助手（核心功能，精简为单行入口） -->
+  <view class="section ai-section">
+    <view class="card ai-card ui-press" bindtap="openAiGuide">
+      <view class="ai-row">
+        <view class="ai-icon-wrap"><view class="ui-icon ui-icon-chat ui-icon-lg"></view></view>
+        <view class="ai-copy">
+          <view class="ai-title">阿樟 · 随时为你讲解</view>
+          <view class="ai-sub">红头船历史、游玩路线、古港故事</view>
+        </view>
+        <view class="ai-enter">进入对话<view class="ui-icon ui-icon-arrow ui-icon-sm"></view></view>
       </view>
-    </scroll-view>
+    </view>
   </view>
 
-  <!-- 6. 精选景点 -->
+  <!-- 5. 精选景点 -->
   <view class="section" id="featured-section">
     <view class="section-head">
       <view class="section-title">精选景点</view>
@@ -109,46 +79,123 @@
     </scroll-view>
   </view>
 
-  <!-- 7. 主题线路 -->
+  <!-- 6. 主题线路：单条主推 + 更多入口 -->
   <view class="section" id="route-section">
     <view class="section-head">
       <view class="section-title">主题线路</view>
       <view class="section-more ui-press" bindtap="openGuide">全部线路<view class="ui-icon ui-icon-arrow ui-icon-sm"></view></view>
     </view>
-    <block wx:for="{{routePlans}}" wx:key="id">
-      <view class="card card-spacing card-tap-fb" catchtap="openGuide" data-route-id="{{item.id}}">
-        <template is="route-card" data="{{route: item}}" />
-      </view>
-    </block>
+    <view class="card card-tap-fb" wx:if="{{featuredRoute}}" catchtap="openGuide" data-route-id="{{featuredRoute.id}}">
+      <template is="route-card" data="{{route: featuredRoute}}" />
+    </view>
   </view>
 
-  <!-- 8. 近期活动 -->
-  <view class="section">
+  <!-- 7. 更多发现：次要内容分组折叠收纳
+       说明：内容始终渲染，仅用包裹层 height 过渡实现平滑展开/收起；
+       避免 wx:if 销毁重建导致的突变与退出动画缺失。 -->
+  <view class="section more-section">
     <view class="section-head">
-      <view class="section-title">近期活动</view>
-      <view class="section-more ui-press" bindtap="openActivity">更多活动<view class="ui-icon ui-icon-arrow ui-icon-sm"></view></view>
+      <view class="section-title">更多发现</view>
+      <view class="section-more ui-press" bindtap="toggleMore">{{showMore ? '收起' : '展开全部'}}<view class="ui-icon ui-icon-up ui-icon-sm fold-arrow {{showMore ? 'fold-arrow-open' : ''}}"></view></view>
     </view>
-    <block wx:for="{{hotActivities}}" wx:key="id">
-      <view class="card card-tap-fb" bindtap="openActivity">
-        <template is="activity-card" data="{{activity: item}}" />
-      </view>
-    </block>
-  </view>
 
-  <!-- 9. 景点地图 -->
-  <view class="section">
-    <view class="section-head">
-      <view class="section-title">景点地图</view>
+    <!-- 收起态：分类快捷入口 -->
+    <view class="fold-wrap" style="height: {{foldHeight.teaser}}">
+      <view class="fold-inner" id="fold-inner-teaser">
+        <view class="more-teaser">
+          <view class="teaser-item ui-press" bindtap="openMoreGroup" data-group="culture">文化时间轴</view>
+          <view class="teaser-item ui-press" bindtap="openMoreGroup" data-group="activity">近期活动</view>
+          <view class="teaser-item ui-press" bindtap="openMoreGroup" data-group="map">景点地图</view>
+        </view>
+      </view>
     </view>
-    <view class="card map-card">
-      <map
-        class="home-map"
-        latitude="23.461"
-        longitude="116.780"
-        scale="15"
-        markers="{{mapMarkers}}"
-        bindmarkertap="onMarkerTap"
-      />
+
+    <!-- 展开态：分组卡片 -->
+    <view class="fold-wrap" style="height: {{foldHeight.more}}">
+      <view class="fold-inner" id="fold-inner-more">
+        <view class="more-groups">
+          <!-- 分组卡片：文化时间轴 -->
+          <view class="more-group">
+            <view class="more-group-head" bindtap="toggleGroup" data-group="culture">
+              <view class="more-group-icon"><view class="ui-icon ui-icon-book ui-icon-lg"></view></view>
+              <view class="more-group-copy">
+                <view class="more-group-title">海丝文化时间轴</view>
+                <view class="more-group-sub">七百年变迁 · 从开港通商到数字文旅</view>
+              </view>
+              <view class="ui-icon ui-icon-up ui-icon-sm fold-arrow {{expandedGroups.culture ? 'fold-arrow-open' : ''}}"></view>
+            </view>
+            <view class="fold-wrap" style="height: {{foldHeight.culture}}">
+              <view class="fold-inner" id="fold-inner-culture">
+                <view class="more-group-body">
+                  <scroll-view class="timeline-scroll" scroll-x="{{true}}" show-scrollbar="{{false}}">
+                    <view class="timeline-row">
+                      <block wx:for="{{cultureTimeline}}" wx:key="year">
+                        <view class="timeline-node">
+                          <view class="timeline-dot"></view>
+                          <view class="timeline-year">{{item.year}}</view>
+                          <view class="timeline-event">{{item.event}}</view>
+                        </view>
+                      </block>
+                    </view>
+                  </scroll-view>
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <!-- 分组卡片：近期活动 -->
+          <view class="more-group">
+            <view class="more-group-head" bindtap="toggleGroup" data-group="activity">
+              <view class="more-group-icon"><view class="ui-icon ui-icon-calendar ui-icon-lg"></view></view>
+              <view class="more-group-copy">
+                <view class="more-group-title">近期活动</view>
+                <view class="more-group-sub">讲解专场 · 夜游体验 · 亲子研学</view>
+              </view>
+              <view class="ui-icon ui-icon-up ui-icon-sm fold-arrow {{expandedGroups.activity ? 'fold-arrow-open' : ''}}"></view>
+            </view>
+            <view class="fold-wrap" style="height: {{foldHeight.activity}}">
+              <view class="fold-inner" id="fold-inner-activity">
+                <view class="more-group-body">
+                  <view class="more-group-action ui-press" bindtap="openActivity">查看全部活动<view class="ui-icon ui-icon-arrow ui-icon-sm"></view></view>
+                  <block wx:for="{{hotActivities}}" wx:key="id">
+                    <view class="card card-tap-fb" bindtap="openActivity">
+                      <template is="activity-card" data="{{activity: item}}" />
+                    </view>
+                  </block>
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <!-- 分组卡片：景点地图 -->
+          <view class="more-group">
+            <view class="more-group-head" bindtap="toggleGroup" data-group="map">
+              <view class="more-group-icon"><view class="ui-icon ui-icon-pin ui-icon-lg"></view></view>
+              <view class="more-group-copy">
+                <view class="more-group-title">景点地图</view>
+                <view class="more-group-sub">古港核心区点位分布</view>
+              </view>
+              <view class="ui-icon ui-icon-up ui-icon-sm fold-arrow {{expandedGroups.map ? 'fold-arrow-open' : ''}}"></view>
+            </view>
+            <view class="fold-wrap" style="height: {{foldHeight.map}}">
+              <view class="fold-inner" id="fold-inner-map">
+                <view class="more-group-body">
+                  <view class="card map-card">
+                    <map
+                      class="home-map"
+                      latitude="23.461"
+                      longitude="116.780"
+                      scale="15"
+                      markers="{{mapMarkers}}"
+                      bindmarkertap="onMarkerTap"
+                    />
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
     </view>
   </view>
 
