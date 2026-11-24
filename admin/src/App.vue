@@ -30,6 +30,10 @@
           <el-icon><component :is="icons.TrendCharts" /></el-icon>
           <span>数据统计</span>
         </el-menu-item>
+        <el-menu-item index="/comments">
+          <el-icon><component :is="icons.ChatDot" /></el-icon>
+          <span>评论管理</span>
+        </el-menu-item>
         <el-menu-item index="/settings/ai-keys">
           <el-icon><component :is="icons.Setting" /></el-icon>
           <span>AI 密钥设置</span>
@@ -64,7 +68,8 @@ import {
   Calendar,
   User,
   TrendCharts,
-  Setting
+  Setting,
+  ChatDotRound
 } from '@element-plus/icons-vue'
 import { authApi } from './api'
 
@@ -77,7 +82,8 @@ const icons = {
   Calendar,
   User,
   TrendCharts,
-  Setting
+  Setting,
+  ChatDot: ChatDotRound
 }
 
 const handleMenuSelect = (key) => {

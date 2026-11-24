@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "comments": [
+    {
+      "id": "seed-story-tea",
+      "targetType": "story",
+      "targetId": "specialty-01",
+      "targetName": "潮汕工夫茶",
+      "nickname": "茶香客",
+      "content": "在古港喝一杯工夫茶，才算真正来过樟林。茶汤回甘，老街的慢节奏让人舍不得走。",
+      "rating": 5,
+      "images": [],
+      "createdAt": "2026-11-20T09:30:00.000Z",
+      "status": "active"
+    },
+    {
+      "id": "seed-spot-ship",
+      "targetType": "spot",
+      "targetId": "ship-museum",
+      "targetName": "红头船文化展示点",
+      "nickname": "古港游客",
+      "content": "红头船的历史讲解很生动，带孩子来涨了不少知识，展馆里多媒体互动也做得很用心。",
+      "rating": 5,
+      "images": [],
+      "createdAt": "2026-11-21T13:15:00.000Z",
+      "status": "active"
+    },
+    {
+      "id": "seed-spot-street",
+      "targetType": "spot",
+      "targetId": "qiaoxiang-street",
+      "targetName": "新兴街古商业街",
+      "nickname": "行走的相机",
+      "content": "骑楼建筑很有味道，傍晚光线打在老墙上特别出片。街边小吃也值得慢慢逛。",
+      "rating": 4,
+      "images": [],
+      "createdAt": "2026-11-22T07:45:00.000Z",
+      "status": "active"
+    }
+  ]
+}

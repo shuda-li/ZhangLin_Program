@@ -1,0 +1,38 @@
+<view class="cb">
+  <view class="cb-head">
+    <view class="cb-title">评论 <text class="cb-count">{{comments.length}}</text></view>
+    <view class="cb-toggle ui-press" bindtap="toggleForm">
+      <view class="ui-icon {{expanded ? 'ui-icon-close' : 'ui-icon-chat'}} ui-icon-sm"></view>
+      <text>{{expanded ? '收起' : '写评论'}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{expanded}}" class="cb-form">
+    <input class="cb-nick" placeholder="你的称呼（选填）" value="{{nickname}}" bindinput="onNick" maxlength="30" />
+    <view wx:if="{{showRating}}" class="cb-stars">
+      <text
+        wx:for="{{[1,2,3,4,5]}}"
+        wx:key="*this"
+        class="cb-star {{rating >= item ? 'active' : ''}}"
+        bindtap="setRating"
+        data-rating="{{item}}"
+      >{{rating >= item ? '★' : '☆'}}</text>
+    </view>
+    <textarea class="cb-input" placeholder="说说你的想法（最多500字）" maxlength="500" value="{{content}}" bindinput="onContent" />
+    <view class="cb-submit ui-press {{content ? 'active' : ''}}" bindtap="submit">{{submitting ? '发表中...' : '发表评论'}}</view>
+  </view>
+
+  <view wx:if="{{loaded && comments.length === 0}}" class="cb-empty">还没有评论，来留下第一条吧</view>
+
+  <view wx:for="{{comments}}" wx:key="id" class="cb-item">
+    <view class="cb-avatar"><view class="ui-icon ui-icon-user ui-icon-sm"></view></view>
+    <view class="cb-main">
+      <view class="cb-meta">
+        <text class="cb-nickname">{{item.nickname}}</text>
+        <text class="cb-time">{{item.timeText}}</text>
+      </view>
+      <view wx:if="{{showRating && item.rating}}" class="cb-stars-static">{{item.starsText}}</view>
+      <view class="cb-content">{{item.content}}</view>
+    </view>
+  </view>
+</view>

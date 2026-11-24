@@ -72,6 +72,11 @@
       </view>
     </view>
     <view class="route-description">{{activeRoute.description}}</view>
+    <view class="route-comments-entry ui-press" bindtap="scrollToRouteComments">
+      <view class="ui-icon ui-icon-chat ui-icon-sm"></view>
+      <text>查看这条路线的讨论</text>
+      <view class="entry-arrow"></view>
+    </view>
   </view>
 
   <view class="card voice-card card-tap-fb" bindtap="startVoiceGuide">
@@ -158,25 +163,18 @@
       </view>
     </block>
   </view>
-  </view>
 
-  <view class="stop-detail-mask {{showStopDetail ? 'show' : ''}}" bindtap="closeStopDetail"></view>
-  <view class="stop-detail-panel {{showStopDetail ? 'show' : ''}}">
-    <view class="panel-handle"></view>
-    <view class="panel-header">
-      <view class="panel-stop-num">{{currentStopIndex + 1}}</view>
-      <view class="panel-stop-info">
-        <view class="panel-stop-time">{{detailStop.time}}</view>
-        <view class="panel-stop-title">{{detailStop.title}}</view>
-      </view>
+  <view class="section-spacing" id="routeComments">
+    <view class="section-title">路线讨论</view>
+    <view class="card route-comments-card">
+      <view class="route-comments-subtitle">当前路线 · {{activeRoute.name}}</view>
+      <comment-board
+        target-type="route"
+        target-id="{{activeRouteId}}"
+        target-name="{{activeRoute.name}}"
+      />
     </view>
-    <scroll-view scroll-y class="panel-content">
-      <view class="panel-stop-detail">{{detailStop.detail}}</view>
-    </scroll-view>
-    <view class="panel-actions">
-      <view class="panel-btn ui-press" bindtap="startVoiceGuide">语音讲解</view>
-      <view class="panel-btn primary" bindtap="closeStopDetail">导航到这里</view>
-    </view>
+  </view>
   </view>
 
   <view class="ai-chat-btn ui-press" bindtap="openAiChat">
@@ -186,5 +184,40 @@
 
   <view class="back-top {{showBackTop ? 'back-top-show' : ''}}" bindtap="scrollToTop">
     <view class="ui-icon ui-icon-up"></view>
+  </view>
+</view>
+
+<!-- 站点详情弹层：置于 .page 之外，避免祖先 transform 使 fixed 相对页面定位 -->
+<view class="stop-detail-mask {{showStopDetail ? 'show' : ''}}" bindtap="closeStopDetail"></view>
+<view class="stop-detail-panel {{showStopDetail ? 'show' : ''}} {{stopExpanded ? 'expanded' : ''}} {{stopDragging ? 'dragging' : ''}} {{stopSnapping ? 'snapping' : ''}}"
+      style="height:{{stopPanelHeight}}px;">
+  <view class="panel-handle-area"
+        bindtouchstart="onStopTouchStart"
+        catchtouchmove="onStopTouchMove"
+        bindtouchend="onStopTouchEnd"
+        bindtouchcancel="onStopTouchEnd">
+    <view class="panel-handle"></view>
+  </view>
+  <view class="panel-header">
+    <view class="panel-stop-num">{{currentStopIndex + 1}}</view>
+    <view class="panel-stop-info">
+      <view class="panel-stop-time">{{detailStop.time}}</view>
+      <view class="panel-stop-title">{{detailStop.title}}</view>
+    </view>
+    <view class="panel-close ui-press" catchtap="closeStopDetail"><view class="ui-icon ui-icon-close ui-icon-sm"></view></view>
+  </view>
+  <scroll-view scroll-y class="panel-content">
+    <view class="panel-stop-detail">{{detailStop.detail}}</view>
+    <view class="panel-comments" wx:if="{{showStopDetail && stopCommentId}}">
+      <comment-board
+        target-type="spot"
+        target-id="{{stopCommentId}}"
+        target-name="{{detailStop.title}}"
+      />
+    </view>
+  </scroll-view>
+  <view class="panel-actions">
+    <view class="panel-btn ui-press" bindtap="startVoiceGuide">语音讲解</view>
+    <view class="panel-btn primary" bindtap="closeStopDetail">导航到这里</view>
   </view>
 </view>

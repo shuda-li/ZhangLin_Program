@@ -89,23 +89,6 @@
   </block>
 </view>
 
-  <view class="story-mask {{showStory ? 'show' : ''}}" bindtap="closeStory"></view>
-  <view class="story-panel {{showStory ? 'show' : ''}}">
-    <view class="story-panel-handle"></view>
-    <view class="story-panel-header">
-      <view class="story-panel-title">{{storyItem.name}}</view>
-      <view class="story-panel-close ui-press" catchtap="closeStory"><view class="ui-icon ui-icon-close ui-icon-sm"></view></view>
-    </view>
-    <view class="story-panel-scroll">
-      <image class="story-panel-img" wx:if="{{storyItem.image}}" src="{{storyItem.image}}" mode="aspectFill" catchtap="previewImage" data-src="{{storyItem.image}}" />
-      <view class="story-panel-body">{{storyItem.story}}</view>
-      <view class="story-panel-footer">
-        <text>推荐时间：{{storyItem.bestTime}}</text>
-        <text>热度：{{storyItem.crowdLevel}}</text>
-      </view>
-    </view>
-  </view>
-
   <view class="page-footer">
     <view class="footer-line"></view>
     <view class="footer-text">潮味 · 侨韵 · 古港风物</view>
@@ -115,4 +98,35 @@
   <view class="back-top {{showBackTop ? 'back-top-show' : ''}}" bindtap="scrollToTop">
     <text class="back-top-icon">^</text>
   </view>
+</view>
+
+<!-- 风物故事底部弹层：置于 .page 之外，避免祖先 transform 使 fixed 相对页面定位 -->
+<view class="story-mask {{showStory ? 'show' : ''}}" bindtap="closeStory"></view>
+<view class="story-panel {{showStory ? 'show' : ''}} {{storyExpanded ? 'expanded' : ''}} {{storyDragging ? 'dragging' : ''}} {{storySnapping ? 'snapping' : ''}}"
+      style="height:{{storyPanelHeight}}px;">
+  <view class="story-handle-area"
+        bindtouchstart="onStoryTouchStart"
+        catchtouchmove="onStoryTouchMove"
+        bindtouchend="onStoryTouchEnd"
+        bindtouchcancel="onStoryTouchEnd">
+    <view class="story-panel-handle"></view>
+  </view>
+  <view class="story-panel-header">
+    <view class="story-panel-title">{{storyItem.name}}</view>
+    <view class="story-panel-close ui-press" catchtap="closeStory"><view class="ui-icon ui-icon-close ui-icon-sm"></view></view>
+  </view>
+  <scroll-view scroll-y class="story-panel-scroll">
+    <image class="story-panel-img" wx:if="{{storyItem.image}}" src="{{storyItem.image}}" mode="aspectFill" catchtap="previewImage" data-src="{{storyItem.image}}" />
+    <view class="story-panel-body">{{storyItem.story}}</view>
+    <view class="story-panel-footer">
+      <text>推荐时间：{{storyItem.bestTime}}</text>
+      <text>热度：{{storyItem.crowdLevel}}</text>
+    </view>
+    <comment-board
+      wx:if="{{showStory && storyItem}}"
+      target-type="story"
+      target-id="{{storyItem.id}}"
+      target-name="{{storyItem.name}}"
+    />
+  </scroll-view>
 </view>

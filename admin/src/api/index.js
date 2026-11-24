@@ -76,6 +76,13 @@ export const statsApi = {
   daily: () => api.get('/stats/daily')
 }
 
+export const commentApi = {
+  list: (params) => api.get('/comments/admin/list', { params }),
+  stats: () => api.get('/comments/admin/stats'),
+  setStatus: (id, status) => api.put(`/comments/admin/${id}/status`, { status }),
+  remove: (id) => api.delete(`/comments/admin/${id}`)
+}
+
 export const settingsApi = {
   getAiKeys: () => api.get('/settings/ai-keys'),
   updateAiKeys: (data) => api.put('/settings/ai-keys', data),

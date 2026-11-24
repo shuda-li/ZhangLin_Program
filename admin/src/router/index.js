@@ -9,6 +9,7 @@ import UserList from '../views/UserList.vue'
 import UserForm from '../views/UserForm.vue'
 import Stats from '../views/Stats.vue'
 import AISettings from '../views/AISettings.vue'
+import CommentList from '../views/CommentList.vue'
 
 const routes = [
   {
@@ -75,6 +76,11 @@ const routes = [
     path: '/settings/ai-keys',
     name: 'AISettings',
     component: AISettings
+  },
+  {
+    path: '/comments',
+    name: 'CommentList',
+    component: CommentList
   }
 ]
 

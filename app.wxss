@@ -650,14 +650,26 @@ image { background: #ebe5d9; }
 .ui-icon-close::before { transform: rotate(45deg); }
 .ui-icon-close::after { transform: rotate(-45deg); }
 
-/* 点赞 / 心形 */
+/* 点赞 / 标准心形：两个圆角半体在底部内侧相接，按比例缩放，适配任意图标尺寸 */
+.ui-icon-heart::before,
+.ui-icon-heart::after {
+  content: '';
+  position: absolute;
+  top: 10%;
+  width: 46%;
+  height: 68%;
+  border-radius: 50% 50% 0 0;
+  background: currentColor;
+}
 .ui-icon-heart::before {
-  left: 9rpx; top: 17rpx; width: 18rpx; height: 18rpx;
-  background: currentColor; border-radius: 3rpx; transform: rotate(45deg);
+  left: 50%;
+  transform: rotate(-45deg);
+  transform-origin: 0 100%;
 }
 .ui-icon-heart::after {
-  left: 9rpx; top: 11rpx; width: 9rpx; height: 9rpx;
-  border-radius: 50%; background: currentColor; box-shadow: 9rpx 0 0 currentColor;
+  left: 4%;
+  transform: rotate(45deg);
+  transform-origin: 100% 100%;
 }
 
 /* 用户 */

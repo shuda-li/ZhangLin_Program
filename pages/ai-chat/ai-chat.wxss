@@ -6,41 +6,56 @@
 }
 
 .chat-header {
-  display: flex;
+  display: grid;
+  grid-template-columns: 80rpx 1fr 80rpx;
   align-items: center;
-  justify-content: space-between;
-  padding: 24rpx 32rpx;
+  padding: 20rpx 28rpx;
   background: #fff;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2rpx 12rpx rgba(60, 30, 10, 0.06);
   position: sticky;
   top: 0;
   z-index: 100;
 }
 
-.header-left, .header-right {
-  width: 80rpx;
+.header-left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 
-.back-icon {
-  font-size: 48rpx;
-  font-weight: 300;
-  color: #333;
+.header-right { width: 80rpx; }
+
+.back-arrow {
+  transform: rotate(-45deg);
+  color: #8b3a1a;
+  transition: transform 0.2s ease;
 }
+.header-left:active .back-arrow { transform: rotate(-45deg) scale(0.86); }
 
 .header-center {
   display: flex;
   align-items: center;
-  gap: 16rpx;
+  justify-content: center;
+  gap: 14rpx;
 }
 
 .chat-avatar {
-  font-size: 40rpx;
+  width: 60rpx;
+  height: 60rpx;
+  flex: 0 0 60rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #b86a3a, #8b3a1a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 12rpx rgba(139, 58, 26, 0.2);
 }
 
 .chat-title {
   font-size: 32rpx;
   font-weight: 600;
-  color: #2a2a2a;
+  color: #3c2b23;
+  letter-spacing: 1rpx;
 }
 
 .messages-container {
@@ -60,24 +75,24 @@
 }
 
 .message-avatar {
-  width: 64rpx;
-  height: 64rpx;
+  width: 72rpx;
+  height: 72rpx;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32rpx;
   flex-shrink: 0;
+  box-shadow: 0 4rpx 12rpx rgba(60, 30, 10, 0.1);
 }
 
 .ai-wrapper .message-avatar {
   background: linear-gradient(135deg, #d4a574 0%, #c89050 100%);
-  margin-right: 20rpx;
+  margin-right: 18rpx;
 }
 
 .user-wrapper .message-avatar {
-  background: linear-gradient(135deg, #74a5d4 0%, #5080c8 100%);
-  margin-left: 20rpx;
+  background: linear-gradient(135deg, #b86a3a 0%, #8b3a1a 100%);
+  margin-left: 18rpx;
 }
 
 .message-bubble {
@@ -97,7 +112,7 @@
 }
 
 .user-bubble {
-  background: linear-gradient(135deg, #d4a574 0%, #c89050 100%);
+  background: linear-gradient(135deg, #b86a3a 0%, #8b3a1a 100%);
   color: #fff;
   border-bottom-right-radius: 8rpx;
 }
@@ -112,7 +127,7 @@
   width: 12rpx;
   height: 12rpx;
   border-radius: 50%;
-  background: #d4a574;
+  background: #c89050;
   animation: dotPulse 1.4s infinite;
 }
 
@@ -158,21 +173,21 @@
   background: #fff;
   border-radius: 48rpx;
   font-size: 26rpx;
-  color: #c89050;
-  border: 2rpx solid #f0e0c8;
-  transition: all 0.3s;
+  color: #b26a1e;
+  border: 2rpx solid rgba(178, 106, 30, 0.18);
+  transition: all 0.25s ease;
 }
 
 .quick-item:active {
-  background: #f0e0c8;
-  transform: scale(0.98);
+  background: #f7ecdd;
+  transform: scale(0.97);
 }
 
 .input-container {
-  padding: 24rpx 32rpx;
+  padding: 24rpx 32rpx calc(24rpx + env(safe-area-inset-bottom));
   background: #fff;
-  border-top: 2rpx solid #f0f0f0;
-  box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.04);
+  border-top: 2rpx solid #f0e0d4;
+  box-shadow: 0 -4rpx 16rpx rgba(60, 30, 10, 0.04);
 }
 
 .input-wrapper {
@@ -192,28 +207,23 @@
 }
 
 .send-btn {
-  width: 64rpx;
-  height: 64rpx;
+  width: 72rpx;
+  height: 72rpx;
+  flex: 0 0 72rpx;
   border-radius: 50%;
   background: #ddd;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
 }
 
 .send-btn.active {
-  background: linear-gradient(135deg, #d4a574 0%, #c89050 100%);
-  box-shadow: 0 4rpx 12rpx rgba(200, 144, 80, 0.4);
+  background: linear-gradient(135deg, #8b3a1a 0%, #b86a3a 100%);
+  box-shadow: 0 4rpx 12rpx rgba(139, 58, 26, 0.35);
 }
 
-.send-icon {
-  color: #fff;
-  font-size: 32rpx;
-  font-weight: 600;
-}
-
-/* 统一线性图标适配 */
-.chat-avatar.ui-icon { color: #fff; }
-.message-avatar .ui-icon { color: #fff; }
-.send-btn .send-icon.ui-icon { color: #fff; }
+/* 统一线性图标适配：图标统一使用 36rpx 基准，伪元素坐标才不会偏移 */
+.chat-avatar .ui-icon,
+.message-avatar .ui-icon,
+.send-btn .send-icon { color: #fff; }

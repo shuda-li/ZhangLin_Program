@@ -1,10 +1,18 @@
 const { scenicSpots } = require('../../data/site');
 const dataService = require('../../utils/data-service');
+const commentService = require('../../utils/comment-service');
 const {
   addRecentSpot, isFavoriteSpot, toggleFavoriteSpot,
-  toggleLikeSpot, isLikedSpot,
-  addReview, getReviews
+  toggleLikeSpot, isLikedSpot
 } = require('../../utils/storage');
+
+function decorateReviews(rawReviews) {
+  return rawReviews.map(r => ({
+    ...r,
+    starsText: '★★★★★'.slice(0, r.rating) + '☆☆☆☆☆'.slice(0, 5 - r.rating),
+    timeText: (r.createdAt || '').slice(0, 10)
+  }));
+}
 
 Page({
   data: {
@@ -27,25 +35,28 @@ Page({
     reviewRating: 5,
     reviewContent: '',
     reviewImages: [],
-    submittingReview: false
+    submittingReview: false,
+    // 评价面板（bottom sheet）
+    panelHeight: 0,        // 当前高度(px)，随拖拽变化
+    panelBottomPad: 0,     // 底部安全区(px)
+    panelExpanded: false,  // 是否已展开为全屏
+    panelDragging: false,  // 是否正在拖拽
+    panelSnapping: false   // 松手吸附中（启用高度过渡）
   },
 
   onLoad(options) {
     const scenicSpot = (scenicSpots || []).find((item) => item.id === options.id) || scenicSpots[0];
     addRecentSpot(scenicSpot);
-    const rawReviews = getReviews(scenicSpot.id);
-    const reviews = rawReviews.map(r => ({
-      ...r,
-      starsText: '★★★★★'.slice(0, r.rating) + '☆☆☆☆☆'.slice(0, 5 - r.rating),
-      timeText: (r.createdAt || '').slice(0, 10)
-    }));
     this.setData({
       scenicSpot,
       gallery: scenicSpot.gallery || [scenicSpot.image],
       isFavorite: isFavoriteSpot(scenicSpot.id),
       isLiked: isLikedSpot(scenicSpot.id),
-      reviews,
+      reviews: [],
       durationText: scenicSpot.audioMeta ? scenicSpot.audioMeta.duration : '00:00'
+    });
+    commentService.list('spot', scenicSpot.id).then(reviews => {
+      this.setData({ reviews: decorateReviews(reviews) });
     });
     wx.setNavigationBarTitle({ title: scenicSpot.name });
     this._spotId = scenicSpot.id;
@@ -79,7 +90,11 @@ Page({
     return { title: `樟林古港 — ${name}`, path: `/pages/scenic-detail/scenic-detail?id=${this.data.scenicSpot ? this.data.scenicSpot.id : ''}` };
   },
 
-  onUnload() { this.clearAudioTimer(); this.destroyAudio(); },
+  onUnload() {
+    this.clearAudioTimer();
+    this.destroyAudio();
+    if (this._snapTimer) { clearTimeout(this._snapTimer); this._snapTimer = null; }
+  },
   clearAudioTimer() { if (this.audioTimer) { clearInterval(this.audioTimer); this.audioTimer = null; } },
   destroyAudio() { if (this.innerAudioContext) { this.innerAudioContext.destroy(); this.innerAudioContext = null; } },
 
@@ -92,11 +107,111 @@ Page({
   },
 
   // ═══ 评价 ═══
+  // 依据可视区计算面板尺寸（半屏 / 全屏 / 底部安全区），与页面滚动位置无关
+  computePanelMetrics() {
+    let windowHeight = 0;
+    let safeBottom = 0;
+    try {
+      const sys = wx.getSystemInfoSync();
+      windowHeight = sys.windowHeight || 0;
+      if (sys.safeArea && typeof sys.screenHeight === 'number') {
+        safeBottom = Math.max(0, Math.round(sys.screenHeight - sys.safeArea.bottom));
+      }
+    } catch (e) {
+      windowHeight = 0;
+    }
+    if (!windowHeight) windowHeight = 667; // 极旧环境兜底
+    const full = windowHeight;
+    const half = Math.max(280, Math.round(windowHeight * 0.72));
+    this._panelMetrics = { half, full };
+    return { half, full, safeBottom };
+  },
   openReview() {
-    this.setData({ showReviewPanel: true, reviewRating: 5, reviewContent: '', reviewImages: [] });
+    const m = this.computePanelMetrics();
+    // 单次 setData，避免高度从 0 跳变造成闪烁
+    this.setData({
+      showReviewPanel: true,
+      panelHeight: m.half,
+      panelBottomPad: m.safeBottom,
+      panelExpanded: false,
+      panelDragging: false,
+      panelSnapping: false,
+      reviewRating: 5,
+      reviewContent: '',
+      reviewImages: []
+    });
   },
   closeReview() {
-    this.setData({ showReviewPanel: false });
+    if (this._snapTimer) { clearTimeout(this._snapTimer); this._snapTimer = null; }
+    this.setData({ showReviewPanel: false, panelDragging: false, panelSnapping: false });
+  },
+  // 视口尺寸变化（横竖屏 / 分屏）时按当前展开状态重算
+  onResize() {
+    if (!this.data.showReviewPanel) return;
+    const m = this.computePanelMetrics();
+    this.setData({
+      panelBottomPad: m.safeBottom,
+      panelHeight: this.data.panelExpanded ? m.full : m.half
+    });
+  },
+  onHandleTouchStart(e) {
+    const t = (e.touches && e.touches[0]) || {};
+    this._dragStartY = t.clientY || 0;
+    this._dragStartHeight = this.data.panelHeight;
+    this._dragLastY = this._dragStartY;
+    this._dragLastTime = Date.now();
+    this._dragVelocity = 0;
+    if (this._snapTimer) { clearTimeout(this._snapTimer); this._snapTimer = null; }
+    this.setData({ panelDragging: true, panelSnapping: false });
+  },
+  onHandleTouchMove(e) {
+    if (!this.data.panelDragging || !this._panelMetrics) return;
+    const t = (e.touches && e.touches[0]) || {};
+    const y = t.clientY || 0;
+    const { half, full } = this._panelMetrics;
+    // 向上拖动 clientY 变小 => delta 为正 => 面板变高
+    const delta = this._dragStartY - y;
+    let h = this._dragStartHeight + delta;
+    // 上限全屏；下限允许拖到半屏的 55%，用于下滑关闭
+    h = Math.max(half * 0.55, Math.min(h, full));
+    const now = Date.now();
+    const dt = Math.max(1, now - this._dragLastTime);
+    this._dragVelocity = (this._dragLastY - y) / dt; // px/ms，正数表示向上
+    this._dragLastY = y;
+    this._dragLastTime = now;
+    this.setData({ panelHeight: Math.round(h) });
+  },
+  onHandleTouchEnd() {
+    if (!this.data.panelDragging || !this._panelMetrics) return;
+    this.setData({ panelDragging: false });
+    const { half, full } = this._panelMetrics;
+    const cur = this.data.panelHeight;
+    const v = this._dragVelocity || 0;
+    const expandLine = half + (full - half) * 0.4;
+    let height, expanded;
+    if (v > 0.3 || cur >= expandLine) {
+      // 向上滑或越过阈值：展开全屏
+      height = full; expanded = true;
+    } else if (v < -0.3 || cur <= half * 0.62) {
+      // 向下滑：全屏先回到半屏；半屏则关闭
+      if (this.data.panelExpanded) {
+        height = half; expanded = false;
+      } else {
+        this.closeReview();
+        return;
+      }
+    } else if (this.data.panelExpanded) {
+      height = full; expanded = true;
+    } else {
+      height = half; expanded = false;
+    }
+    // 松手后启用高度过渡，平滑吸附到目标状态
+    this.setData({ panelHeight: height, panelExpanded: expanded, panelSnapping: true });
+    if (this._snapTimer) clearTimeout(this._snapTimer);
+    this._snapTimer = setTimeout(() => {
+      this.setData({ panelSnapping: false });
+      this._snapTimer = null;
+    }, 340);
   },
   // 阻止点击面板内部时冒泡关闭面板（wxml catchtap="dummy"）
   dummy() {},
@@ -128,24 +243,23 @@ Page({
     if (!this.data.reviewContent.trim()) { wx.showToast({ title: '请输入评价内容', icon: 'none' }); return; }
     if (this.data.submittingReview) return;
     this.setData({ submittingReview: true });
-    try {
-      const raw = addReview(this.data.scenicSpot.id, {
-        nickname: '古港游客',
-        rating: this.data.reviewRating,
-        content: this.data.reviewContent.trim(),
-        images: this.data.reviewImages
-      });
-      const reviews = raw.map(r => ({
-        ...r,
-        starsText: '★★★★★'.slice(0, r.rating) + '☆☆☆☆☆'.slice(0, 5 - r.rating),
-        timeText: (r.createdAt || '').slice(0, 10)
-      }));
-      this.setData({ reviews, showReviewPanel: false, submittingReview: false });
+    commentService.add({
+      targetType: 'spot',
+      targetId: this.data.scenicSpot.id,
+      targetName: this.data.scenicSpot.name,
+      nickname: '古港游客',
+      rating: this.data.reviewRating,
+      content: this.data.reviewContent.trim(),
+      images: this.data.reviewImages
+    }).then(() => {
+      return commentService.list('spot', this.data.scenicSpot.id);
+    }).then(reviews => {
+      this.setData({ reviews: decorateReviews(reviews), showReviewPanel: false, submittingReview: false });
       wx.showToast({ title: '评价成功', icon: 'success' });
-    } catch (e) {
+    }).catch(() => {
       this.setData({ submittingReview: false });
       wx.showToast({ title: '评价失败', icon: 'none' });
-    }
+    });
   },
 
   // ═══ 音频 ═══

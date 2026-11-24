@@ -34,6 +34,10 @@ Page({
     todayPicks: ['蚝烙与古港小吃', '潮汕工夫茶体验', '潮式点心与古港茶配'],
     showStory: false,
     storyItem: null,
+    storyPanelHeight: 0,
+    storyExpanded: false,
+    storyDragging: false,
+    storySnapping: false,
     bannerOffset: 0,
     showBackTop: false
   },
@@ -46,16 +50,103 @@ Page({
     this.setData({ activeCategory: category, visibleItems: visibleItems, showStory: false });
   },
 
+  // 面板尺寸基于可视区计算，与页面滚动位置无关
+  computeStoryMetrics() {
+    var windowHeight = 0;
+    try {
+      var sys = wx.getSystemInfoSync();
+      windowHeight = sys.windowHeight || 0;
+    } catch (e) {
+      windowHeight = 0;
+    }
+    if (!windowHeight) windowHeight = 667;
+    var full = windowHeight;
+    var half = Math.max(280, Math.round(windowHeight * 0.72));
+    this._storyMetrics = { half: half, full: full };
+    return { half: half, full: full };
+  },
+
   openStory(event) {
     var id = event.currentTarget.dataset.id;
     var item = this.data.specialtyItems.find(function(i) { return i.id === id; });
     if (item) {
-      this.setData({ showStory: true, storyItem: item });
+      var m = this.computeStoryMetrics();
+      // 一次 setData 让高度直接就位，只保留上滑动画，避免先变高再升起的抖动
+      this.setData({
+        showStory: true,
+        storyItem: item,
+        storyPanelHeight: m.half,
+        storyExpanded: false,
+        storyDragging: false,
+        storySnapping: false
+      });
     }
   },
 
   closeStory() {
-    this.setData({ showStory: false, storyItem: null });
+    if (this._storySnapTimer) { clearTimeout(this._storySnapTimer); this._storySnapTimer = null; }
+    this.setData({ showStory: false, storyItem: null, storyDragging: false, storySnapping: false });
+  },
+
+  onStoryTouchStart(e) {
+    var t = (e.touches && e.touches[0]) || {};
+    this._storyStartY = t.clientY || 0;
+    this._storyStartH = this.data.storyPanelHeight;
+    if (this._storySnapTimer) { clearTimeout(this._storySnapTimer); this._storySnapTimer = null; }
+    this.setData({ storyDragging: true, storySnapping: false });
+  },
+
+  onStoryTouchMove(e) {
+    if (!this.data.storyDragging || !this._storyMetrics) return;
+    var t = (e.touches && e.touches[0]) || {};
+    var m = this._storyMetrics;
+    var h = this._storyStartH + (this._storyStartY - (t.clientY || 0));
+    h = Math.max(m.half * 0.62, Math.min(h, m.full));
+    this.setData({ storyPanelHeight: Math.round(h) });
+  },
+
+  onStoryTouchEnd() {
+    if (!this.data.storyDragging || !this._storyMetrics) return;
+    var m = this._storyMetrics;
+    var cur = this.data.storyPanelHeight;
+    var expandLine = m.half + (m.full - m.half) * 0.4;
+    var height, expanded;
+    if (cur >= expandLine) {
+      height = m.full; expanded = true;
+    } else if (cur <= m.half * 0.7) {
+      if (this.data.storyExpanded) {
+        height = m.half; expanded = false;
+      } else {
+        this.closeStory();
+        return;
+      }
+    } else if (this.data.storyExpanded) {
+      height = m.full; expanded = true;
+    } else {
+      height = m.half; expanded = false;
+    }
+    var that = this;
+    this.setData({
+      storyDragging: false,
+      storyPanelHeight: height,
+      storyExpanded: expanded,
+      storySnapping: true
+    });
+    if (this._storySnapTimer) clearTimeout(this._storySnapTimer);
+    this._storySnapTimer = setTimeout(function () {
+      that.setData({ storySnapping: false });
+      that._storySnapTimer = null;
+    }, 320);
+  },
+
+  onResize() {
+    if (!this.data.showStory) return;
+    var m = this.computeStoryMetrics();
+    this.setData({ storyPanelHeight: this.data.storyExpanded ? m.full : m.half });
+  },
+
+  onUnload() {
+    if (this._storySnapTimer) { clearTimeout(this._storySnapTimer); this._storySnapTimer = null; }
   },
 
   previewImage(event) {

@@ -105,6 +105,11 @@ Page({
     showStopDetail: false,
     detailStop: null,
     currentStopIndex: 0,
+    stopCommentId: '',
+    stopPanelHeight: 0,
+    stopExpanded: false,
+    stopDragging: false,
+    stopSnapping: false,
     travelTips: [
       '优先选择上午时段进入古港遗址与建筑片区，步行体验更舒适。',
       '首次到访建议从红头船文化展示点开始，先建立整体文化认知。',
@@ -136,7 +141,17 @@ Page({
     var markerId = event.detail.markerId;
     var stop = this.data.activeRoute.stops[markerId];
     if (stop) {
-      this.setData({ showStopDetail: true, detailStop: stop, currentStopIndex: markerId });
+      var m = this.computeStopMetrics();
+      this.setData({
+        showStopDetail: true,
+        detailStop: stop,
+        currentStopIndex: markerId,
+        stopCommentId: this.data.activeRouteId + '-' + markerId,
+        stopPanelHeight: m.half,
+        stopExpanded: false,
+        stopDragging: false,
+        stopSnapping: false
+      });
     }
   },
 
@@ -144,12 +159,102 @@ Page({
     var index = parseInt(event.currentTarget.dataset.index);
     var stop = this.data.activeRoute.stops[index];
     if (stop) {
-      this.setData({ showStopDetail: true, detailStop: stop, currentStopIndex: index });
+      var m = this.computeStopMetrics();
+      this.setData({
+        showStopDetail: true,
+        detailStop: stop,
+        currentStopIndex: index,
+        stopCommentId: this.data.activeRouteId + '-' + index,
+        stopPanelHeight: m.half,
+        stopExpanded: false,
+        stopDragging: false,
+        stopSnapping: false
+      });
     }
   },
 
   closeStopDetail() {
-    this.setData({ showStopDetail: false, detailStop: null });
+    if (this._stopSnapTimer) { clearTimeout(this._stopSnapTimer); this._stopSnapTimer = null; }
+    this.setData({
+      showStopDetail: false,
+      detailStop: null,
+      stopCommentId: '',
+      stopDragging: false,
+      stopSnapping: false
+    });
+  },
+
+  computeStopMetrics() {
+    var windowHeight = 0;
+    try {
+      var sys = wx.getSystemInfoSync();
+      windowHeight = sys.windowHeight || 0;
+    } catch (e) {
+      windowHeight = 0;
+    }
+    if (!windowHeight) windowHeight = 667;
+    var full = windowHeight;
+    var half = Math.max(280, Math.round(windowHeight * 0.72));
+    this._stopMetrics = { half: half, full: full };
+    return { half: half, full: full };
+  },
+
+  onStopTouchStart(e) {
+    var t = (e.touches && e.touches[0]) || {};
+    this._stopStartY = t.clientY || 0;
+    this._stopStartH = this.data.stopPanelHeight;
+    if (this._stopSnapTimer) { clearTimeout(this._stopSnapTimer); this._stopSnapTimer = null; }
+    this.setData({ stopDragging: true, stopSnapping: false });
+  },
+
+  onStopTouchMove(e) {
+    if (!this.data.stopDragging || !this._stopMetrics) return;
+    var t = (e.touches && e.touches[0]) || {};
+    var m = this._stopMetrics;
+    var h = this._stopStartH + (this._stopStartY - (t.clientY || 0));
+    h = Math.max(m.half * 0.62, Math.min(h, m.full));
+    this.setData({ stopPanelHeight: Math.round(h) });
+  },
+
+  onStopTouchEnd() {
+    if (!this.data.stopDragging || !this._stopMetrics) return;
+    var m = this._stopMetrics;
+    var cur = this.data.stopPanelHeight;
+    var expandLine = m.half + (m.full - m.half) * 0.4;
+    var height, expanded;
+    if (cur >= expandLine) {
+      height = m.full; expanded = true;
+    } else if (cur <= m.half * 0.7) {
+      if (this.data.stopExpanded) {
+        height = m.half; expanded = false;
+      } else {
+        this.closeStopDetail();
+        return;
+      }
+    } else if (this.data.stopExpanded) {
+      height = m.full; expanded = true;
+    } else {
+      height = m.half; expanded = false;
+    }
+    var that = this;
+    this.setData({
+      stopDragging: false,
+      stopPanelHeight: height,
+      stopExpanded: expanded,
+      stopSnapping: true
+    });
+    if (this._stopSnapTimer) clearTimeout(this._stopSnapTimer);
+    this._stopSnapTimer = setTimeout(function () {
+      that.setData({ stopSnapping: false });
+      that._stopSnapTimer = null;
+    }, 320);
+  },
+
+  onResize() {
+    if (this.data.showStopDetail) {
+      var m = this.computeStopMetrics();
+      this.setData({ stopPanelHeight: this.data.stopExpanded ? m.full : m.half });
+    }
   },
 
   onShowLocation() {
@@ -324,7 +429,15 @@ Page({
     this.setData({ showBackTop: event.scrollTop > 400 });
   },
 
+  scrollToRouteComments() {
+    wx.pageScrollTo({ selector: '#routeComments', offset: -16, duration: 320 });
+  },
+
   scrollToTop() {
     wx.pageScrollTo({ scrollTop: 0, duration: 300 });
+  },
+
+  onUnload() {
+    if (this._stopSnapTimer) { clearTimeout(this._stopSnapTimer); this._stopSnapTimer = null; }
   }
 });

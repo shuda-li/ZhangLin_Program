@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "特色风物"
+  "navigationBarTitleText": "特色风物",
+  "usingComponents": {
+    "comment-board": "/components/comment-board/index"
+  }
 }

@@ -31,7 +31,9 @@ const statsRouter = require('./routes/stats');
 const aiRouter = require('./routes/ai');
 const contentRouter = require('./routes/content');
 const settingsRouter = require('./routes/settings');
+const commentsRouter = require('./routes/comments');
 
+app.use('/api/comments', commentsRouter);
 app.use('/api/settings', settingsRouter);
 app.use('/api/content', contentRouter);
 app.use('/api/auth', authRouter);

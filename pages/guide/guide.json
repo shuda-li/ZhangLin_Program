@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "智慧导览"
+  "navigationBarTitleText": "智慧导览",
+  "usingComponents": {
+    "comment-board": "/components/comment-board/index"
+  }
 }
