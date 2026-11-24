@@ -26,6 +26,10 @@
           <el-icon><component :is="icons.User" /></el-icon>
           <span>用户管理</span>
         </el-menu-item>
+        <el-menu-item index="/wx-users">
+          <el-icon><component :is="icons.UserFilled" /></el-icon>
+          <span>小程序用户</span>
+        </el-menu-item>
         <el-menu-item index="/stats">
           <el-icon><component :is="icons.TrendCharts" /></el-icon>
           <span>数据统计</span>
@@ -67,6 +71,7 @@ import {
   MapLocation,
   Calendar,
   User,
+  UserFilled,
   TrendCharts,
   Setting,
   ChatDotRound
@@ -81,6 +86,7 @@ const icons = {
   MapLocation,
   Calendar,
   User,
+  UserFilled,
   TrendCharts,
   Setting,
   ChatDot: ChatDotRound

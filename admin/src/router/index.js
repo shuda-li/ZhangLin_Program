@@ -10,6 +10,7 @@ import UserForm from '../views/UserForm.vue'
 import Stats from '../views/Stats.vue'
 import AISettings from '../views/AISettings.vue'
 import CommentList from '../views/CommentList.vue'
+import WxUserList from '../views/WxUserList.vue'
 
 const routes = [
   {
@@ -81,6 +82,11 @@ const routes = [
     path: '/comments',
     name: 'CommentList',
     component: CommentList
+  },
+  {
+    path: '/wx-users',
+    name: 'WxUserList',
+    component: WxUserList
   }
 ]
 

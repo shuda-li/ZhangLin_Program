@@ -76,6 +76,12 @@ export const statsApi = {
   daily: () => api.get('/stats/daily')
 }
 
+export const wxUserApi = {
+  list: (params) => api.get('/wx-users', { params }),
+  stats: () => api.get('/wx-users/stats'),
+  setStatus: (id, status) => api.put(`/wx-users/${id}/status`, { status })
+}
+
 export const commentApi = {
   list: (params) => api.get('/comments/admin/list', { params }),
   stats: () => api.get('/comments/admin/stats'),
