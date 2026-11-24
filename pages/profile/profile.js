@@ -7,6 +7,9 @@ const {
   profileAiTips
 } = require('../../data/site');
 const nav = require('../../utils/navigate');
+const auth = require('../../utils/auth');
+const api = require('../../utils/api');
+const sync = require('../../utils/sync-service');
 const {
   getActivityRegistrations,
   getFavoriteSpots,
@@ -20,6 +23,13 @@ var spotCoordMap = {
   'historic-arcade': { lat: 23.4562, lng: 116.7792, name: '侨乡古建筑群' },
   'overseas-memory': { lat: 23.4545, lng: 116.7800, name: '侨史记忆长廊' }
 };
+
+/** 云端返回的是站内相对路径，图片组件需拼成完整地址 */
+function avatarSrc(url) {
+  if (!url) return '';
+  if (/^https?:\/\//.test(url) || url.indexOf('data:') === 0) return url;
+  return api.getBaseUrl() + url;
+}
 
 function getTagClass(tag) {
   if (tag.indexOf('亲子') >= 0 || tag.indexOf('家庭') >= 0 || tag.indexOf('研学') >= 0) return 'tag-family';
@@ -193,13 +203,128 @@ Page({
     profileStats: [],
     bannerOffset: 0,
     animShimmer: false,
-    showBackTop: false
+    showBackTop: false,
+    isLoggedIn: false,
+    loginName: '游客模式',
+    loginInitial: '游',
+    loginDesc: '登录后可跨设备同步我的数据',
+    loginAvatarUrl: '',
+    profileComplete: false,
+    showProfileEditor: false,
+    draftNickname: '',
+    draftAvatar: '',
+    profileSaving: false
   },
 
   onShow() {
     this.refreshData();
+    this.refreshLoginState();
+    sync.flush();
     var self = this;
     setTimeout(function() { self.setData({ animShimmer: true }); }, 300);
+  },
+
+  refreshLoginState() {
+    var user = auth.getCachedUser();
+    var logged = auth.isLoggedIn();
+    var name = logged && user ? (user.nickname || '微信用户') : '游客模式';
+    var complete = Boolean(logged && user && (user.nickname || user.avatarUrl));
+    this.setData({
+      isLoggedIn: logged,
+      loginName: name,
+      loginInitial: name.charAt(0),
+      loginAvatarUrl: logged && user ? avatarSrc(user.avatarUrl) : '',
+      profileComplete: complete,
+      loginDesc: !logged ? '登录后可跨设备同步我的数据'
+        : (complete ? '微信账号已绑定 · 数据将同步到云端' : '点击完善头像昵称，让旅程更有温度')
+    });
+  },
+
+  openProfileEditor() {
+    if (!auth.isLoggedIn()) {
+      this.handleLogin();
+      return;
+    }
+    var user = auth.getCachedUser() || {};
+    this.setData({
+      showProfileEditor: true,
+      draftNickname: user.nickname && user.nickname !== '微信用户' ? user.nickname : '',
+      draftAvatar: avatarSrc(user.avatarUrl)
+    });
+  },
+
+  closeProfileEditor() {
+    if (this.data.profileSaving) return;
+    this.setData({ showProfileEditor: false });
+  },
+
+  noop() {},
+
+  onChooseAvatar(event) {
+    var url = event.detail && event.detail.avatarUrl;
+    if (url) this.setData({ draftAvatar: url });
+  },
+
+  onNicknameInput(event) {
+    var value = event.detail && event.detail.value;
+    if (value !== undefined) this.setData({ draftNickname: value });
+  },
+
+  saveProfile() {
+    var self = this;
+    var nickname = String(this.data.draftNickname || '').trim();
+    var avatar = this.data.draftAvatar || '';
+    if (!nickname && !avatar) {
+      wx.showToast({ title: '请选择头像或填写昵称', icon: 'none' });
+      return;
+    }
+    if (this.data.profileSaving) return;
+    this.setData({ profileSaving: true });
+    wx.showLoading({ title: '保存中', mask: true });
+
+    // 云端头像地址一定含 /uploads/avatars/；chooseAvatar 返回的是 http://tmp/ 等临时路径，需上传
+    var isLocalAvatar = Boolean(avatar) && avatar.indexOf('/uploads/avatars/') < 0;
+    var chain = isLocalAvatar
+      ? auth.uploadAvatar(avatar).then(function(result) {
+          if (!result || !result.success) throw new Error((result && result.error) || '头像上传失败');
+        })
+      : Promise.resolve();
+
+    chain.then(function() {
+      if (!nickname) return { success: true };
+      return auth.updateProfile({ nickname: nickname });
+    }).then(function(result) {
+      if (!result || !result.success) throw new Error((result && result.error) || '昵称保存失败');
+      wx.hideLoading();
+      self.setData({ profileSaving: false, showProfileEditor: false });
+      self.refreshLoginState();
+      wx.showToast({ title: '资料已保存', icon: 'success' });
+    }).catch(function(error) {
+      wx.hideLoading();
+      self.setData({ profileSaving: false });
+      wx.showToast({ title: error.message || '资料保存失败', icon: 'none', duration: 2500 });
+    });
+  },
+
+  handleLogin() {
+    var self = this;
+    wx.showLoading({ title: '正在登录', mask: true });
+    auth.silentLogin().then(function(result) {
+      wx.hideLoading();
+      if (result && result.success) {
+        self.refreshLoginState();
+        wx.showToast({ title: '微信账号已绑定', icon: 'success' });
+        sync.mergeOnLogin().then(function(mergeResult) {
+          if (mergeResult && mergeResult.success) self.refreshData();
+        });
+      } else {
+        wx.showToast({
+          title: result && result.error ? result.error : '登录失败',
+          icon: 'none',
+          duration: 2000
+        });
+      }
+    });
   },
 
   onPullDownRefresh() {

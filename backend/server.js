@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const config = require('./config');
 
 const app = express();
@@ -17,7 +18,8 @@ const corsOptions = {
   credentials: true
 };
 app.use(cors(corsOptions));
-app.use(express.json({ limit: '100kb' }));
+// 放宽到 2mb 以容纳 base64 头像；上传路由内部另做 512KB 解码后大小校验
+app.use(express.json({ limit: '2mb' }));
 
 // 初始化种子用户密码（生成有效 bcrypt 哈希）
 const { initializeUserPasswords } = require('./data/initUsers');
@@ -32,8 +34,21 @@ const aiRouter = require('./routes/ai');
 const contentRouter = require('./routes/content');
 const settingsRouter = require('./routes/settings');
 const commentsRouter = require('./routes/comments');
+const userDataRouter = require('./routes/userData');
+const uploadRouter = require('./routes/upload');
+const wxUsersRouter = require('./routes/wxUsers');
 
+// 用户上传的头像（站内静态资源，目录不入库）
+// 挂载点含 avatars 一层，与返回的 /uploads/avatars/xxx 对齐；
+// 不挂到 /data，避免数据库与评论文件被直接下载
+app.use('/uploads/avatars', express.static(path.join(__dirname, 'data', 'avatars'), {
+  maxAge: '1h',
+  fallthrough: true
+}));
 app.use('/api/comments', commentsRouter);
+app.use('/api/userdata', userDataRouter);
+app.use('/api/upload', uploadRouter);
+app.use('/api/wx-users', wxUsersRouter);
 app.use('/api/settings', settingsRouter);
 app.use('/api/content', contentRouter);
 app.use('/api/auth', authRouter);
@@ -54,6 +69,9 @@ app.use((err, req, res, next) => {
 
 if (!config.jwtConfigured) {
   console.warn('[安全警告] JWT_SECRET 未配置，鉴权功能将使用临时密钥，请勿用于生产环境');
+}
+if (!config.wxConfigured) {
+  console.warn('[提示] 微信登录凭据未配置，将使用本地开发模拟 openid（仅非生产环境有效）');
 }
 
 app.listen(PORT, () => {

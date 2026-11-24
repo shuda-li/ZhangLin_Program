@@ -36,5 +36,17 @@ App({
     } catch (e) {
       console.warn('获取系统信息失败，使用默认值');
     }
+
+    // 静默建立微信身份并合并本地数据；未配置后端或异常时保持游客模式，不阻塞启动
+    var auth = require('./utils/auth');
+    var sync = require('./utils/sync-service');
+    auth.silentLogin().then(function(result) {
+      if (result && result.success) {
+        that.globalData.userInfo = result.data.user;
+        that.globalData.hasUserInfo = true;
+        return sync.mergeOnLogin();
+      }
+      return null;
+    }).catch(function() { /* 合并失败不阻塞启动，队列会在下次登录重试 */ });
   }
 });

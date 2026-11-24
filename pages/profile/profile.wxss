@@ -78,6 +78,75 @@
   z-index: 2;
 }
 
+/* ===== 微信登录状态条 ===== */
+.login-strip {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  margin-top: 18rpx;
+  padding: 12rpx 14rpx;
+  border-radius: 16rpx;
+  background: rgba(255, 255, 255, 0.12);
+}
+.login-avatar {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff5e8;
+  font-size: 24rpx;
+  flex-shrink: 0;
+}
+.login-avatar.is-login { background: #c89050; }
+.login-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: block;
+}
+.login-avatar-mark {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 50% 50% 44% 44%;
+  background: #fff5e8;
+  position: relative;
+}
+.login-avatar-mark::after {
+  content: '';
+  position: absolute;
+  left: -9rpx;
+  bottom: -11rpx;
+  width: 38rpx;
+  height: 18rpx;
+  border-radius: 20rpx 20rpx 0 0;
+  background: #fff5e8;
+}
+.login-copy { flex: 1; min-width: 0; }
+.login-name {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #ffffff;
+}
+.login-sub {
+  margin-top: 4rpx;
+  font-size: 19rpx;
+  color: rgba(255, 255, 255, 0.72);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.login-btn {
+  flex-shrink: 0;
+  padding: 10rpx 20rpx;
+  border-radius: 999rpx;
+  background: #ffffff;
+  color: #8b3a1a;
+  font-size: 21rpx;
+}
+
 .hero-level-row {
   display: flex;
   align-items: center;
@@ -704,3 +773,148 @@
 .stat-card:nth-child(1) .stat-value { animation-delay: 0.05s; }
 .stat-card:nth-child(2) .stat-value { animation-delay: 0.15s; }
 .stat-card:nth-child(3) .stat-value { animation-delay: 0.25s; }
+
+/* ==================== 微信头像昵称授权弹层 ==================== */
+.profile-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(20, 12, 6, 0.55);
+  z-index: 900;
+}
+.profile-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600rpx;
+  max-width: calc(100vw - 64rpx);
+  padding: 36rpx 32rpx 32rpx;
+  background: #fffdf8;
+  border-radius: 24rpx;
+  z-index: 901;
+  box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.2);
+}
+.pm-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.pm-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #3d2b1b;
+}
+.pm-close {
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  line-height: 1;
+  color: #9a8268;
+}
+.pm-tip {
+  margin-top: 12rpx;
+  font-size: 22rpx;
+  line-height: 1.5;
+  color: #9a8268;
+}
+.pm-row {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  margin-top: 28rpx;
+}
+.pm-label {
+  width: 80rpx;
+  flex-shrink: 0;
+  font-size: 26rpx;
+  color: #7a5c3a;
+}
+.pm-avatar-btn {
+  padding: 0;
+  margin: 0;
+  width: 96rpx;
+  height: 96rpx;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  background: transparent;
+  line-height: normal;
+}
+.pm-avatar-btn::after {
+  border: none;
+}
+.pm-avatar {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  display: block;
+}
+.pm-avatar-empty {
+  background: #f0e7d9;
+  position: relative;
+}
+.pm-avatar-empty::before,
+.pm-avatar-empty::after {
+  content: '';
+  position: absolute;
+  background: #b99a70;
+  border-radius: 2rpx;
+}
+.pm-avatar-empty::before {
+  width: 32rpx;
+  height: 4rpx;
+  top: 46rpx;
+  left: 32rpx;
+}
+.pm-avatar-empty::after {
+  width: 4rpx;
+  height: 32rpx;
+  top: 32rpx;
+  left: 46rpx;
+}
+.pm-hint {
+  font-size: 22rpx;
+  color: #a08b74;
+}
+.pm-nickname {
+  flex: 1;
+  min-width: 0;
+  height: 72rpx;
+  padding: 0 20rpx;
+  background: #f7f1e8;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  color: #3d2b1b;
+}
+.pm-actions {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 40rpx;
+}
+.pm-cancel,
+.pm-save {
+  flex: 1;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999rpx;
+  font-size: 28rpx;
+}
+.pm-cancel {
+  background: #f0e8dd;
+  color: #7a5c3a;
+}
+.pm-save {
+  background: linear-gradient(135deg, #c89050, #a87038);
+  color: #ffffff;
+}
+.pm-save.is-saving {
+  opacity: 0.7;
+}

@@ -4,10 +4,23 @@
  * - 管理员：查看全部、筛选、屏蔽/恢复、删除
  */
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const store = require('../data/commentStore');
-const { authenticate, adminOnly } = require('../middleware/auth');
+const { RUNTIME_SECRET, authenticate, adminOnly } = require('../middleware/auth');
 
 const router = express.Router();
+
+// 可选鉴权：已登录用户的公开评论自动绑定 userId，游客仍可匿名发表
+function currentUserId(req) {
+  const header = req.headers.authorization || '';
+  if (!header.startsWith('Bearer ')) return '';
+  try {
+    const decoded = jwt.verify(header.slice(7), RUNTIME_SECRET);
+    return decoded.id || '';
+  } catch (_) {
+    return '';
+  }
+}
 
 // 公开读取：仅返回正常状态评论
 router.get('/', (req, res) => {
@@ -31,7 +44,9 @@ router.post('/', (req, res) => {
   if (text.length > 500) return res.status(400).json({ code: 400, message: '评论内容最多500字' });
 
   const comment = store.add({
-    id, targetType, targetId, targetName, nickname,
+    id,
+    userId: currentUserId(req),
+    targetType, targetId, targetName, nickname,
     content: text, rating, images, createdAt
   });
   if (!comment) return res.status(500).json({ code: 500, message: '评论保存失败' });

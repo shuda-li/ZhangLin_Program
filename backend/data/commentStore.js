@@ -43,8 +43,9 @@ function normalizeType(type) {
 
 /** 条件查询：targetType / targetId / keyword / status / 时间范围 */
 function list(filters = {}) {
-  const { targetType, targetId, keyword, status, startDate, endDate } = filters;
+  const { targetType, targetId, keyword, status, startDate, endDate, userId } = filters;
   let comments = readStore().comments.slice();
+  if (userId) comments = comments.filter(c => c.userId === userId);
   if (targetType) comments = comments.filter(c => c.targetType === normalizeType(targetType));
   if (targetId) comments = comments.filter(c => c.targetId === targetId);
   if (status) comments = comments.filter(c => c.status === status);
@@ -66,6 +67,7 @@ function add(payload = {}) {
   const store = readStore();
   const comment = {
     id: payload.id || ('c_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 6)),
+    userId: payload.userId ? String(payload.userId).slice(0, 80) : '',
     targetType: normalizeType(payload.targetType),
     targetId: String(payload.targetId || '').slice(0, 80),
     targetName: String(payload.targetName || '').slice(0, 80),

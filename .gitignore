@@ -34,6 +34,14 @@ backend/.env
 # 管理后台输入的 AI 密钥（AES 加密后的密文文件，绝不入库）
 backend/data/.ai-keys.json
 
+# SQLite 用户数据库（含 openid 等个人信息，绝不入库）
+backend/data/*.db
+backend/data/*.db-shm
+backend/data/*.db-wal
+
+# 用户上传的头像（含个人信息，绝不入库）
+backend/data/avatars/
+
 # 图片素材（使用远程或本地）
 assets/images/*.jpg
 assets/images/*.png

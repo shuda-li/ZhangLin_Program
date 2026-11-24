@@ -1,8 +1,11 @@
-const FAVORITE_SPOTS_KEY = 'favoriteSpots';
-const RECENT_SPOTS_KEY = 'recentSpots';
-const ACTIVITY_REGISTRATIONS_KEY = 'activityRegistrations';
-const LIKED_SPOTS_KEY = 'likedSpots';
-const SPOT_REVIEWS_KEY = 'spotReviews';
+const KEYS = require('./storage-keys');
+const sync = require('./sync-service');
+
+const FAVORITE_SPOTS_KEY = KEYS.FAVORITE_SPOTS_KEY;
+const RECENT_SPOTS_KEY = KEYS.RECENT_SPOTS_KEY;
+const ACTIVITY_REGISTRATIONS_KEY = KEYS.ACTIVITY_REGISTRATIONS_KEY;
+const LIKED_SPOTS_KEY = KEYS.LIKED_SPOTS_KEY;
+const SPOT_REVIEWS_KEY = KEYS.SPOT_REVIEWS_KEY;
 
 function getArray(key) {
   try { const value = wx.getStorageSync(key); return Array.isArray(value) ? value : []; }
@@ -14,7 +17,7 @@ function setArray(key, value) {
   catch (_) { /* storage full, silently fail */ }
 }
 
-// ═══ 收藏 (已有) ═══
+// ═══ 收藏 (本地优先 + 云端同步) ═══
 function toggleFavoriteSpot(spot) {
   const favorites = getArray(FAVORITE_SPOTS_KEY);
   const exists = favorites.find((item) => item.id === spot.id);
@@ -22,26 +25,40 @@ function toggleFavoriteSpot(spot) {
     ? favorites.filter((item) => item.id !== spot.id)
     : [{ id: spot.id, name: spot.name, image: spot.image, summary: spot.summary }].concat(favorites).slice(0, 12);
   setArray(FAVORITE_SPOTS_KEY, next);
+  if (exists) {
+    sync.enqueue({ kind: 'favorite', op: 'remove', id: spot.id });
+  } else {
+    sync.enqueue({
+      kind: 'favorite',
+      op: 'add',
+      item: { id: spot.id, name: spot.name, image: spot.image, summary: spot.summary }
+    });
+  }
   return !exists;
 }
 function isFavoriteSpot(spotId) { return getArray(FAVORITE_SPOTS_KEY).some((item) => item.id === spotId); }
 function getFavoriteSpots() { return getArray(FAVORITE_SPOTS_KEY); }
 
+// ═══ 浏览足迹 (本地优先 + 云端同步) ═══
 function addRecentSpot(spot) {
   const recent = getArray(RECENT_SPOTS_KEY).filter((item) => item.id !== spot.id);
-  const next = [{ id: spot.id, name: spot.name, image: spot.image, summary: spot.summary, time: Date.now() }].concat(recent).slice(0, 8);
+  const item = { id: spot.id, name: spot.name, image: spot.image, summary: spot.summary, time: Date.now() };
+  const next = [item].concat(recent).slice(0, 8);
   setArray(RECENT_SPOTS_KEY, next);
+  sync.enqueue({ kind: 'footprint', op: 'add', item: item });
   return next;
 }
 function getRecentSpots() { return getArray(RECENT_SPOTS_KEY); }
 
-// ═══ 活动报名 (已有) ═══
+// ═══ 活动报名 (本地优先 + 云端同步) ═══
 function registerActivity(activity) {
   const registrations = getArray(ACTIVITY_REGISTRATIONS_KEY);
   const exists = registrations.find((item) => item.id === activity.id);
   if (exists) return { alreadyRegistered: true, registrations };
-  const next = [{ id: activity.id, title: activity.title, date: activity.date, place: activity.place, image: activity.image }].concat(registrations).slice(0, 10);
+  const item = { id: activity.id, title: activity.title, date: activity.date, place: activity.place, image: activity.image };
+  const next = [item].concat(registrations).slice(0, 10);
   setArray(ACTIVITY_REGISTRATIONS_KEY, next);
+  sync.enqueue({ kind: 'registration', op: 'add', item: item });
   return { alreadyRegistered: false, registrations: next };
 }
 function getActivityRegistrations() { return getArray(ACTIVITY_REGISTRATIONS_KEY); }
@@ -49,10 +66,11 @@ function isRegisteredActivity(activityId) { return getArray(ACTIVITY_REGISTRATIO
 function unregisterActivity(activityId) {
   const registrations = getArray(ACTIVITY_REGISTRATIONS_KEY).filter((item) => item.id !== activityId);
   setArray(ACTIVITY_REGISTRATIONS_KEY, registrations);
+  sync.enqueue({ kind: 'registration', op: 'remove', id: activityId });
   return registrations;
 }
 
-// ═══ 点赞 (新增) ═══
+// ═══ 点赞 (纯本地偏好，不上云) ═══
 function toggleLikeSpot(spotId) {
   const liked = getArray(LIKED_SPOTS_KEY);
   const idx = liked.indexOf(spotId);
@@ -62,7 +80,7 @@ function toggleLikeSpot(spotId) {
 }
 function isLikedSpot(spotId) { return getArray(LIKED_SPOTS_KEY).includes(spotId); }
 
-// ═══ 评价 (新增) ═══
+// ═══ 评价 (旧版本地结构，保留兼容) ═══
 function addReview(spotId, { nickname, rating, content, images }) {
   const reviews = getArray(SPOT_REVIEWS_KEY);
   const review = { id: Date.now().toString(36), spotId, nickname: nickname || '匿名游客', rating: Math.max(1, Math.min(5, rating)), content, images: (images || []).slice(0, 3), createdAt: new Date().toISOString(), likes: 0 };

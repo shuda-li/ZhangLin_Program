@@ -45,6 +45,11 @@ module.exports = {
   port: process.env.PORT || 3000,
   jwtSecret: process.env.JWT_SECRET || '',
   adminPassword: process.env.ADMIN_PASSWORD || '',
+  // 微信小程序登录凭据。未配置时仅允许非生产环境使用固定开发 openid
+  wxAppId: process.env.WX_APPID || '',
+  wxAppSecret: process.env.WX_APPSECRET || '',
+  wxDevOpenId: process.env.WX_DEV_OPENID || 'dev-openid-local',
+  wxConfigured: isConfigured(process.env.WX_APPID) && isConfigured(process.env.WX_APPSECRET),
   // AI 密钥不再从环境变量读取：仅由管理员在管理后台输入，加密存于 data/.ai-keys.json
   corsOrigins: rawOrigin.split(',').map((s) => s.trim()).filter(Boolean),
   isConfigured,

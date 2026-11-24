@@ -5,6 +5,7 @@
  */
 const jwt = require('jsonwebtoken');
 const config = require('../config');
+const wxUserDb = require('../data/wxUserDb');
 
 // 生产环境未配置 JWT_SECRET 时，使用一次性随机密钥（重启失效），避免硬编码弱密钥
 const RUNTIME_SECRET = config.jwtConfigured
@@ -21,6 +22,13 @@ function authenticate(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, RUNTIME_SECRET);
+    // 被禁用的小程序用户：旧令牌在过期前也要立即失效
+    if (decoded.role === 'visitor') {
+      const wxUser = wxUserDb.findById(decoded.id);
+      if (wxUser && wxUser.status !== 'active') {
+        return res.status(403).json({ code: 403, message: '账号已被禁用' });
+      }
+    }
     req.user = decoded;
     next();
   } catch (error) {

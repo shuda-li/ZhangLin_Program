@@ -16,6 +16,19 @@
         <view class="hero-title-text">{{userTitle}}</view>
       </view>
       <view class="hero-name">我的古港旅程</view>
+    <view class="login-strip">
+      <view class="login-avatar {{isLoggedIn ? 'is-login' : ''}}" bindtap="openProfileEditor">
+        <image wx:if="{{loginAvatarUrl}}" class="login-avatar-img" src="{{loginAvatarUrl}}" mode="aspectFill" />
+        <view wx:elif="{{isLoggedIn}}" class="login-avatar-text">{{loginInitial}}</view>
+        <view wx:else class="login-avatar-mark"></view>
+      </view>
+      <view class="login-copy" bindtap="openProfileEditor">
+        <view class="login-name">{{loginName}}</view>
+        <view class="login-sub">{{loginDesc}}</view>
+      </view>
+      <view wx:if="{{!isLoggedIn}}" class="login-btn ui-press" bindtap="handleLogin">登录</view>
+      <view wx:else class="login-btn ui-press" bindtap="openProfileEditor">{{profileComplete ? '编辑' : '完善资料'}}</view>
+    </view>
       <view class="hero-progress-wrap">
         <view class="hero-progress-bar">
           <view class="hero-progress-fill {{animShimmer ? 'shimmer-on' : ''}}" style="width:{{explorePercent}}%">
@@ -188,5 +201,31 @@
 
   <view class="back-top {{showBackTop ? 'back-top-show' : ''}}" bindtap="scrollToTop">
     <text class="back-top-icon">^</text>
+  </view>
+</view>
+
+<!-- 微信头像昵称授权弹层（置于页面容器外，避免 transform 影响 fixed 定位） -->
+<view wx:if="{{showProfileEditor}}" class="profile-mask" bindtap="closeProfileEditor" catchtouchmove="noop"></view>
+<view wx:if="{{showProfileEditor}}" class="profile-modal" catchtouchmove="noop">
+  <view class="pm-head">
+    <text class="pm-title">完善微信资料</text>
+    <view class="pm-close" bindtap="closeProfileEditor">×</view>
+  </view>
+  <view class="pm-tip">头像与昵称来自你的微信授权，仅用于本小程序内展示。</view>
+  <view class="pm-row">
+    <text class="pm-label">头像</text>
+    <button class="pm-avatar-btn" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar" hover-class="none">
+      <image wx:if="{{draftAvatar}}" class="pm-avatar" src="{{draftAvatar}}" mode="aspectFill" />
+      <view wx:else class="pm-avatar pm-avatar-empty"></view>
+    </button>
+    <text class="pm-hint">点击选择微信头像</text>
+  </view>
+  <view class="pm-row">
+    <text class="pm-label">昵称</text>
+    <input class="pm-nickname" type="nickname" value="{{draftNickname}}" bindinput="onNicknameInput" placeholder="点击使用微信昵称" maxlength="32" />
+  </view>
+  <view class="pm-actions">
+    <view class="pm-cancel" bindtap="closeProfileEditor">取消</view>
+    <view class="pm-save {{profileSaving ? 'is-saving' : ''}}" bindtap="saveProfile">{{profileSaving ? '保存中…' : '保存'}}</view>
   </view>
 </view>

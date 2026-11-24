@@ -1,14 +1,17 @@
 /**
  * 评论服务
  *
- * 设计：本地持久化为主，后端可选同步
- * - 小程序 API_BASE_URL 未配置时，评论保存在本地，功能完全可用
- * - 配置后端地址后，新评论会同步到后端，管理端即可查看/筛选/删除
- * - 列表读取时合并本地与后端数据（按 id 去重），避免网络异常导致评论丢失
+ * 设计：本地持久化为主，后端同步为辅
+ * - 未配置后端或游客状态：评论保存在本地，功能完全可用
+ * - 已登录：新评论进入同步队列写入后端并绑定 userId，管理端可识别来源
+ * - 列表读取时合并本地与后端数据（按 id 去重），云端状态优先（含屏蔽状态）
  */
 const api = require('./api');
+const auth = require('./auth');
+const sync = require('./sync-service');
+const KEYS = require('./storage-keys');
 
-const STORAGE_KEY = 'siteComments';
+const STORAGE_KEY = KEYS.SITE_COMMENTS_KEY;
 const VALID_TYPES = ['story', 'spot', 'route'];
 
 function readLocal() {
@@ -53,7 +56,7 @@ function normalize(item) {
 function list(targetType, targetId) {
   const local = readLocal()
     .map(normalize)
-    .filter(c => c && c.status === 'active' && c.targetType === targetType && c.targetId === targetId);
+    .filter(c => c && c.targetType === targetType && c.targetId === targetId);
 
   return api.request('/api/comments', {
     method: 'GET',
@@ -63,8 +66,9 @@ function list(targetType, targetId) {
       ? result.data.list.map(normalize).filter(Boolean)
       : [];
     const merged = new Map();
-    remote.forEach(c => merged.set(c.id, c));
     local.forEach(c => merged.set(c.id, c));
+    // 云端优先：管理员屏蔽状态能覆盖本地缓存
+    remote.forEach(c => merged.set(c.id, c));
     return Array.from(merged.values())
       .filter(c => c.status === 'active')
       .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
@@ -72,7 +76,7 @@ function list(targetType, targetId) {
 }
 
 /**
- * 发表评论（本地立即生效，后端尽力同步）
+ * 发表评论（本地立即生效，云端异步同步）
  * @returns {Promise<Object>} 新建的评论
  */
 function add(payload = {}) {
@@ -97,8 +101,13 @@ function add(payload = {}) {
   all.unshift(comment);
   writeLocal(all);
 
-  // 后端同步失败不影响用户发表体验
-  api.request('/api/comments', { method: 'POST', data: comment }).catch(() => {});
+  if (auth.isLoggedIn()) {
+    // 已登录：走同步队列，后端会绑定 userId
+    sync.enqueue({ kind: 'comment', op: 'add', item: comment });
+  } else {
+    // 游客：保留原有匿名同步，管理端仍可见但无用户归属
+    api.request('/api/comments', { method: 'POST', data: comment }).catch(() => {});
+  }
   return Promise.resolve(comment);
 }
 
